@@ -1,0 +1,29 @@
+aid: fireworks-ai
+url: https://raw.githubusercontent.com/api-evangelist/fireworks-ai/refs/heads/main/apis.yml
+name: Fireworks AI
+x-type: company
+description: >-
+  Fireworks AI is a production-grade inference platform for open-source generative models. The Fireworks API hosts Llama, Mixtral, DeepSeek, Stable Diffusion, and other open models with serverless and on-demand deployment.
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+  - AI
+  - LLM
+  - Inference
+  - Multimodal
+  - Fine-tuning
+created: '2026-05-08'
+modified: '2026-05-08'
+specificationVersion: '0.19'
+apis: []
+common:
+  - type: Website
+    url: https://fireworks.ai/
+  - type: Plans
+    url: plans/fireworks-ai-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/fireworks-ai-rate-limits.yml
+  - type: FinOps
+    url: finops/fireworks-ai-finops.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
