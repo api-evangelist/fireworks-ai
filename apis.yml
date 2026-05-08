@@ -3,7 +3,7 @@ url: https://raw.githubusercontent.com/api-evangelist/fireworks-ai/refs/heads/ma
 name: Fireworks AI
 x-type: company
 description: >-
-  Fireworks AI is a production-grade inference platform for open-source generative models. The Fireworks API hosts Llama, Mixtral, DeepSeek, Stable Diffusion, and other open models with serverless and on-demand deployment.
+  Fireworks AI is a production-grade inference platform for open-source and proprietary generative models. The Fireworks API hosts Llama, DeepSeek, Qwen, Mixtral, Stable Diffusion, and other models with serverless pay-per-token, on-demand dedicated GPU, and batch deployment options, plus managed fine-tuning.
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 tags:
   - AI
@@ -11,13 +11,202 @@ tags:
   - Inference
   - Multimodal
   - Fine-tuning
+  - GPU
 created: '2026-05-08'
 modified: '2026-05-08'
 specificationVersion: '0.19'
-apis: []
+apis:
+  - aid: fireworks-ai:fireworks-chat-completions-api
+    name: Fireworks Chat Completions API
+    tags:
+      - Chat
+      - Completions
+      - LLM
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://docs.fireworks.ai/api-reference/post-chatcompletions
+    baseURL: https://api.fireworks.ai/inference/v1
+    properties:
+      - url: https://docs.fireworks.ai/guides/querying-text-models
+        type: Documentation
+      - url: https://docs.fireworks.ai/api-reference/post-chatcompletions
+        type: API Reference
+    description: >-
+      OpenAI-compatible chat completions across 100+ open-source and proprietary models including Llama, DeepSeek, Qwen, and Mixtral, with streaming, function calling, and structured outputs.
+  - aid: fireworks-ai:fireworks-completions-api
+    name: Fireworks Completions API
+    tags:
+      - Completions
+      - LLM
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://docs.fireworks.ai/api-reference/post-completions
+    baseURL: https://api.fireworks.ai/inference/v1
+    properties:
+      - url: https://docs.fireworks.ai/api-reference/post-completions
+        type: API Reference
+    description: >-
+      Legacy text completion endpoint, OpenAI-compatible.
+  - aid: fireworks-ai:fireworks-vision-api
+    name: Fireworks Vision API
+    tags:
+      - Vision
+      - Multimodal
+      - Documents
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://docs.fireworks.ai/guides/querying-vision-language-models
+    baseURL: https://api.fireworks.ai/inference/v1
+    properties:
+      - url: https://docs.fireworks.ai/guides/querying-vision-language-models
+        type: Documentation
+    description: >-
+      Vision-language inference for image and document understanding through chat completions.
+  - aid: fireworks-ai:fireworks-embeddings-api
+    name: Fireworks Embeddings API
+    tags:
+      - Embeddings
+      - Vector
+      - Retrieval
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://docs.fireworks.ai/guides/querying-embeddings-models
+    baseURL: https://api.fireworks.ai/inference/v1
+    properties:
+      - url: https://docs.fireworks.ai/guides/querying-embeddings-models
+        type: Documentation
+    description: >-
+      Generate dense vector embeddings for retrieval, RAG, and semantic search using nomic, Qwen3, BGE, and other open embedding models.
+  - aid: fireworks-ai:fireworks-rerank-api
+    name: Fireworks Rerank API
+    tags:
+      - Rerank
+      - Retrieval
+      - RAG
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://docs.fireworks.ai/guides/querying-rerank-models
+    baseURL: https://api.fireworks.ai/inference/v1
+    properties:
+      - url: https://docs.fireworks.ai/guides/querying-rerank-models
+        type: Documentation
+    description: >-
+      Cross-encoder reranking of candidate passages for higher-quality retrieval and RAG pipelines.
+  - aid: fireworks-ai:fireworks-images-api
+    name: Fireworks Images API
+    tags:
+      - Images
+      - Generation
+      - Stable Diffusion
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://docs.fireworks.ai/api-reference/generate-a-new-image-from-a-text-prompt
+    baseURL: https://api.fireworks.ai/inference/v1
+    properties:
+      - url: https://docs.fireworks.ai/guides/querying-image-language-models
+        type: Documentation
+      - url: https://docs.fireworks.ai/api-reference/generate-a-new-image-from-a-text-prompt
+        type: API Reference
+    description: >-
+      Text-to-image and image-to-image generation across Stable Diffusion, FLUX, and other diffusion model families.
+  - aid: fireworks-ai:fireworks-audio-api
+    name: Fireworks Audio API
+    tags:
+      - Audio
+      - Speech to Text
+      - Text to Speech
+      - Whisper
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://docs.fireworks.ai/api-reference/audio-transcriptions
+    baseURL: https://audio-prod.us-virginia-1.direct.fireworks.ai/v1
+    properties:
+      - url: https://docs.fireworks.ai/guides/audio
+        type: Documentation
+      - url: https://docs.fireworks.ai/api-reference/audio-transcriptions
+        type: API Reference
+    description: >-
+      OpenAI-compatible audio transcription, translation, and TTS endpoints for Whisper and other audio models with low-latency streaming.
+  - aid: fireworks-ai:fireworks-batch-inference-api
+    name: Fireworks Batch Inference API
+    tags:
+      - Batch
+      - Async
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://docs.fireworks.ai/guides/batch-inference
+    baseURL: https://api.fireworks.ai/inference/v1
+    properties:
+      - url: https://docs.fireworks.ai/guides/batch-inference
+        type: Documentation
+    description: >-
+      Asynchronous batch inference at 50% of serverless rates for both input and output tokens.
+  - aid: fireworks-ai:fireworks-fine-tuning-api
+    name: Fireworks Fine-Tuning API
+    tags:
+      - Fine-Tuning
+      - LoRA
+      - RFT
+      - Training
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://docs.fireworks.ai/fine-tuning/fine-tuning-models
+    baseURL: https://api.fireworks.ai/v1
+    properties:
+      - url: https://docs.fireworks.ai/fine-tuning/fine-tuning-models
+        type: Documentation
+    description: >-
+      Supervised fine-tuning (LoRA and full-parameter) and reinforcement fine-tuning, with one-click deployment of fine-tuned weights at the same per-token price as base models.
+  - aid: fireworks-ai:fireworks-files-api
+    name: Fireworks Files API
+    tags:
+      - Files
+      - Datasets
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://docs.fireworks.ai/api-reference/files
+    baseURL: https://api.fireworks.ai/v1
+    properties:
+      - url: https://docs.fireworks.ai/api-reference/files
+        type: API Reference
+    description: >-
+      Upload and manage training datasets, batch input files, and fine-tuning artifacts.
+  - aid: fireworks-ai:fireworks-models-api
+    name: Fireworks Models API
+    tags:
+      - Models
+      - Catalog
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://docs.fireworks.ai/api-reference/list-models
+    baseURL: https://api.fireworks.ai/v1
+    properties:
+      - url: https://docs.fireworks.ai/api-reference/list-models
+        type: API Reference
+    description: >-
+      Lists models, deployments, and metadata across the Fireworks catalog.
+  - aid: fireworks-ai:fireworks-deployments-api
+    name: Fireworks Deployments API
+    tags:
+      - Deployments
+      - On-Demand
+      - GPU
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://docs.fireworks.ai/guides/ondemand-deployments
+    baseURL: https://api.fireworks.ai/v1
+    properties:
+      - url: https://docs.fireworks.ai/guides/ondemand-deployments
+        type: Documentation
+    description: >-
+      Provision and autoscale on-demand dedicated GPU deployments (H100, H200, B200, B300) billed per GPU-second.
+  - aid: fireworks-ai:fireworks-account-api
+    name: Fireworks Account API
+    tags:
+      - Account
+      - Usage
+      - Billing
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://docs.fireworks.ai/api-reference
+    baseURL: https://api.fireworks.ai/v1
+    properties:
+      - url: https://docs.fireworks.ai/api-reference
+        type: API Reference
+    description: >-
+      Programmatic access to account, billing, usage, and team management.
 common:
   - type: Website
     url: https://fireworks.ai/
+  - type: Documentation
+    url: https://docs.fireworks.ai/
   - type: Plans
     url: plans/fireworks-ai-plans-pricing.yml
   - type: RateLimits

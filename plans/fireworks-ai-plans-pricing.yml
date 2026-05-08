@@ -5,38 +5,215 @@ provider: Fireworks AI
 providerId: fireworks-ai
 created: '2026-05-08'
 modified: '2026-05-08'
-reconciled: false
+reconciled: true
 tags:
 - AI
 - LLM
 - Inference
 - Multimodal
 - Fine-tuning
+- GPU
 - Plans
-description: Placeholder plans/pricing artifact for Fireworks AI. Replace with real published pricing once
-  the pipeline researches the provider's plans page.
-notes: Initial scaffold — plans/pricing have not yet been reconciled against the provider's documentation.
+description: >-
+  Fireworks AI offers serverless pay-per-token inference, on-demand dedicated
+  GPU deployments billed per GPU-second, batch inference at 50% of serverless,
+  cached input tokens at 50% of standard, and managed fine-tuning. New users
+  get $1 in free credits and postpaid billing as usage grows.
+notes: >-
+  Per-model rates are listed on the Fireworks pricing page; representative
+  ranges are captured here. Fine-tuned model serving is the same per-token
+  price as the base model.
 sources:
-- https://fireworks.ai/
+- https://fireworks.ai/pricing
+- https://docs.fireworks.ai/
 plans:
-- id: fireworks-ai-default
-  name: To Be Reconciled
-  type: enterprise
-  description: Initial scaffold; replace with provider plan tiers (Free / Pro / Enterprise / pay-as-you-go,
-    etc.) once pricing is reconciled.
+- id: fireworks-serverless
+  name: Serverless (Pay-as-you-go)
+  type: usage
+  description: >-
+    On-demand per-token inference with high rate limits, postpaid billing,
+    and zero cold starts.
   entries:
-  - label: API Access
-    name: api_access
-    type: flat
-    metric: varies
+  - label: Chat / Vision Tokens
+    name: chat_tokens
+    type: usage
+    metric: tokens
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1000000
+    price: per 1M tokens, varies by model (see pricing page)
+    userMultiplied: false
+  - label: Cached Input Tokens
+    name: cached_input
+    type: usage
+    metric: tokens
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1000000
+    price: 50% of the standard input rate
+    userMultiplied: false
+  - label: Embeddings (up to 150M params)
+    name: embeddings_small
+    type: usage
+    metric: tokens
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1000000
+    price: $0.008 per 1M
+    userMultiplied: false
+  - label: Embeddings (150M-350M params)
+    name: embeddings_mid
+    type: usage
+    metric: tokens
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1000000
+    price: $0.016 per 1M
+    userMultiplied: false
+  - label: Embeddings (Qwen3 8B)
+    name: embeddings_large
+    type: usage
+    metric: tokens
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1000000
+    price: $0.10 per 1M
+    userMultiplied: false
+  elements:
+  - name: Chat Completions
+  - name: Vision
+  - name: Embeddings
+  - name: Rerank
+  - name: Images
+  - name: Audio
+- id: fireworks-batch
+  name: Batch Inference
+  type: usage
+  description: >-
+    Asynchronous batch jobs priced at 50% of serverless input and output
+    rates.
+  entries:
+  - label: Batch Tokens
+    name: batch_tokens
+    type: usage
+    metric: tokens
+    limit: -1
+    timeFrame: usage
+    geo: global
+    unit: 1000000
+    price: 50% of serverless rates (input and output)
+    userMultiplied: false
+  elements:
+  - name: Batch Chat Completions
+  - name: Batch Embeddings
+- id: fireworks-fine-tuning
+  name: Fine-Tuning
+  type: usage
+  description: >-
+    Supervised fine-tuning (LoRA and full) priced per 1M training tokens
+    by model size and method, plus reinforcement fine-tuning billed per
+    GPU-hour at on-demand deployment rates.
+  entries:
+  - label: Supervised Fine-Tuning Tokens
+    name: ft_sft
+    type: usage
+    metric: tokens
+    limit: -1
+    timeFrame: usage
+    geo: global
+    unit: 1000000
+    price: $0.50-$40.00 per 1M training tokens (varies by model size and method)
+    userMultiplied: false
+  - label: Reinforcement Fine-Tuning
+    name: ft_rft
+    type: usage
+    metric: hours
     limit: -1
     timeFrame: usage
     geo: global
     unit: 1
-    price: see https://fireworks.ai/
+    price: per GPU-hour at on-demand rates ($7-$12 per hour)
+    userMultiplied: false
+  - label: Fine-Tuned Model Serving
+    name: ft_serving
+    type: usage
+    metric: tokens
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1000000
+    price: same per-token price as base model
     userMultiplied: false
   elements:
-  - name: Pending Reconciliation
+  - name: SFT (LoRA)
+  - name: SFT (Full)
+  - name: Reinforcement Fine-Tuning
+- id: fireworks-on-demand
+  name: On-Demand Deployments (Dedicated GPUs)
+  type: usage
+  description: >-
+    Pay-per-GPU-second dedicated GPU deployments with autoscaling and
+    no cold-start charge.
+  entries:
+  - label: H100 / H200 (per hour)
+    name: gpu_h100_h200
+    type: usage
+    metric: hours
+    limit: -1
+    timeFrame: usage
+    geo: global
+    unit: 1
+    price: $7.00 per hour
+    userMultiplied: false
+  - label: B200 (per hour)
+    name: gpu_b200
+    type: usage
+    metric: hours
+    limit: -1
+    timeFrame: usage
+    geo: global
+    unit: 1
+    price: $10.00 per hour
+    userMultiplied: false
+  - label: B300 (per hour)
+    name: gpu_b300
+    type: usage
+    metric: hours
+    limit: -1
+    timeFrame: usage
+    geo: global
+    unit: 1
+    price: $12.00 per hour
+    userMultiplied: false
+  elements:
+  - name: H100 / H200
+  - name: B200
+  - name: B300
+- id: fireworks-enterprise
+  name: Enterprise
+  type: enterprise
+  description: >-
+    Reserved capacity, dedicated regions, SOC2 / HIPAA compliance support,
+    and negotiated terms. Contact Fireworks sales.
+  entries:
+  - label: Enterprise Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Custom Volume Pricing
+  - name: Reserved Capacity
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

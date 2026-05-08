@@ -15,22 +15,57 @@ tags:
 - Rate Limiting
 - Quotas
 - Throttling
-description: Placeholder rate-limit artifact for Fireworks AI. Replace with real limits once the pipeline
-  researches the provider's rate-limit documentation.
-notes: Initial scaffold — limits have not yet been reconciled against the provider's documentation.
+description: >-
+  Fireworks AI publishes high serverless rate limits that scale with paid
+  spend, expressed primarily as RPM (requests per minute) per model, with
+  separate limits for batch jobs and fine-tuning. On-demand dedicated
+  deployments are bounded by provisioned GPU capacity rather than shared
+  serverless limits.
+notes: >-
+  Per-model RPM and concurrency limits are listed on the docs.fireworks.ai
+  rate-limits page; verify on reconciliation. Free-tier accounts have lower
+  limits than paid postpaid accounts.
 sources:
-- https://fireworks.ai/
+- https://docs.fireworks.ai/guides/rate-limits
+- https://fireworks.ai/pricing
 responseCodes:
   throttled: 429
 limits:
-- name: Default
+- name: Requests Per Minute (RPM)
   scope: account
-  metric: varies
+  metric: requests
   limit: see provider documentation
-  notes: Pending reconciliation.
+  notes: Per-model RPM, varies by tier and model.
+- name: Concurrent Requests
+  scope: account
+  metric: concurrent
+  limit: see provider documentation
+  notes: Concurrency cap per model on serverless.
+- name: Tokens Per Minute (TPM)
+  scope: account
+  metric: tokens
+  limit: see provider documentation
+  notes: Per-model TPM, varies by tier and model.
+- name: Batch Inference
+  scope: account
+  metric: jobs
+  limit: separate from sync limits
+  notes: Batch runs at 50% discount and does not consume sync RPM/TPM directly.
+- name: Fine-Tuning Jobs
+  scope: account
+  metric: concurrent_jobs
+  limit: see provider documentation
+  notes: Concurrency cap on parallel fine-tuning jobs.
+- name: On-Demand Deployments
+  scope: deployment
+  metric: requests
+  limit: bounded by provisioned GPU capacity
+  notes: Throughput determined by GPU sizing and autoscaling configuration.
 policies:
+- name: Tiered Limits
+  description: Limits scale up automatically with paid postpaid usage and via Enterprise agreements.
 - name: Backoff Strategy
-  description: Clients should implement exponential backoff with jitter and honor any Retry-After header.
+  description: Clients should implement exponential backoff with jitter and honor Retry-After.
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
