@@ -30,6 +30,8 @@ apis:
         type: Documentation
       - url: https://docs.fireworks.ai/api-reference/post-chatcompletions
         type: API Reference
+      - url: openapi/fireworks-ai-merged-openapi.yml
+        type: OpenAPI
     description: >-
       OpenAI-compatible chat completions across 100+ open-source and proprietary models including Llama, DeepSeek, Qwen, and Mixtral, with streaming, function calling, and structured outputs.
   - aid: fireworks-ai:fireworks-completions-api
@@ -43,6 +45,8 @@ apis:
     properties:
       - url: https://docs.fireworks.ai/api-reference/post-completions
         type: API Reference
+      - url: openapi/fireworks-ai-merged-openapi.yml
+        type: OpenAPI
     description: >-
       Legacy text completion endpoint, OpenAI-compatible.
   - aid: fireworks-ai:fireworks-vision-api
@@ -57,6 +61,8 @@ apis:
     properties:
       - url: https://docs.fireworks.ai/guides/querying-vision-language-models
         type: Documentation
+      - url: openapi/fireworks-ai-merged-openapi.yml
+        type: OpenAPI
     description: >-
       Vision-language inference for image and document understanding through chat completions.
   - aid: fireworks-ai:fireworks-embeddings-api
@@ -71,6 +77,8 @@ apis:
     properties:
       - url: https://docs.fireworks.ai/guides/querying-embeddings-models
         type: Documentation
+      - url: openapi/fireworks-ai-merged-openapi.yml
+        type: OpenAPI
     description: >-
       Generate dense vector embeddings for retrieval, RAG, and semantic search using nomic, Qwen3, BGE, and other open embedding models.
   - aid: fireworks-ai:fireworks-rerank-api
@@ -85,6 +93,8 @@ apis:
     properties:
       - url: https://docs.fireworks.ai/guides/querying-rerank-models
         type: Documentation
+      - url: openapi/fireworks-ai-merged-openapi.yml
+        type: OpenAPI
     description: >-
       Cross-encoder reranking of candidate passages for higher-quality retrieval and RAG pipelines.
   - aid: fireworks-ai:fireworks-images-api
@@ -101,6 +111,8 @@ apis:
         type: Documentation
       - url: https://docs.fireworks.ai/api-reference/generate-a-new-image-from-a-text-prompt
         type: API Reference
+      - url: openapi/fireworks-ai-merged-openapi.yml
+        type: OpenAPI
     description: >-
       Text-to-image and image-to-image generation across Stable Diffusion, FLUX, and other diffusion model families.
   - aid: fireworks-ai:fireworks-audio-api
@@ -118,6 +130,8 @@ apis:
         type: Documentation
       - url: https://docs.fireworks.ai/api-reference/audio-transcriptions
         type: API Reference
+      - url: openapi/fireworks-ai-merged-openapi.yml
+        type: OpenAPI
     description: >-
       OpenAI-compatible audio transcription, translation, and TTS endpoints for Whisper and other audio models with low-latency streaming.
   - aid: fireworks-ai:fireworks-batch-inference-api
@@ -131,6 +145,8 @@ apis:
     properties:
       - url: https://docs.fireworks.ai/guides/batch-inference
         type: Documentation
+      - url: openapi/fireworks-ai-merged-openapi.yml
+        type: OpenAPI
     description: >-
       Asynchronous batch inference at 50% of serverless rates for both input and output tokens.
   - aid: fireworks-ai:fireworks-fine-tuning-api
@@ -146,6 +162,8 @@ apis:
     properties:
       - url: https://docs.fireworks.ai/fine-tuning/fine-tuning-models
         type: Documentation
+      - url: openapi/fireworks-ai-merged-openapi.yml
+        type: OpenAPI
     description: >-
       Supervised fine-tuning (LoRA and full-parameter) and reinforcement fine-tuning, with one-click deployment of fine-tuned weights at the same per-token price as base models.
   - aid: fireworks-ai:fireworks-files-api
@@ -159,6 +177,8 @@ apis:
     properties:
       - url: https://docs.fireworks.ai/api-reference/files
         type: API Reference
+      - url: openapi/fireworks-ai-merged-openapi.yml
+        type: OpenAPI
     description: >-
       Upload and manage training datasets, batch input files, and fine-tuning artifacts.
   - aid: fireworks-ai:fireworks-models-api
@@ -172,6 +192,8 @@ apis:
     properties:
       - url: https://docs.fireworks.ai/api-reference/list-models
         type: API Reference
+      - url: openapi/fireworks-ai-merged-openapi.yml
+        type: OpenAPI
     description: >-
       Lists models, deployments, and metadata across the Fireworks catalog.
   - aid: fireworks-ai:fireworks-deployments-api
@@ -186,6 +208,8 @@ apis:
     properties:
       - url: https://docs.fireworks.ai/guides/ondemand-deployments
         type: Documentation
+      - url: openapi/fireworks-ai-merged-openapi.yml
+        type: OpenAPI
     description: >-
       Provision and autoscale on-demand dedicated GPU deployments (H100, H200, B200, B300) billed per GPU-second.
   - aid: fireworks-ai:fireworks-account-api
@@ -200,6 +224,8 @@ apis:
     properties:
       - url: https://docs.fireworks.ai/api-reference
         type: API Reference
+      - url: openapi/fireworks-ai-merged-openapi.yml
+        type: OpenAPI
     description: >-
       Programmatic access to account, billing, usage, and team management.
 common:
