@@ -239,6 +239,13 @@ common:
     url: rate-limits/fireworks-ai-rate-limits.yml
   - type: FinOps
     url: finops/fireworks-ai-finops.yml
+  - type: Integrations
+    url: https://fireworks.ai/partners
+integrations:
+  - name: 'AWS''s logo'
+  - name: 'NVIDIA''s logo'
+  - name: 'AMD''s logo'
+  - name: 'Microsoft''s logo'
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
