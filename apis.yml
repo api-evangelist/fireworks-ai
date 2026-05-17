@@ -1,7 +1,7 @@
 aid: fireworks-ai
 url: https://raw.githubusercontent.com/api-evangelist/fireworks-ai/refs/heads/main/apis.yml
 name: Fireworks AI
-x-type: company
+kind: company
 description: >-
   Fireworks AI is a production-grade inference platform for open-source and proprietary generative models. The Fireworks API hosts Llama, DeepSeek, Qwen, Mixtral, Stable Diffusion, and other models with serverless pay-per-token, on-demand dedicated GPU, and batch deployment options, plus managed fine-tuning.
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
@@ -29,7 +29,7 @@ apis:
       - url: https://docs.fireworks.ai/guides/querying-text-models
         type: Documentation
       - url: https://docs.fireworks.ai/api-reference/post-chatcompletions
-        type: API Reference
+        type: APIReference
       - url: openapi/fireworks-ai-merged-openapi.yml
         type: OpenAPI
     description: >-
@@ -44,7 +44,7 @@ apis:
     baseURL: https://api.fireworks.ai/inference/v1
     properties:
       - url: https://docs.fireworks.ai/api-reference/post-completions
-        type: API Reference
+        type: APIReference
       - url: openapi/fireworks-ai-merged-openapi.yml
         type: OpenAPI
     description: >-
@@ -110,7 +110,7 @@ apis:
       - url: https://docs.fireworks.ai/guides/querying-image-language-models
         type: Documentation
       - url: https://docs.fireworks.ai/api-reference/generate-a-new-image-from-a-text-prompt
-        type: API Reference
+        type: APIReference
       - url: openapi/fireworks-ai-merged-openapi.yml
         type: OpenAPI
     description: >-
@@ -129,7 +129,7 @@ apis:
       - url: https://docs.fireworks.ai/guides/audio
         type: Documentation
       - url: https://docs.fireworks.ai/api-reference/audio-transcriptions
-        type: API Reference
+        type: APIReference
       - url: openapi/fireworks-ai-merged-openapi.yml
         type: OpenAPI
     description: >-
@@ -176,7 +176,7 @@ apis:
     baseURL: https://api.fireworks.ai/v1
     properties:
       - url: https://docs.fireworks.ai/api-reference/files
-        type: API Reference
+        type: APIReference
       - url: openapi/fireworks-ai-merged-openapi.yml
         type: OpenAPI
     description: >-
@@ -191,7 +191,7 @@ apis:
     baseURL: https://api.fireworks.ai/v1
     properties:
       - url: https://docs.fireworks.ai/api-reference/list-models
-        type: API Reference
+        type: APIReference
       - url: openapi/fireworks-ai-merged-openapi.yml
         type: OpenAPI
     description: >-
@@ -223,7 +223,7 @@ apis:
     baseURL: https://api.fireworks.ai/v1
     properties:
       - url: https://docs.fireworks.ai/api-reference
-        type: API Reference
+        type: APIReference
       - url: openapi/fireworks-ai-merged-openapi.yml
         type: OpenAPI
     description: >-
