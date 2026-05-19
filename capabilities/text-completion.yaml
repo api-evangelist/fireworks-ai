@@ -1,0 +1,122 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Fireworks Text Completion API
+  description: 'Fireworks Text Completion API. 2 operations. Lead operation: Create Chat Completion. Self-contained Naftiko
+    capability covering one Fireworks Ai business surface.'
+  tags:
+  - Fireworks Ai
+  - Fireworks Text Completion API
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    FIREWORKS_AI_API_KEY: FIREWORKS_AI_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: text-completion
+    baseUri: https://api.fireworks.ai/inference
+    description: Fireworks Text Completion API business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-chat-completions
+      path: /v1/chat/completions
+      operations:
+      - name: createchatcompletionv1chatcompletionspost
+        method: POST
+        description: Create Chat Completion
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: v1-completions
+      path: /v1/completions
+      operations:
+      - name: createcompletionv1completionspost
+        method: POST
+        description: Create Completion
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.FIREWORKS_AI_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: text-completion-rest
+    port: 8080
+    description: REST adapter for Fireworks Text Completion API. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/v1/chat/completions
+      name: v1-chat-completions
+      description: REST surface for v1-chat-completions.
+      operations:
+      - method: POST
+        name: createchatcompletionv1chatcompletionspost
+        description: Create Chat Completion
+        call: text-completion.createchatcompletionv1chatcompletionspost
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/completions
+      name: v1-completions
+      description: REST surface for v1-completions.
+      operations:
+      - method: POST
+        name: createcompletionv1completionspost
+        description: Create Completion
+        call: text-completion.createcompletionv1completionspost
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: text-completion-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Fireworks Text Completion API. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: create-chat-completion
+      description: Create Chat Completion
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: text-completion.createchatcompletionv1chatcompletionspost
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-completion
+      description: Create Completion
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: text-completion.createcompletionv1completionspost
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

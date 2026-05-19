@@ -1,0 +1,94 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Gateway REST API — gateway-extra.openapi_Gateway
+  description: 'Gateway REST API — gateway-extra.openapi_Gateway. 1 operations. Lead operation: Upload Dataset Files. Self-contained
+    Naftiko capability covering one Fireworks Ai business surface.'
+  tags:
+  - Fireworks Ai
+  - gateway-extra.openapi_Gateway
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    FIREWORKS_AI_API_KEY: FIREWORKS_AI_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: merged-gateway-extra-openapi-gateway
+    baseUri: ''
+    description: Gateway REST API — gateway-extra.openapi_Gateway business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-accounts-account_id-datasets-dataset_id}:upload
+      path: /v1/accounts/{account_id}/datasets/{dataset_id}:upload
+      operations:
+      - name: gatewayuploaddatasetfile
+        method: POST
+        description: Upload Dataset Files
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: account_id
+          in: path
+          type: string
+          description: The account id
+          required: true
+        - name: dataset_id
+          in: path
+          type: string
+          description: The dataset id
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.FIREWORKS_AI_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: merged-gateway-extra-openapi-gateway-rest
+    port: 8080
+    description: REST adapter for Gateway REST API — gateway-extra.openapi_Gateway. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/v1/accounts/{account-id}/datasets/dataset-id-upload
+      name: v1-accounts-account-id-datasets-dataset-id-upload
+      description: REST surface for v1-accounts-account_id-datasets-dataset_id}:upload.
+      operations:
+      - method: POST
+        name: gatewayuploaddatasetfile
+        description: Upload Dataset Files
+        call: merged-gateway-extra-openapi-gateway.gatewayuploaddatasetfile
+        with:
+          account_id: rest.account_id
+          dataset_id: rest.dataset_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: merged-gateway-extra-openapi-gateway-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Gateway REST API — gateway-extra.openapi_Gateway. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: upload-dataset-files
+      description: Upload Dataset Files
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: merged-gateway-extra-openapi-gateway.gatewayuploaddatasetfile
+      with:
+        account_id: tools.account_id
+        dataset_id: tools.dataset_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

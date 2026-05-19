@@ -1,0 +1,80 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Gateway REST API — anthropic-messages.openapi_other
+  description: 'Gateway REST API — anthropic-messages.openapi_other. 1 operations. Lead operation: Create a Message. Self-contained
+    Naftiko capability covering one Fireworks Ai business surface.'
+  tags:
+  - Fireworks Ai
+  - anthropic-messages.openapi_other
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    FIREWORKS_AI_API_KEY: FIREWORKS_AI_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: merged-anthropic-messages-openapi-other
+    baseUri: ''
+    description: Gateway REST API — anthropic-messages.openapi_other business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-messages
+      path: /v1/messages
+      operations:
+      - name: messagespost
+        method: POST
+        description: Create a Message
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.FIREWORKS_AI_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: merged-anthropic-messages-openapi-other-rest
+    port: 8080
+    description: REST adapter for Gateway REST API — anthropic-messages.openapi_other. One Spectral-compliant resource per
+      consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/v1/messages
+      name: v1-messages
+      description: REST surface for v1-messages.
+      operations:
+      - method: POST
+        name: messagespost
+        description: Create a Message
+        call: merged-anthropic-messages-openapi-other.messagespost
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: merged-anthropic-messages-openapi-other-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Gateway REST API — anthropic-messages.openapi_other. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: create-message
+      description: Create a Message
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: merged-anthropic-messages-openapi-other.messagespost
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
