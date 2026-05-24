@@ -255,6 +255,8 @@ common:
     url: finops/fireworks-ai-finops.yml
   - type: Integrations
     url: https://fireworks.ai/partners
+  - type: LLMsTxt
+    url: https://docs.fireworks.ai/llms.txt
 integrations:
   - name: AWS's logo
   - name: NVIDIA's logo
