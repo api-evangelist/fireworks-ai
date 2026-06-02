@@ -1,0 +1,1143 @@
+asyncapi: '2.6.0'
+id: 'urn:com:fireworks:ai:inference:streaming'
+info:
+  title: Fireworks AI Streaming Inference API
+  version: '1.0.0'
+  description: |
+    AsyncAPI description of the Fireworks AI streaming inference surface. Fireworks
+    streams generation deltas over HTTP using Server-Sent Events (SSE) on a single
+    `text/event-stream` response when `stream: true` is set on the request body.
+
+    Only endpoints that Fireworks AI documents as supporting SSE streaming are
+    described here:
+
+      - POST /chat/completions  (OpenAI-compatible chat completions stream)
+      - POST /completions       (OpenAI-compatible legacy text completions stream)
+      - POST /responses         (OpenAI-compatible Responses API stream)
+      - POST /messages          (Anthropic-compatible Messages stream)
+
+    Fireworks AI does not document a separate streaming endpoint for audio
+    transcription, translation, or TTS. Audio is delivered to the platform as an
+    `audio_url` content part inside a chat completion request and is streamed back
+    using the same `/chat/completions` SSE stream described below.
+
+    Sources:
+      - https://docs.fireworks.ai/api-reference/post-chatcompletions
+      - https://docs.fireworks.ai/api-reference/post-completions
+      - https://docs.fireworks.ai/api-reference/post-responses
+      - https://docs.fireworks.ai/api-reference/anthropic-messages
+      - https://docs.fireworks.ai/guides/querying-text-models
+      - https://docs.fireworks.ai/guides/function-calling
+      - https://docs.fireworks.ai/guides/video-audio-inputs
+  contact:
+    name: Fireworks AI
+    url: https://docs.fireworks.ai/
+  license:
+    name: Proprietary
+    url: https://fireworks.ai/terms-of-service
+  tags:
+    - name: Streaming
+    - name: SSE
+    - name: LLM
+    - name: Inference
+
+defaultContentType: text/event-stream
+
+servers:
+  production:
+    url: https://api.fireworks.ai/inference/v1
+    protocol: https
+    description: |
+      Fireworks AI inference base URL. All streaming endpoints are reached by
+      sending an HTTP POST with `stream: true` (or `"stream": true`) in the JSON
+      body; the server responds with `Content-Type: text/event-stream` and emits
+      a sequence of `data:` lines terminated by `data: [DONE]`.
+    security:
+      - bearerAuth: []
+    bindings:
+      http:
+        bindingVersion: '0.3.0'
+
+channels:
+
+  /chat/completions:
+    description: |
+      OpenAI-compatible chat completions. When the request body sets
+      `stream: true`, the response is `text/event-stream`. Each event is emitted
+      as a `data:` line whose payload is a JSON `ChatCompletionStreamResponse`
+      chunk. The stream terminates with a literal `data: [DONE]` event.
+    bindings:
+      http:
+        type: request
+        method: POST
+        bindingVersion: '0.3.0'
+    subscribe:
+      operationId: streamChatCompletion
+      summary: Receive chat completion deltas as Server-Sent Events.
+      description: |
+        Token-by-token deltas of a chat completion. The final non-terminator
+        chunk carries `finish_reason`, optional `usage`, and (when requested)
+        `perf_metrics`. The stream is closed by a `data: [DONE]` line.
+      message:
+        oneOf:
+          - $ref: '#/components/messages/ChatCompletionChunk'
+          - $ref: '#/components/messages/StreamDone'
+    publish:
+      operationId: createChatCompletionStream
+      summary: Open a chat completion stream.
+      description: |
+        POST a `ChatCompletionRequest` with `stream: true` to open the SSE
+        stream. The same body schema applies whether or not streaming is used.
+      message:
+        $ref: '#/components/messages/ChatCompletionRequest'
+
+  /completions:
+    description: |
+      OpenAI-compatible legacy text completions. When the request body sets
+      `stream: true`, the response is `text/event-stream`. Each event is a
+      `data:` line whose payload is a JSON `CompletionStreamResponse` chunk.
+      The stream terminates with `data: [DONE]`.
+    bindings:
+      http:
+        type: request
+        method: POST
+        bindingVersion: '0.3.0'
+    subscribe:
+      operationId: streamTextCompletion
+      summary: Receive text completion deltas as Server-Sent Events.
+      description: |
+        Token deltas for the legacy completions endpoint. The final non-terminator
+        chunk carries `finish_reason`, optional `usage`, and (when requested)
+        `perf_metrics`. The stream is closed by a `data: [DONE]` line.
+      message:
+        oneOf:
+          - $ref: '#/components/messages/CompletionChunk'
+          - $ref: '#/components/messages/StreamDone'
+    publish:
+      operationId: createTextCompletionStream
+      summary: Open a text completion stream.
+      message:
+        $ref: '#/components/messages/CompletionRequest'
+
+  /responses:
+    description: |
+      OpenAI-compatible Responses API. When the request body sets `stream: true`,
+      the response is `text/event-stream`. Per Fireworks docs each chunk is an
+      SSE event delivering the incremental Response state. Fireworks does not
+      enumerate the full set of event names in public documentation; the
+      generic event payload is described here.
+    bindings:
+      http:
+        type: request
+        method: POST
+        bindingVersion: '0.3.0'
+    subscribe:
+      operationId: streamResponse
+      summary: Receive Response streaming events as Server-Sent Events.
+      description: |
+        Server-Sent Events emitted while a Response is being generated. Each
+        event payload is a partial or final Response object. The stream closes
+        once the Response reaches a terminal status (e.g. `completed`,
+        `failed`, `incomplete`, `cancelled`).
+      message:
+        $ref: '#/components/messages/ResponseStreamEvent'
+    publish:
+      operationId: createResponseStream
+      summary: Open a Response stream.
+      message:
+        $ref: '#/components/messages/ResponseRequest'
+
+  /messages:
+    description: |
+      Anthropic-compatible Messages endpoint. When `stream: true`, the response
+      is `text/event-stream`. Unlike the OpenAI-compatible endpoints, each SSE
+      event includes both an `event:` line naming the event type and a `data:`
+      line carrying the JSON payload. Event types are enumerated below.
+    bindings:
+      http:
+        type: request
+        method: POST
+        bindingVersion: '0.3.0'
+    subscribe:
+      operationId: streamAnthropicMessage
+      summary: Receive Anthropic-compatible Message streaming events.
+      description: |
+        A documented sequence of typed SSE events: `message_start` opens the
+        stream with an initial Message envelope, one or more
+        `content_block_start` / `content_block_delta` / `content_block_stop`
+        groups deliver content blocks, `message_delta` carries top-level
+        updates such as `stop_reason`, and `message_stop` closes the stream.
+      message:
+        oneOf:
+          - $ref: '#/components/messages/AnthropicMessageStart'
+          - $ref: '#/components/messages/AnthropicContentBlockStart'
+          - $ref: '#/components/messages/AnthropicContentBlockDelta'
+          - $ref: '#/components/messages/AnthropicContentBlockStop'
+          - $ref: '#/components/messages/AnthropicMessageDelta'
+          - $ref: '#/components/messages/AnthropicMessageStop'
+    publish:
+      operationId: createAnthropicMessageStream
+      summary: Open an Anthropic-compatible Messages stream.
+      message:
+        $ref: '#/components/messages/AnthropicMessageRequest'
+
+components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: API Key
+      description: |
+        Fireworks AI API key passed as `Authorization: Bearer <FIREWORKS_API_KEY>`.
+
+  messages:
+
+    # ---------- Chat Completions ----------
+
+    ChatCompletionRequest:
+      name: ChatCompletionRequest
+      title: Chat Completion Request
+      contentType: application/json
+      summary: Body of POST /chat/completions with stream=true.
+      payload:
+        $ref: '#/components/schemas/ChatCompletionRequest'
+      bindings:
+        http:
+          headers:
+            type: object
+            properties:
+              Authorization:
+                type: string
+                description: 'Bearer <FIREWORKS_API_KEY>'
+              Content-Type:
+                type: string
+                const: application/json
+              Accept:
+                type: string
+                const: text/event-stream
+          bindingVersion: '0.3.0'
+
+    ChatCompletionChunk:
+      name: ChatCompletionChunk
+      title: Chat Completion Stream Chunk
+      contentType: application/json
+      summary: A single `data:` SSE event carrying an incremental delta.
+      description: |
+        SSE event of the form `data: {ChatCompletionStreamResponse}\n\n`. The
+        terminal stream marker `data: [DONE]` is described by `StreamDone`.
+      payload:
+        $ref: '#/components/schemas/ChatCompletionStreamResponse'
+      examples:
+        - name: typical-token-chunk
+          summary: A typical mid-stream token chunk
+          payload:
+            id: cmpl-xyz
+            object: chat.completion.chunk
+            created: 1748501234
+            model: accounts/fireworks/models/kimi-k2-instruct-0905
+            choices:
+              - index: 0
+                delta:
+                  content: 'Hello'
+                finish_reason: null
+
+    # ---------- Completions ----------
+
+    CompletionRequest:
+      name: CompletionRequest
+      title: Text Completion Request
+      contentType: application/json
+      summary: Body of POST /completions with stream=true.
+      payload:
+        $ref: '#/components/schemas/CompletionRequest'
+      bindings:
+        http:
+          headers:
+            type: object
+            properties:
+              Authorization:
+                type: string
+                description: 'Bearer <FIREWORKS_API_KEY>'
+              Content-Type:
+                type: string
+                const: application/json
+              Accept:
+                type: string
+                const: text/event-stream
+          bindingVersion: '0.3.0'
+
+    CompletionChunk:
+      name: CompletionChunk
+      title: Text Completion Stream Chunk
+      contentType: application/json
+      summary: A single `data:` SSE event carrying a token delta.
+      payload:
+        $ref: '#/components/schemas/CompletionStreamResponse'
+
+    # ---------- Responses ----------
+
+    ResponseRequest:
+      name: ResponseRequest
+      title: Responses API Request
+      contentType: application/json
+      summary: Body of POST /responses with stream=true.
+      payload:
+        $ref: '#/components/schemas/ResponseRequest'
+      bindings:
+        http:
+          headers:
+            type: object
+            properties:
+              Authorization:
+                type: string
+                description: 'Bearer <FIREWORKS_API_KEY>'
+              Content-Type:
+                type: string
+                const: application/json
+              Accept:
+                type: string
+                const: text/event-stream
+          bindingVersion: '0.3.0'
+
+    ResponseStreamEvent:
+      name: ResponseStreamEvent
+      title: Response Stream Event
+      contentType: application/json
+      summary: An SSE event delivering an incremental Response object.
+      description: |
+        Per Fireworks docs, when `stream: true`, the Responses API "returns
+        responses via Server-Sent Events (SSE), delivering tokens incrementally
+        as they are generated." Fireworks public docs reference event names
+        such as `response.created`, `response.in_progress`,
+        `response.output_text.delta`, and `response.completed`, and direct
+        readers to the streaming cookbook for the full event catalogue.
+      payload:
+        $ref: '#/components/schemas/ResponseStreamPayload'
+
+    # ---------- Anthropic Messages ----------
+
+    AnthropicMessageRequest:
+      name: AnthropicMessageRequest
+      title: Anthropic Messages Request
+      contentType: application/json
+      summary: Body of POST /messages with stream=true.
+      payload:
+        $ref: '#/components/schemas/AnthropicMessageRequest'
+      bindings:
+        http:
+          headers:
+            type: object
+            properties:
+              Authorization:
+                type: string
+                description: 'Bearer <FIREWORKS_API_KEY>'
+              Content-Type:
+                type: string
+                const: application/json
+              Accept:
+                type: string
+                const: text/event-stream
+          bindingVersion: '0.3.0'
+
+    AnthropicMessageStart:
+      name: AnthropicMessageStart
+      title: message_start
+      contentType: application/json
+      summary: Opens an Anthropic-compatible message stream.
+      payload:
+        $ref: '#/components/schemas/AnthropicMessageStartEvent'
+
+    AnthropicContentBlockStart:
+      name: AnthropicContentBlockStart
+      title: content_block_start
+      contentType: application/json
+      summary: Announces the start of a content block in the Message.
+      payload:
+        $ref: '#/components/schemas/AnthropicContentBlockStartEvent'
+
+    AnthropicContentBlockDelta:
+      name: AnthropicContentBlockDelta
+      title: content_block_delta
+      contentType: application/json
+      summary: Incremental content for the active content block.
+      payload:
+        $ref: '#/components/schemas/AnthropicContentBlockDeltaEvent'
+
+    AnthropicContentBlockStop:
+      name: AnthropicContentBlockStop
+      title: content_block_stop
+      contentType: application/json
+      summary: Marks the end of a content block.
+      payload:
+        $ref: '#/components/schemas/AnthropicContentBlockStopEvent'
+
+    AnthropicMessageDelta:
+      name: AnthropicMessageDelta
+      title: message_delta
+      contentType: application/json
+      summary: Top-level Message updates (e.g., stop_reason, usage).
+      payload:
+        $ref: '#/components/schemas/AnthropicMessageDeltaEvent'
+
+    AnthropicMessageStop:
+      name: AnthropicMessageStop
+      title: message_stop
+      contentType: application/json
+      summary: Terminates the Anthropic Messages SSE stream.
+      payload:
+        $ref: '#/components/schemas/AnthropicMessageStopEvent'
+
+    # ---------- Stream terminator ----------
+
+    StreamDone:
+      name: StreamDone
+      title: '[DONE] terminator'
+      contentType: text/plain
+      summary: 'Final SSE line `data: [DONE]` closing an OpenAI-compatible stream.'
+      description: |
+        Per Fireworks docs the OpenAI-compatible chat and completions streams
+        terminate with the literal SSE line `data: [DONE]`.
+      payload:
+        type: string
+        const: '[DONE]'
+
+  schemas:
+
+    # ---------- Chat Completions schemas ----------
+
+    ChatCompletionRequest:
+      type: object
+      required: [model, messages]
+      properties:
+        model:
+          type: string
+          description: 'Model identifier, e.g. accounts/fireworks/models/kimi-k2-instruct-0905.'
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatMessage'
+        stream:
+          type: boolean
+          default: false
+          description: When true, response is delivered as Server-Sent Events.
+        tools:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatCompletionTool'
+        tool_choice:
+          oneOf:
+            - type: string
+              enum: [auto, none, required, any]
+            - type: object
+        parallel_tool_calls:
+          type: boolean
+        functions:
+          type: array
+          description: Deprecated; legacy function definitions.
+          items:
+            type: object
+        function_call:
+          description: Deprecated; use tool_choice.
+        temperature:
+          type: number
+          minimum: 0
+          maximum: 2
+        top_p:
+          type: number
+          minimum: 0
+          maximum: 1
+        top_k:
+          type: integer
+          minimum: 0
+          maximum: 100
+        min_p:
+          type: number
+          minimum: 0
+          maximum: 1
+        typical_p:
+          type: number
+          minimum: 0
+          maximum: 1
+        frequency_penalty:
+          type: number
+          minimum: -2
+          maximum: 2
+        presence_penalty:
+          type: number
+          minimum: -2
+          maximum: 2
+        repetition_penalty:
+          type: number
+          minimum: 0
+          maximum: 2
+        max_tokens:
+          type: integer
+        max_completion_tokens:
+          type: integer
+        stop:
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+              maxItems: 4
+        response_format:
+          type: object
+          properties:
+            type:
+              type: string
+              enum: [json_object, json_schema, grammar, text]
+        reasoning_effort:
+          oneOf:
+            - type: string
+              enum: [low, medium, high, xhigh, max, none]
+            - type: integer
+              minimum: 1024
+        reasoning_history:
+          type: string
+          enum: [disabled, interleaved, preserved]
+        thinking:
+          type: object
+        prompt_cache_key:
+          type: string
+        prompt_cache_isolation_key:
+          type: string
+        prompt_truncate_len:
+          type: integer
+        safe_tokenization:
+          type: boolean
+        logprobs:
+          oneOf:
+            - type: boolean
+            - type: integer
+              minimum: 0
+              maximum: 5
+        top_logprobs:
+          type: integer
+          minimum: 0
+          maximum: 5
+        echo:
+          type: boolean
+        echo_last:
+          type: integer
+        return_token_ids:
+          type: boolean
+        raw_output:
+          type: boolean
+        perf_metrics_in_response:
+          type: boolean
+        speculation:
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                type: integer
+        prediction:
+          oneOf:
+            - type: object
+            - type: string
+        seed:
+          type: integer
+        user:
+          type: string
+        metadata:
+          type: object
+        service_tier:
+          type: string
+          enum: [auto, default, flex, priority]
+        ignore_eos:
+          type: boolean
+        context_length_exceeded_behavior:
+          type: string
+          enum: [truncate, error]
+        logit_bias:
+          type: object
+        n:
+          type: integer
+          minimum: 1
+          maximum: 128
+        mirostat_target:
+          type: number
+        mirostat_lr:
+          type: number
+
+    ChatMessage:
+      type: object
+      required: [role]
+      properties:
+        role:
+          type: string
+          enum: [system, user, assistant, tool]
+        content:
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                $ref: '#/components/schemas/ChatMessageContent'
+        reasoning_content:
+          type: string
+        tool_calls:
+          type: array
+          items:
+            $ref: '#/components/schemas/ToolCall'
+        tool_call_id:
+          type: string
+
+    ChatMessageContent:
+      type: object
+      description: |
+        Multimodal content part. Vision uses `image_url`; video and audio use
+        `video_url` and `audio_url` (audio as a base64 data URL, e.g.
+        `data:audio/ogg;base64,...`).
+      properties:
+        type:
+          type: string
+          enum: [text, image_url, video_url, audio_url]
+        text:
+          type: string
+        image_url:
+          type: object
+          properties:
+            url:
+              type: string
+        video_url:
+          type: object
+          properties:
+            url:
+              type: string
+        audio_url:
+          type: object
+          properties:
+            url:
+              type: string
+              description: 'Base64 data URL, e.g. data:audio/ogg;base64,<DATA>.'
+
+    ChatCompletionTool:
+      type: object
+      required: [type, function]
+      properties:
+        type:
+          type: string
+          const: function
+        function:
+          type: object
+          required: [name]
+          properties:
+            name:
+              type: string
+            description:
+              type: string
+            parameters:
+              type: object
+              description: JSON Schema for function arguments.
+
+    ToolCall:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          const: function
+        function:
+          type: object
+          properties:
+            name:
+              type: string
+            arguments:
+              type: string
+              description: JSON-encoded arguments string.
+
+    ChatCompletionStreamResponse:
+      type: object
+      description: |
+        Payload of one `data:` SSE event during a chat completions stream.
+      required: [id, object, created, model, choices]
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          const: chat.completion.chunk
+        created:
+          type: integer
+          description: Unix timestamp.
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatCompletionStreamChoice'
+        usage:
+          $ref: '#/components/schemas/UsageInfo'
+        perf_metrics:
+          $ref: '#/components/schemas/PerfMetrics'
+        prompt_token_ids:
+          type: array
+          items:
+            type: integer
+
+    ChatCompletionStreamChoice:
+      type: object
+      required: [index, delta]
+      properties:
+        index:
+          type: integer
+        delta:
+          $ref: '#/components/schemas/ChatCompletionDelta'
+        finish_reason:
+          oneOf:
+            - type: 'null'
+            - type: string
+              enum: [stop, length, function_call, tool_calls]
+        logprobs:
+          oneOf:
+            - type: 'null'
+            - type: object
+        raw_output:
+          type: object
+        prompt_token_ids:
+          type: array
+          items:
+            type: integer
+        token_ids:
+          type: array
+          items:
+            type: integer
+
+    ChatCompletionDelta:
+      type: object
+      properties:
+        role:
+          type: string
+        content:
+          type: string
+        reasoning_content:
+          type: string
+        tool_calls:
+          type: array
+          items:
+            $ref: '#/components/schemas/ToolCallDelta'
+
+    ToolCallDelta:
+      type: object
+      properties:
+        index:
+          type: integer
+        id:
+          type: string
+        type:
+          type: string
+          const: function
+        function:
+          type: object
+          properties:
+            name:
+              type: string
+            arguments:
+              type: string
+              description: |
+                Incremental JSON string fragment; clients accumulate fragments
+                across chunks until `finish_reason == "tool_calls"`.
+
+    # ---------- Completions schemas ----------
+
+    CompletionRequest:
+      type: object
+      required: [model, prompt]
+      properties:
+        model:
+          type: string
+        prompt:
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+            - type: array
+              items:
+                type: integer
+            - type: array
+              items:
+                type: array
+                items:
+                  type: integer
+        stream:
+          type: boolean
+          default: false
+        max_tokens:
+          type: integer
+        max_completion_tokens:
+          type: integer
+        temperature:
+          type: number
+          minimum: 0
+          maximum: 2
+        top_p:
+          type: number
+          minimum: 0
+          maximum: 1
+        top_k:
+          type: integer
+          minimum: 0
+          maximum: 100
+        top_logprobs:
+          type: integer
+          minimum: 0
+          maximum: 5
+        stop:
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+        logprobs:
+          oneOf:
+            - type: boolean
+            - type: integer
+              minimum: 0
+              maximum: 5
+        echo:
+          type: boolean
+        n:
+          type: integer
+          minimum: 1
+          maximum: 128
+        response_format:
+          type: object
+        reasoning_effort:
+          oneOf:
+            - type: string
+              enum: [low, medium, high, xhigh, max, none]
+            - type: integer
+        thinking:
+          type: object
+        min_p:
+          type: number
+        typical_p:
+          type: number
+        frequency_penalty:
+          type: number
+        presence_penalty:
+          type: number
+        repetition_penalty:
+          type: number
+        mirostat_target:
+          type: number
+        mirostat_lr:
+          type: number
+
+    CompletionStreamResponse:
+      type: object
+      description: Payload of one `data:` SSE event during a text completions stream.
+      required: [id, object, created, model, choices]
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          const: text_completion
+        created:
+          type: integer
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompletionStreamChoice'
+        usage:
+          oneOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/UsageInfo'
+        perf_metrics:
+          oneOf:
+            - type: 'null'
+            - $ref: '#/components/schemas/PerfMetrics'
+
+    CompletionStreamChoice:
+      type: object
+      required: [index, text]
+      properties:
+        index:
+          type: integer
+        text:
+          type: string
+        finish_reason:
+          oneOf:
+            - type: 'null'
+            - type: string
+              enum: [stop, length, error]
+        token_ids:
+          type: array
+          items:
+            type: integer
+
+    # ---------- Responses schemas ----------
+
+    ResponseRequest:
+      type: object
+      required: [model, input]
+      properties:
+        model:
+          type: string
+        input:
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                type: object
+        previous_response_id:
+          type: string
+        instructions:
+          type: string
+        max_output_tokens:
+          type: integer
+          minimum: 1
+        max_tool_calls:
+          type: integer
+          minimum: 1
+        metadata:
+          type: object
+        parallel_tool_calls:
+          type: boolean
+          default: true
+        reasoning:
+          type: object
+        store:
+          type: boolean
+          default: true
+        stream:
+          type: boolean
+          default: false
+        temperature:
+          type: number
+          minimum: 0
+          maximum: 2
+        tool_choice:
+          oneOf:
+            - type: string
+              enum: [none, auto, required]
+            - type: object
+        tools:
+          type: array
+          items:
+            type: object
+            description: |
+              Supports `function`, `mcp`, `sse`, and `python` tool types.
+        top_p:
+          type: number
+          minimum: 0
+          maximum: 1
+        truncation:
+          type: string
+          enum: [auto, disabled]
+          default: disabled
+        user:
+          type: string
+        text:
+          type: object
+
+    ResponseStreamPayload:
+      type: object
+      description: |
+        Generic Response stream event payload. Each SSE event delivers a
+        partial or final Response object whose `status` advances through
+        values such as `in_progress` and a terminal state (`completed`,
+        `failed`, `incomplete`, or `cancelled`).
+      properties:
+        type:
+          type: string
+          description: |
+            Event type name. Fireworks docs reference event names of the form
+            `response.created`, `response.in_progress`,
+            `response.output_text.delta`, and `response.completed`. The
+            complete event taxonomy is provided by the Fireworks streaming
+            cookbook rather than the public API reference.
+        response:
+          type: object
+          description: Full or partial Response envelope at this point in the stream.
+        delta:
+          description: Incremental payload for delta-style events.
+
+    # ---------- Anthropic Messages schemas ----------
+
+    AnthropicMessageRequest:
+      type: object
+      required: [model, messages, max_tokens]
+      properties:
+        model:
+          type: string
+        messages:
+          type: array
+          items:
+            type: object
+        max_tokens:
+          type: integer
+          minimum: 1
+        system:
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                type: object
+        temperature:
+          type: number
+          minimum: 0
+          maximum: 1
+        top_p:
+          type: number
+          minimum: 0
+          maximum: 1
+        top_k:
+          type: integer
+          minimum: 0
+        stop_sequences:
+          type: array
+          items:
+            type: string
+        stream:
+          type: boolean
+        metadata:
+          type: object
+        output_config:
+          type: object
+        tool_choice:
+          oneOf:
+            - type: string
+              enum: [auto, any, none]
+            - type: object
+        tools:
+          type: array
+          items:
+            type: object
+        thinking:
+          type: object
+        raw_output:
+          type: boolean
+
+    AnthropicMessageStartEvent:
+      type: object
+      required: [type, message]
+      properties:
+        type:
+          type: string
+          const: message_start
+        message:
+          type: object
+          description: Initial Message envelope with id, role, model, and empty content array.
+
+    AnthropicContentBlockStartEvent:
+      type: object
+      required: [type, index, content_block]
+      properties:
+        type:
+          type: string
+          const: content_block_start
+        index:
+          type: integer
+        content_block:
+          type: object
+
+    AnthropicContentBlockDeltaEvent:
+      type: object
+      required: [type, index, delta]
+      properties:
+        type:
+          type: string
+          const: content_block_delta
+        index:
+          type: integer
+        delta:
+          type: object
+
+    AnthropicContentBlockStopEvent:
+      type: object
+      required: [type, index]
+      properties:
+        type:
+          type: string
+          const: content_block_stop
+        index:
+          type: integer
+
+    AnthropicMessageDeltaEvent:
+      type: object
+      required: [type, delta]
+      properties:
+        type:
+          type: string
+          const: message_delta
+        delta:
+          type: object
+          description: |
+            Top-level Message updates. `stop_reason` may be one of `end_turn`,
+            `max_tokens`, `stop_sequence`, `tool_use`, `pause_turn`, or
+            `refusal`.
+        usage:
+          type: object
+
+    AnthropicMessageStopEvent:
+      type: object
+      required: [type]
+      properties:
+        type:
+          type: string
+          const: message_stop
+
+    # ---------- Shared schemas ----------
+
+    UsageInfo:
+      type: object
+      properties:
+        prompt_tokens:
+          type: integer
+        completion_tokens:
+          oneOf:
+            - type: 'null'
+            - type: integer
+        total_tokens:
+          type: integer
+        prompt_tokens_details:
+          type: object
+          properties:
+            cached_tokens:
+              oneOf:
+                - type: 'null'
+                - type: integer
+
+    PerfMetrics:
+      type: object
+      description: |
+        Performance metrics returned in the final stream chunk when
+        `perf_metrics_in_response=true`. For dedicated deployments includes
+        deployment, queue, and speculative-decoding metrics.
+      properties:
+        prompt-tokens:
+          type: integer
+        cached-prompt-tokens:
+          type: integer
+        server-time-to-first-token:
+          type: number
+        server-processing-time:
+          type: number
+        speculation-prompt-tokens:
+          type: integer
+        speculation-prompt-matched-tokens:
+          type: integer
+        speculation-generated-tokens:
+          type: integer
+        speculation-acceptance:
+          type: number
+        backend-host:
+          type: string
+        num-concurrent-requests:
+          type: integer
+        deployment:
+          type: string
+        tokenizer-queue-duration:
+          type: number
+        prefill-queue-duration:
+          type: number
+        generation-queue-duration:
+          type: number

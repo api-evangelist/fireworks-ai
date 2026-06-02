@@ -14,7 +14,7 @@ tags:
   - Fine-tuning
   - GPU
 created: '2026-05-08'
-modified: '2026-05-19'
+modified: '2026-05-29'
 specificationVersion: '0.19'
 apis:
   - aid: fireworks-ai:fireworks-chat-completions-api
@@ -33,6 +33,8 @@ apis:
       type: APIReference
     - url: openapi/fireworks-ai-merged-openapi.yml
       type: OpenAPI
+    - url: asyncapi/fireworks-ai-asyncapi.yml
+      type: AsyncAPI
     - type: NaftikoCapability
       url: capabilities/anthropic-messages.yaml
     - type: NaftikoCapability
@@ -66,6 +68,8 @@ apis:
       type: APIReference
     - url: openapi/fireworks-ai-merged-openapi.yml
       type: OpenAPI
+    - url: asyncapi/fireworks-ai-asyncapi.yml
+      type: AsyncAPI
     description: Legacy text completion endpoint, OpenAI-compatible.
   - aid: fireworks-ai:fireworks-vision-api
     name: Fireworks Vision API
