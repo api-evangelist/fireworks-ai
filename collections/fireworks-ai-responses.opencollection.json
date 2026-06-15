@@ -1,0 +1,106 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fireworks Responses API",
+    "version": "0.6.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "List Responses",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://api.fireworks.ai/inference/v1/responses",
+        "params": [
+          {
+            "name": "limit",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "after",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "before",
+            "value": "",
+            "type": "query"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "token": "{{bearerToken}}"
+        }
+      },
+      "docs": "Get a list of all responses for the authenticated account.\n\nArgs:\n    limit: Maximum number of responses to return (default: 20, max: 100)\n    after: Cursor for pagination - return responses after this ID\n    before: Cursor for pagination - return responses before this ID"
+    },
+    {
+      "info": {
+        "name": "Create Response",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://api.fireworks.ai/inference/v1/responses",
+        "body": {
+          "type": "json",
+          "data": "{}"
+        },
+        "auth": {
+          "type": "bearer",
+          "token": "{{bearerToken}}"
+        }
+      },
+      "docs": "Creates a model response, optionally interacting with custom tools via the Model Context Protocol (MCP). This endpoint supports conversational continuation and streaming.\n\nExplore our cookbooks for detailed examples:\n\n- [Basic MCP Usage](https://github.com/fw-ai/cookbook/blob/main/learn/response-api/fireworks_mcp_examples.ipynb)\n- [Streaming with MCP](https://github.com/fw-ai/cookbook/blob/main/learn/response-api/fireworks_mcp_with_streaming.ipynb)\n- [Conversational History with `previous_respon"
+    },
+    {
+      "info": {
+        "name": "Get Response",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://api.fireworks.ai/inference/v1/responses/:response_id",
+        "params": [
+          {
+            "name": "response_id",
+            "value": "",
+            "type": "path"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "token": "{{bearerToken}}"
+        }
+      },
+      "docs": "Get Response"
+    },
+    {
+      "info": {
+        "name": "Delete Response",
+        "type": "http"
+      },
+      "http": {
+        "method": "DELETE",
+        "url": "https://api.fireworks.ai/inference/v1/responses/:response_id",
+        "params": [
+          {
+            "name": "response_id",
+            "value": "",
+            "type": "path",
+            "description": "The ID of the response to delete"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "token": "{{bearerToken}}"
+        }
+      },
+      "docs": "Deletes a model response by its ID. Once deleted, the response data will be gone immediately and permanently.\n\nThe response cannot be recovered and any conversations that reference this response ID will no longer be able to access it."
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,46 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fireworks Text Completion API",
+    "version": "0.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Create Completion",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://api.fireworks.ai/inference/v1/completions",
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Create a completion for the provided prompt and parameters.\n\nFor RL / agent rollouts, Fireworks inference exposes additional\nrollout-specific features:\n[`x-session-affinity` and `x-multi-turn-session-id`](https://docs.fireworks.ai/guides/rollout-inference#session-affinity)\nfor multi-turn trajectories, and\n[MoE Router Replay (R3)](https://docs.fireworks.ai/guides/rollout-inference#moe-router-replay)\nfor MoE expert tracing during rollouts."
+    },
+    {
+      "info": {
+        "name": "Create Chat Completion",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://api.fireworks.ai/inference/v1/chat/completions",
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Create a completion for the provided prompt and parameters.\n\nFor RL / agent rollouts, Fireworks inference exposes additional\nrollout-specific features:\n[`x-session-affinity` and `x-multi-turn-session-id`](https://docs.fireworks.ai/guides/rollout-inference#session-affinity)\nfor multi-turn trajectories, and\n[MoE Router Replay (R3)](https://docs.fireworks.ai/guides/rollout-inference#moe-router-replay)\nfor MoE expert tracing during rollouts."
+    }
+  ],
+  "bundled": true
+}
