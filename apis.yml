@@ -6,7 +6,7 @@ description: Fireworks AI is a production-grade inference platform for open-sour
   and proprietary generative models. The Fireworks API hosts Llama, DeepSeek, Qwen,
   Mixtral, Stable Diffusion, and other models with serverless pay-per-token, on-demand
   dedicated GPU, and batch deployment options, plus managed fine-tuning.
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
 - AI
 - LLM
@@ -24,7 +24,7 @@ apis:
   - Chat
   - Completions
   - LLM
-  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.fireworks.ai/api-reference/post-chatcompletions
   baseURL: https://api.fireworks.ai/inference/v1
   properties:
@@ -46,7 +46,7 @@ apis:
   tags:
   - Completions
   - LLM
-  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.fireworks.ai/api-reference/post-completions
   baseURL: https://api.fireworks.ai/inference/v1
   properties:
@@ -63,7 +63,7 @@ apis:
   - Vision
   - Multimodal
   - Documents
-  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.fireworks.ai/guides/querying-vision-language-models
   baseURL: https://api.fireworks.ai/inference/v1
   properties:
@@ -79,7 +79,7 @@ apis:
   - Embeddings
   - Vector
   - Retrieval
-  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.fireworks.ai/guides/querying-embeddings-models
   baseURL: https://api.fireworks.ai/inference/v1
   properties:
@@ -95,7 +95,7 @@ apis:
   - Rerank
   - Retrieval
   - RAG
-  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.fireworks.ai/guides/querying-rerank-models
   baseURL: https://api.fireworks.ai/inference/v1
   properties:
@@ -111,7 +111,7 @@ apis:
   - Images
   - Generation
   - Stable Diffusion
-  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.fireworks.ai/api-reference/generate-a-new-image-from-a-text-prompt
   baseURL: https://api.fireworks.ai/inference/v1
   properties:
@@ -130,7 +130,7 @@ apis:
   - Speech to Text
   - Text to Speech
   - Whisper
-  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.fireworks.ai/api-reference/audio-transcriptions
   baseURL: https://audio-prod.us-virginia-1.direct.fireworks.ai/v1
   properties:
@@ -147,7 +147,7 @@ apis:
   tags:
   - Batch
   - Async
-  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.fireworks.ai/guides/batch-inference
   baseURL: https://api.fireworks.ai/inference/v1
   properties:
@@ -164,7 +164,7 @@ apis:
   - LoRA
   - RFT
   - Training
-  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.fireworks.ai/fine-tuning/fine-tuning-models
   baseURL: https://api.fireworks.ai/v1
   properties:
@@ -180,7 +180,7 @@ apis:
   tags:
   - Files
   - Datasets
-  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.fireworks.ai/api-reference/files
   baseURL: https://api.fireworks.ai/v1
   properties:
@@ -195,7 +195,7 @@ apis:
   tags:
   - Models
   - Catalog
-  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.fireworks.ai/api-reference/list-models
   baseURL: https://api.fireworks.ai/v1
   properties:
@@ -210,7 +210,7 @@ apis:
   - Deployments
   - On-Demand
   - GPU
-  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.fireworks.ai/guides/ondemand-deployments
   baseURL: https://api.fireworks.ai/v1
   properties:
@@ -226,7 +226,7 @@ apis:
   - Account
   - Usage
   - Billing
-  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.fireworks.ai/api-reference
   baseURL: https://api.fireworks.ai/v1
   properties:
