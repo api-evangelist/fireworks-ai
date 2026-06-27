@@ -252,7 +252,7 @@ common:
   url: finops/fireworks-ai-finops.yml
 - type: Integrations
   url: https://fireworks.ai/partners
-- type: LLMsTxt
+- type: LlmsText
   url: https://docs.fireworks.ai/llms.txt
 integrations:
 - name: AWS's logo
