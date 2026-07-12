@@ -236,6 +236,10 @@ apis:
     type: OpenAPI
   description: Programmatic access to account, billing, usage, and team management.
 common:
+- type: DomainSecurity
+  url: security/fireworks-ai-domain-security.yml
+- type: Authentication
+  url: authentication/fireworks-ai-authentication.yml
 - type: GitHubOrganization
   url: https://github.com/fw-ai
 - type: LinkedIn
@@ -254,6 +258,8 @@ common:
   url: https://fireworks.ai/partners
 - type: LlmsText
   url: https://docs.fireworks.ai/llms.txt
+- type: Blog
+  url: https://fireworks.ai/blog
 integrations:
 - name: AWS's logo
 - name: NVIDIA's logo

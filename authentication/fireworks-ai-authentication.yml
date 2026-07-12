@@ -1,0 +1,19 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/fireworks-ai-anthropic-messages-openapi.json, openapi/fireworks-ai-gateway-openapi.yml,
+  openapi/fireworks-ai-merged-openapi.yml, openapi/fireworks-ai-responses-openapi.yml, openapi/fireworks-ai-text-completion-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: BearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: API_KEY
+  description: 'Bearer authentication using your Fireworks API key. Format: Bearer <API_KEY>'
+  sources:
+  - openapi/fireworks-ai-anthropic-messages-openapi.json
+  - openapi/fireworks-ai-gateway-openapi.yml
+  - openapi/fireworks-ai-merged-openapi.yml
+  - openapi/fireworks-ai-responses-openapi.yml
+  - openapi/fireworks-ai-text-completion-openapi.yml
