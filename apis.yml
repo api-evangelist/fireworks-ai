@@ -236,6 +236,8 @@ apis:
     type: OpenAPI
   description: Programmatic access to account, billing, usage, and team management.
 common:
+- type: AgenticAccess
+  url: agentic-access/fireworks-ai-agentic-access.yml
 - type: DomainSecurity
   url: security/fireworks-ai-domain-security.yml
 - type: Authentication
