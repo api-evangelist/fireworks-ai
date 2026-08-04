@@ -1,0 +1,32 @@
+{
+  "provider": "fireworks-ai",
+  "sources": [
+    "fireworks-ai-anthropic-messages-openapi-other-api-openapi.yml",
+    "fireworks-ai-chat-api-openapi.yml",
+    "fireworks-ai-completions-api-openapi.yml",
+    "fireworks-ai-gateway-api-openapi.yml",
+    "fireworks-ai-gateway-extra-openapi-gateway-api-openapi.yml",
+    "fireworks-ai-gateway-openapi-gateway-api-openapi.yml",
+    "fireworks-ai-messages-api-openapi.yml",
+    "fireworks-ai-responses-api-openapi.yml",
+    "fireworks-ai-responses-openapi-other-api-openapi.yml",
+    "fireworks-ai-text-completion-openapi-other-api-openapi.yml"
+  ],
+  "outputs": [
+    "fireworks-ai-anthropic-messages-openapi-other-api-openapi.yml",
+    "fireworks-ai-chat-api-openapi.yml",
+    "fireworks-ai-completions-api-openapi.yml",
+    "fireworks-ai-gateway-api-openapi.yml",
+    "fireworks-ai-gateway-extra-openapi-gateway-api-openapi.yml",
+    "fireworks-ai-gateway-openapi-gateway-api-openapi.yml",
+    "fireworks-ai-messages-api-openapi.yml",
+    "fireworks-ai-responses-api-openapi.yml",
+    "fireworks-ai-responses-openapi-other-api-openapi.yml",
+    "fireworks-ai-text-completion-openapi-other-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
