@@ -29,7 +29,7 @@ tags:
 - GPU
 created: '2026-05-08'
 modified: '2026-05-29'
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
 - aid: fireworks-ai:fireworks-ai-anthropic-messages-openapi-other-api
   name: Fireworks AI anthropic-messages.openapi_other API
