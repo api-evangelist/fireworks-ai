@@ -1,0 +1,376 @@
+{
+  "item": [
+    {
+      "id": "e96fd01f-4284-40ab-b5ac-4be01936e942",
+      "name": "text-completion.openapi_other",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e0dfbf58-97f4-4f42-b34e-8f2c8b2d2b4c",
+          "name": "Create Completion",
+          "request": {
+            "name": "Create Completion",
+            "description": {
+              "content": "Create a completion for the provided prompt and parameters.\n\nFor RL / agent rollouts, Fireworks inference exposes additional\nrollout-specific features:\n[`x-session-affinity` and `x-multi-turn-session-id`](https://docs.fireworks.ai/guides/rollout-inference#session-affinity)\nfor multi-turn trajectories, and\n[MoE Router Replay (R3)](https://docs.fireworks.ai/guides/rollout-inference#moe-router-replay)\nfor MoE expert tracing during rollouts.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "completions"
+              ],
+              "host": [
+                "{{v1-completions-Url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prompt\": \"<string>\",\n  \"model\": \"<string>\",\n  \"user\": \"<string>\",\n  \"prompt_cache_key\": \"<string>\",\n  \"prompt_cache_isolation_key\": \"<string>\",\n  \"raw_output\": \"<boolean>\",\n  \"perf_metrics_in_response\": \"<boolean>\",\n  \"stream\": \"<boolean>\",\n  \"n\": 1,\n  \"service_tier\": \"default\",\n  \"stop\": \"<string>\",\n  \"max_tokens\": \"<integer>\",\n  \"max_completion_tokens\": \"<integer>\",\n  \"temperature\": \"<number>\",\n  \"top_k\": \"<integer>\",\n  \"top_p\": \"<number>\",\n  \"min_p\": \"<number>\",\n  \"typical_p\": \"<number>\",\n  \"frequency_penalty\": \"<number>\",\n  \"presence_penalty\": \"<number>\",\n  \"repetition_penalty\": \"<number>\",\n  \"mirostat_target\": \"<number>\",\n  \"mirostat_lr\": \"<number>\",\n  \"seed\": \"<integer>\",\n  \"logprobs\": \"<integer>\",\n  \"top_logprobs\": \"<integer>\",\n  \"echo\": \"<boolean>\",\n  \"echo_last\": \"<integer>\",\n  \"ignore_eos\": false,\n  \"context_length_exceeded_behavior\": \"truncate\",\n  \"response_format\": {\n    \"type\": \"<string>\",\n    \"schema\": \"<string>\",\n    \"grammar\": \"<string>\",\n    \"json_schema\": \"<string>\"\n  },\n  \"logit_bias\": {\n    \"key_0\": \"<number>\"\n  },\n  \"speculation\": \"<string>\",\n  \"prediction\": {\n    \"content\": \"<string>\",\n    \"type\": \"content\"\n  },\n  \"metadata\": {\n    \"key_0\": \"<string>\"\n  },\n  \"reasoning_effort\": \"<string>\",\n  \"reasoning_history\": \"<string>\",\n  \"thinking\": {\n    \"type\": \"<string>\",\n    \"budget_tokens\": \"<integer>\"\n  },\n  \"return_token_ids\": \"<boolean>\",\n  \"images\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "784d8192-cedf-4ec4-b333-99ae0a303a75",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "completions"
+                  ],
+                  "host": [
+                    "{{v1-completions-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"prompt\": \"<string>\",\n  \"model\": \"<string>\",\n  \"user\": \"<string>\",\n  \"prompt_cache_key\": \"<string>\",\n  \"prompt_cache_isolation_key\": \"<string>\",\n  \"raw_output\": \"<boolean>\",\n  \"perf_metrics_in_response\": \"<boolean>\",\n  \"stream\": \"<boolean>\",\n  \"n\": 1,\n  \"service_tier\": \"default\",\n  \"stop\": \"<string>\",\n  \"max_tokens\": \"<integer>\",\n  \"max_completion_tokens\": \"<integer>\",\n  \"temperature\": \"<number>\",\n  \"top_k\": \"<integer>\",\n  \"top_p\": \"<number>\",\n  \"min_p\": \"<number>\",\n  \"typical_p\": \"<number>\",\n  \"frequency_penalty\": \"<number>\",\n  \"presence_penalty\": \"<number>\",\n  \"repetition_penalty\": \"<number>\",\n  \"mirostat_target\": \"<number>\",\n  \"mirostat_lr\": \"<number>\",\n  \"seed\": \"<integer>\",\n  \"logprobs\": \"<integer>\",\n  \"top_logprobs\": \"<integer>\",\n  \"echo\": \"<boolean>\",\n  \"echo_last\": \"<integer>\",\n  \"ignore_eos\": false,\n  \"context_length_exceeded_behavior\": \"truncate\",\n  \"response_format\": {\n    \"type\": \"json_object\",\n    \"schema\": \"string\",\n    \"grammar\": \"string\",\n    \"json_schema\": \"string\"\n  },\n  \"logit_bias\": {\n    \"key_0\": \"<number>\",\n    \"key_1\": \"<number>\",\n    \"key_2\": \"<number>\",\n    \"key_3\": \"<number>\"\n  },\n  \"speculation\": \"<string>\",\n  \"prediction\": {\n    \"content\": \"string\",\n    \"type\": \"content\"\n  },\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"reasoning_effort\": \"<string>\",\n  \"reasoning_history\": \"<string>\",\n  \"thinking\": {\n    \"type\": \"string\",\n    \"budget_tokens\": 579\n  },\n  \"return_token_ids\": \"<boolean>\",\n  \"images\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"created\": 1943,\n  \"model\": \"string\",\n  \"choices\": [\n    {\n      \"index\": 7685,\n      \"text\": \"string\",\n      \"logprobs\": {\n        \"tokens\": [\n          \"string\",\n          \"string\"\n        ],\n        \"token_logprobs\": [\n          8286.049600594444,\n          6949.983175645469\n        ],\n        \"top_logprobs\": [\n          {\n            \"key_0\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"key_1\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"key_2\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"key_3\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"key_4\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"key_0\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"text_offset\": [\n          6243,\n          6720\n        ],\n        \"token_ids\": [\n          7922,\n          2650\n        ]\n      },\n      \"finish_reason\": \"error\",\n      \"raw_output\": {\n        \"prompt_fragments\": [\n          \"string\",\n          \"string\"\n        ],\n        \"prompt_token_ids\": [\n          5624,\n          4498\n        ],\n        \"completion\": \"string\",\n        \"completion_token_ids\": [\n          6258,\n          4126\n        ],\n        \"completion_logprobs\": {\n          \"content\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"images\": [\n          \"string\",\n          \"string\"\n        ],\n        \"videos\": [\n          \"string\",\n          \"string\"\n        ],\n        \"grammar\": \"string\"\n      },\n      \"prompt_token_ids\": [\n        6392,\n        5748\n      ],\n      \"token_ids\": [\n        8071,\n        9288\n      ]\n    },\n    {\n      \"index\": 1590,\n      \"text\": \"string\",\n      \"logprobs\": {\n        \"tokens\": [\n          \"string\",\n          \"string\"\n        ],\n        \"token_logprobs\": [\n          8251.002704707389,\n          3027.587302128222\n        ],\n        \"top_logprobs\": [\n          {\n            \"key_0\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"key_0\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"key_1\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"text_offset\": [\n          9362,\n          9609\n        ],\n        \"token_ids\": [\n          3914,\n          6377\n        ]\n      },\n      \"finish_reason\": \"length\",\n      \"raw_output\": {\n        \"prompt_fragments\": [\n          \"string\",\n          \"string\"\n        ],\n        \"prompt_token_ids\": [\n          1373,\n          9592\n        ],\n        \"completion\": \"string\",\n        \"completion_token_ids\": [\n          3169,\n          1450\n        ],\n        \"completion_logprobs\": {\n          \"content\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"images\": [\n          \"string\",\n          \"string\"\n        ],\n        \"videos\": [\n          \"string\",\n          \"string\"\n        ],\n        \"grammar\": \"string\"\n      },\n      \"prompt_token_ids\": [\n        8855,\n        4603\n      ],\n      \"token_ids\": [\n        1342,\n        2424\n      ]\n    }\n  ],\n  \"usage\": {\n    \"prompt_tokens\": 603,\n    \"total_tokens\": 5507,\n    \"completion_tokens\": 1731,\n    \"prompt_tokens_details\": {\n      \"cached_tokens\": 4168\n    }\n  },\n  \"object\": \"text_completion\",\n  \"perf_metrics\": {\n    \"key_0\": false\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fdfd9b9a-ac55-4e55-be44-78a6ba809e39",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "completions"
+                  ],
+                  "host": [
+                    "{{v1-completions-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"prompt\": \"<string>\",\n  \"model\": \"<string>\",\n  \"user\": \"<string>\",\n  \"prompt_cache_key\": \"<string>\",\n  \"prompt_cache_isolation_key\": \"<string>\",\n  \"raw_output\": \"<boolean>\",\n  \"perf_metrics_in_response\": \"<boolean>\",\n  \"stream\": \"<boolean>\",\n  \"n\": 1,\n  \"service_tier\": \"default\",\n  \"stop\": \"<string>\",\n  \"max_tokens\": \"<integer>\",\n  \"max_completion_tokens\": \"<integer>\",\n  \"temperature\": \"<number>\",\n  \"top_k\": \"<integer>\",\n  \"top_p\": \"<number>\",\n  \"min_p\": \"<number>\",\n  \"typical_p\": \"<number>\",\n  \"frequency_penalty\": \"<number>\",\n  \"presence_penalty\": \"<number>\",\n  \"repetition_penalty\": \"<number>\",\n  \"mirostat_target\": \"<number>\",\n  \"mirostat_lr\": \"<number>\",\n  \"seed\": \"<integer>\",\n  \"logprobs\": \"<integer>\",\n  \"top_logprobs\": \"<integer>\",\n  \"echo\": \"<boolean>\",\n  \"echo_last\": \"<integer>\",\n  \"ignore_eos\": false,\n  \"context_length_exceeded_behavior\": \"truncate\",\n  \"response_format\": {\n    \"type\": \"json_object\",\n    \"schema\": \"string\",\n    \"grammar\": \"string\",\n    \"json_schema\": \"string\"\n  },\n  \"logit_bias\": {\n    \"key_0\": \"<number>\",\n    \"key_1\": \"<number>\",\n    \"key_2\": \"<number>\",\n    \"key_3\": \"<number>\"\n  },\n  \"speculation\": \"<string>\",\n  \"prediction\": {\n    \"content\": \"string\",\n    \"type\": \"content\"\n  },\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"reasoning_effort\": \"<string>\",\n  \"reasoning_history\": \"<string>\",\n  \"thinking\": {\n    \"type\": \"string\",\n    \"budget_tokens\": 579\n  },\n  \"return_token_ids\": \"<boolean>\",\n  \"images\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "06374242-ab1e-4655-9eb3-b8552b75299d",
+          "name": "Create Chat Completion",
+          "request": {
+            "name": "Create Chat Completion",
+            "description": {
+              "content": "Create a completion for the provided prompt and parameters.\n\nFor RL / agent rollouts, Fireworks inference exposes additional\nrollout-specific features:\n[`x-session-affinity` and `x-multi-turn-session-id`](https://docs.fireworks.ai/guides/rollout-inference#session-affinity)\nfor multi-turn trajectories, and\n[MoE Router Replay (R3)](https://docs.fireworks.ai/guides/rollout-inference#moe-router-replay)\nfor MoE expert tracing during rollouts.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "chat",
+                "completions"
+              ],
+              "host": [
+                "{{v1-chat-completions-Url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"messages\": [\n    {\n      \"role\": \"<string>\",\n      \"content\": \"<string>\",\n      \"reasoning_content\": \"<string>\",\n      \"tool_calls\": [\n        {\n          \"function\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"id\": \"<string>\",\n          \"type\": \"function\"\n        },\n        {\n          \"function\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"id\": \"<string>\",\n          \"type\": \"function\"\n        }\n      ],\n      \"tool_call_id\": \"<string>\"\n    },\n    {\n      \"role\": \"<string>\",\n      \"content\": \"<string>\",\n      \"reasoning_content\": \"<string>\",\n      \"tool_calls\": [\n        {\n          \"function\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"id\": \"<string>\",\n          \"type\": \"function\"\n        },\n        {\n          \"function\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"id\": \"<string>\",\n          \"type\": \"function\"\n        }\n      ],\n      \"tool_call_id\": \"<string>\"\n    }\n  ],\n  \"model\": \"<string>\",\n  \"tools\": [\n    {\n      \"type\": \"<string>\",\n      \"function\": {\n        \"name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"parameters\": {\n          \"key_0\": 2830.270635611546,\n          \"key_1\": \"string\"\n        },\n        \"strict\": \"<boolean>\"\n      }\n    },\n    {\n      \"type\": \"<string>\",\n      \"function\": {\n        \"name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"parameters\": {\n          \"key_0\": 7723,\n          \"key_1\": 9978.110062612259\n        },\n        \"strict\": \"<boolean>\"\n      }\n    }\n  ],\n  \"tool_choice\": \"<string>\",\n  \"stream\": \"<boolean>\",\n  \"response_format\": {\n    \"type\": \"<string>\",\n    \"schema\": \"<string>\",\n    \"grammar\": \"<string>\",\n    \"json_schema\": \"<string>\"\n  },\n  \"temperature\": \"<number>\",\n  \"top_k\": \"<integer>\",\n  \"user\": \"<string>\",\n  \"prompt_cache_key\": \"<string>\",\n  \"prompt_cache_isolation_key\": \"<string>\",\n  \"raw_output\": \"<boolean>\",\n  \"perf_metrics_in_response\": \"<boolean>\",\n  \"n\": 1,\n  \"service_tier\": \"default\",\n  \"stop\": \"<string>\",\n  \"max_tokens\": \"<integer>\",\n  \"max_completion_tokens\": \"<integer>\",\n  \"top_p\": \"<number>\",\n  \"min_p\": \"<number>\",\n  \"typical_p\": \"<number>\",\n  \"frequency_penalty\": \"<number>\",\n  \"presence_penalty\": \"<number>\",\n  \"repetition_penalty\": \"<number>\",\n  \"mirostat_target\": \"<number>\",\n  \"mirostat_lr\": \"<number>\",\n  \"seed\": \"<integer>\",\n  \"logprobs\": \"<integer>\",\n  \"top_logprobs\": \"<integer>\",\n  \"echo\": \"<boolean>\",\n  \"echo_last\": \"<integer>\",\n  \"ignore_eos\": false,\n  \"context_length_exceeded_behavior\": \"truncate\",\n  \"logit_bias\": {\n    \"key_0\": \"<number>\",\n    \"key_1\": \"<number>\",\n    \"key_2\": \"<number>\"\n  },\n  \"speculation\": \"<string>\",\n  \"prediction\": {\n    \"content\": \"<string>\",\n    \"type\": \"content\"\n  },\n  \"metadata\": {\n    \"key_0\": \"<string>\"\n  },\n  \"reasoning_effort\": \"<string>\",\n  \"reasoning_history\": \"<string>\",\n  \"thinking\": {\n    \"type\": \"<string>\",\n    \"budget_tokens\": \"<integer>\"\n  },\n  \"return_token_ids\": \"<boolean>\",\n  \"functions\": [\n    {\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"parameters\": {\n        \"key_0\": 2958.440775098494,\n        \"key_1\": 3549.4660890228124\n      },\n      \"strict\": \"<boolean>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"parameters\": {\n        \"key_0\": 1061.2774420628934,\n        \"key_1\": 9121,\n        \"key_2\": 5151\n      },\n      \"strict\": \"<boolean>\"\n    }\n  ],\n  \"prompt_truncate_len\": \"<integer>\",\n  \"parallel_tool_calls\": \"<boolean>\",\n  \"safe_tokenization\": \"<boolean>\",\n  \"function_call\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "94e7cb60-077d-4ef4-8d09-25fb01c34e4a",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "chat",
+                    "completions"
+                  ],
+                  "host": [
+                    "{{v1-chat-completions-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"messages\": [\n    {\n      \"role\": \"string\",\n      \"content\": \"string\",\n      \"reasoning_content\": \"string\",\n      \"tool_calls\": [\n        {\n          \"function\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"id\": \"string\",\n          \"type\": \"function\"\n        },\n        {\n          \"function\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"id\": \"string\",\n          \"type\": \"function\"\n        }\n      ],\n      \"tool_call_id\": \"string\"\n    },\n    {\n      \"role\": \"string\",\n      \"content\": \"string\",\n      \"reasoning_content\": \"string\",\n      \"tool_calls\": [\n        {\n          \"function\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"id\": \"string\",\n          \"type\": \"function\"\n        },\n        {\n          \"function\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"id\": \"string\",\n          \"type\": \"function\"\n        }\n      ],\n      \"tool_call_id\": \"string\"\n    }\n  ],\n  \"model\": \"<string>\",\n  \"tools\": [\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {\n          \"key_0\": 7126,\n          \"key_1\": 1458,\n          \"key_2\": 6561.993018621748\n        },\n        \"strict\": true\n      }\n    },\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {\n          \"key_0\": false\n        },\n        \"strict\": false\n      }\n    }\n  ],\n  \"tool_choice\": \"<string>\",\n  \"stream\": \"<boolean>\",\n  \"response_format\": {\n    \"type\": \"json_schema\",\n    \"schema\": \"string\",\n    \"grammar\": \"string\",\n    \"json_schema\": \"string\"\n  },\n  \"temperature\": \"<number>\",\n  \"top_k\": \"<integer>\",\n  \"user\": \"<string>\",\n  \"prompt_cache_key\": \"<string>\",\n  \"prompt_cache_isolation_key\": \"<string>\",\n  \"raw_output\": \"<boolean>\",\n  \"perf_metrics_in_response\": \"<boolean>\",\n  \"n\": 1,\n  \"service_tier\": \"default\",\n  \"stop\": \"<string>\",\n  \"max_tokens\": \"<integer>\",\n  \"max_completion_tokens\": \"<integer>\",\n  \"top_p\": \"<number>\",\n  \"min_p\": \"<number>\",\n  \"typical_p\": \"<number>\",\n  \"frequency_penalty\": \"<number>\",\n  \"presence_penalty\": \"<number>\",\n  \"repetition_penalty\": \"<number>\",\n  \"mirostat_target\": \"<number>\",\n  \"mirostat_lr\": \"<number>\",\n  \"seed\": \"<integer>\",\n  \"logprobs\": \"<integer>\",\n  \"top_logprobs\": \"<integer>\",\n  \"echo\": \"<boolean>\",\n  \"echo_last\": \"<integer>\",\n  \"ignore_eos\": false,\n  \"context_length_exceeded_behavior\": \"truncate\",\n  \"logit_bias\": {\n    \"key_0\": \"<number>\"\n  },\n  \"speculation\": \"<string>\",\n  \"prediction\": {\n    \"content\": \"string\",\n    \"type\": \"content\"\n  },\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"reasoning_effort\": \"<string>\",\n  \"reasoning_history\": \"<string>\",\n  \"thinking\": {\n    \"type\": \"string\",\n    \"budget_tokens\": 1111\n  },\n  \"return_token_ids\": \"<boolean>\",\n  \"functions\": [\n    {\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"parameters\": {\n        \"key_0\": \"string\"\n      },\n      \"strict\": false\n    },\n    {\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"parameters\": {\n        \"key_0\": 8785\n      },\n      \"strict\": true\n    }\n  ],\n  \"prompt_truncate_len\": \"<integer>\",\n  \"parallel_tool_calls\": \"<boolean>\",\n  \"safe_tokenization\": \"<boolean>\",\n  \"function_call\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"created\": 993,\n  \"model\": \"string\",\n  \"choices\": [\n    {\n      \"index\": 6096,\n      \"message\": {\n        \"role\": \"string\",\n        \"content\": \"string\",\n        \"reasoning_content\": \"string\",\n        \"tool_calls\": [\n          {\n            \"function\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"function\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"tool_call_id\": \"string\"\n      },\n      \"finish_reason\": \"string\",\n      \"logprobs\": {\n        \"tokens\": [\n          \"string\",\n          \"string\"\n        ],\n        \"token_logprobs\": [\n          2022.2221833545418,\n          5884.817256588405\n        ],\n        \"top_logprobs\": [\n          {\n            \"key_0\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"key_0\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"key_1\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"text_offset\": [\n          4694,\n          2042\n        ],\n        \"token_ids\": [\n          2322,\n          5623\n        ]\n      },\n      \"raw_output\": {\n        \"prompt_fragments\": [\n          \"string\",\n          \"string\"\n        ],\n        \"prompt_token_ids\": [\n          6831,\n          9522\n        ],\n        \"completion\": \"string\",\n        \"completion_token_ids\": [\n          1405,\n          6402\n        ],\n        \"completion_logprobs\": {\n          \"content\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"images\": [\n          \"string\",\n          \"string\"\n        ],\n        \"videos\": [\n          \"string\",\n          \"string\"\n        ],\n        \"grammar\": \"string\"\n      },\n      \"token_ids\": [\n        837,\n        3333\n      ]\n    },\n    {\n      \"index\": 1812,\n      \"message\": {\n        \"role\": \"string\",\n        \"content\": \"string\",\n        \"reasoning_content\": \"string\",\n        \"tool_calls\": [\n          {\n            \"function\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"function\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"type\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"tool_call_id\": \"string\"\n      },\n      \"finish_reason\": \"string\",\n      \"logprobs\": {\n        \"tokens\": [\n          \"string\",\n          \"string\"\n        ],\n        \"token_logprobs\": [\n          6981.603926608717,\n          73.75487098306488\n        ],\n        \"top_logprobs\": [\n          {\n            \"key_0\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"key_1\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"key_0\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"text_offset\": [\n          8313,\n          5994\n        ],\n        \"token_ids\": [\n          3987,\n          6848\n        ]\n      },\n      \"raw_output\": {\n        \"prompt_fragments\": [\n          \"string\",\n          \"string\"\n        ],\n        \"prompt_token_ids\": [\n          7703,\n          198\n        ],\n        \"completion\": \"string\",\n        \"completion_token_ids\": [\n          3149,\n          1794\n        ],\n        \"completion_logprobs\": {\n          \"content\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"images\": [\n          \"string\",\n          \"string\"\n        ],\n        \"videos\": [\n          \"string\",\n          \"string\"\n        ],\n        \"grammar\": \"string\"\n      },\n      \"token_ids\": [\n        5537,\n        4396\n      ]\n    }\n  ],\n  \"object\": \"chat.completion\",\n  \"usage\": {\n    \"prompt_tokens\": 3334,\n    \"total_tokens\": 3813,\n    \"completion_tokens\": 9428,\n    \"prompt_tokens_details\": {\n      \"cached_tokens\": 8367\n    }\n  },\n  \"perf_metrics\": {\n    \"key_0\": \"string\",\n    \"key_1\": 3564\n  },\n  \"prompt_token_ids\": [\n    9941,\n    3324\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6375c89a-7650-4667-9255-7895a90c0e54",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "chat",
+                    "completions"
+                  ],
+                  "host": [
+                    "{{v1-chat-completions-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"messages\": [\n    {\n      \"role\": \"string\",\n      \"content\": \"string\",\n      \"reasoning_content\": \"string\",\n      \"tool_calls\": [\n        {\n          \"function\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"id\": \"string\",\n          \"type\": \"function\"\n        },\n        {\n          \"function\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"id\": \"string\",\n          \"type\": \"function\"\n        }\n      ],\n      \"tool_call_id\": \"string\"\n    },\n    {\n      \"role\": \"string\",\n      \"content\": \"string\",\n      \"reasoning_content\": \"string\",\n      \"tool_calls\": [\n        {\n          \"function\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"id\": \"string\",\n          \"type\": \"function\"\n        },\n        {\n          \"function\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"id\": \"string\",\n          \"type\": \"function\"\n        }\n      ],\n      \"tool_call_id\": \"string\"\n    }\n  ],\n  \"model\": \"<string>\",\n  \"tools\": [\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {\n          \"key_0\": 7126,\n          \"key_1\": 1458,\n          \"key_2\": 6561.993018621748\n        },\n        \"strict\": true\n      }\n    },\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {\n          \"key_0\": false\n        },\n        \"strict\": false\n      }\n    }\n  ],\n  \"tool_choice\": \"<string>\",\n  \"stream\": \"<boolean>\",\n  \"response_format\": {\n    \"type\": \"json_schema\",\n    \"schema\": \"string\",\n    \"grammar\": \"string\",\n    \"json_schema\": \"string\"\n  },\n  \"temperature\": \"<number>\",\n  \"top_k\": \"<integer>\",\n  \"user\": \"<string>\",\n  \"prompt_cache_key\": \"<string>\",\n  \"prompt_cache_isolation_key\": \"<string>\",\n  \"raw_output\": \"<boolean>\",\n  \"perf_metrics_in_response\": \"<boolean>\",\n  \"n\": 1,\n  \"service_tier\": \"default\",\n  \"stop\": \"<string>\",\n  \"max_tokens\": \"<integer>\",\n  \"max_completion_tokens\": \"<integer>\",\n  \"top_p\": \"<number>\",\n  \"min_p\": \"<number>\",\n  \"typical_p\": \"<number>\",\n  \"frequency_penalty\": \"<number>\",\n  \"presence_penalty\": \"<number>\",\n  \"repetition_penalty\": \"<number>\",\n  \"mirostat_target\": \"<number>\",\n  \"mirostat_lr\": \"<number>\",\n  \"seed\": \"<integer>\",\n  \"logprobs\": \"<integer>\",\n  \"top_logprobs\": \"<integer>\",\n  \"echo\": \"<boolean>\",\n  \"echo_last\": \"<integer>\",\n  \"ignore_eos\": false,\n  \"context_length_exceeded_behavior\": \"truncate\",\n  \"logit_bias\": {\n    \"key_0\": \"<number>\"\n  },\n  \"speculation\": \"<string>\",\n  \"prediction\": {\n    \"content\": \"string\",\n    \"type\": \"content\"\n  },\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"reasoning_effort\": \"<string>\",\n  \"reasoning_history\": \"<string>\",\n  \"thinking\": {\n    \"type\": \"string\",\n    \"budget_tokens\": 1111\n  },\n  \"return_token_ids\": \"<boolean>\",\n  \"functions\": [\n    {\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"parameters\": {\n        \"key_0\": \"string\"\n      },\n      \"strict\": false\n    },\n    {\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"parameters\": {\n        \"key_0\": 8785\n      },\n      \"strict\": true\n    }\n  ],\n  \"prompt_truncate_len\": \"<integer>\",\n  \"parallel_tool_calls\": \"<boolean>\",\n  \"safe_tokenization\": \"<boolean>\",\n  \"function_call\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fireworks.ai/inference",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://api.fireworks.ai/inference",
+      "key": "v1-completions-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://api.fireworks.ai/inference",
+      "key": "v1-chat-completions-Url"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "34c6b8df-ae33-4558-ba81-ed6e62a39444",
+    "name": "Fireworks AI Anthropic Compatible Messages anthropic-messages.openapi_other text-completion.openapi_other API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Anthropic-compatible Messages API endpoint for Fireworks AI inference",
+      "type": "text/plain"
+    }
+  }
+}

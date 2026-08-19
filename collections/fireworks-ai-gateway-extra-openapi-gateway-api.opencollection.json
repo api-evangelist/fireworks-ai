@@ -1,0 +1,63 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fireworks AI Anthropic Compatible Messages anthropic-messages.openapi_other gateway-extra.openapi_Gateway API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "gateway-extra.openapi_Gateway",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Upload Dataset Files",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.fireworks.ai/inference/v1/accounts/:account_id/datasets/:dataset_id:upload",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path",
+                "description": "The account id"
+              },
+              {
+                "name": "dataset_id",
+                "value": "",
+                "type": "path",
+                "description": "The dataset id"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Provides a streamlined way to upload a dataset file in a single API request. This path can handle file sizes up to 150Mb. For larger file sizes use [Get Dataset Upload Endpoint](get-dataset-upload-endpoint).\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

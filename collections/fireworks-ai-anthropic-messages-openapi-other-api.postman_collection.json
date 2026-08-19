@@ -1,0 +1,207 @@
+{
+  "item": [
+    {
+      "id": "4b2295f6-2e05-4208-ba71-fc02103f1ba0",
+      "name": "anthropic-messages.openapi_other",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c1697c73-7211-4562-b3e0-073ebff0a355",
+          "name": "Create a Message",
+          "request": {
+            "name": "Create a Message",
+            "description": {
+              "content": "**Anthropic-compatible endpoint.**\n\nSend a structured list of input messages with text and/or image content, and the model will generate the next message in the conversation.\n\nThe Messages API can be used for either single queries or stateless multi-turn conversations.\n\n**Fireworks Quickstarts:**\n- [Serverless Quickstart](/getting-started/quickstart)\n- [Deployments Quickstart](/getting-started/ondemand-quickstart)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "messages"
+              ],
+              "host": [
+                "{{v1-messages-Url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"<string>\",\n  \"messages\": [\n    {\n      \"content\": \"<string>\",\n      \"role\": \"<string>\"\n    },\n    {\n      \"content\": \"<string>\",\n      \"role\": \"<string>\"\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"metadata\": {\n    \"user_id\": \"<string>\"\n  },\n  \"output_config\": {\n    \"effort\": \"<string>\",\n    \"format\": {\n      \"schema\": {\n        \"key_0\": false,\n        \"key_1\": 3287\n      },\n      \"type\": \"<string>\"\n    }\n  },\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"stream\": \"<boolean>\",\n  \"system\": \"<string>\",\n  \"temperature\": \"<number>\",\n  \"thinking\": {\n    \"budget_tokens\": \"<integer>\",\n    \"type\": \"<string>\"\n  },\n  \"tool_choice\": {\n    \"type\": \"<string>\",\n    \"disable_parallel_tool_use\": \"<boolean>\"\n  },\n  \"tools\": [\n    {\n      \"name\": \"<string>\",\n      \"input_schema\": {\n        \"type\": \"<string>\",\n        \"properties\": {\n          \"key_0\": 7975,\n          \"key_1\": true,\n          \"key_2\": 9036.829223943534\n        },\n        \"required\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"type\": \"<null>\",\n      \"description\": \"<string>\",\n      \"strict\": \"<boolean>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"input_schema\": {\n        \"type\": \"<string>\",\n        \"properties\": {\n          \"key_0\": 675.3555935937661,\n          \"key_1\": \"string\"\n        },\n        \"required\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"type\": \"<null>\",\n      \"description\": \"<string>\",\n      \"strict\": \"<boolean>\"\n    }\n  ],\n  \"top_k\": \"<integer>\",\n  \"top_p\": \"<number>\",\n  \"raw_output\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "08bdf189-c433-43e2-be83-8f147c4f6701",
+              "name": "Message object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{v1-messages-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"string\",\n  \"messages\": [\n    {\n      \"content\": \"string\",\n      \"role\": \"user\"\n    },\n    {\n      \"content\": \"string\",\n      \"role\": \"user\"\n    }\n  ],\n  \"max_tokens\": 1024,\n  \"metadata\": {\n    \"user_id\": \"string\"\n  },\n  \"output_config\": {\n    \"effort\": \"low\",\n    \"format\": {\n      \"schema\": {\n        \"key_0\": 2402\n      },\n      \"type\": \"string\"\n    }\n  },\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"stream\": \"<boolean>\",\n  \"system\": \"<string>\",\n  \"temperature\": 1,\n  \"thinking\": {\n    \"budget_tokens\": 3057,\n    \"type\": \"string\"\n  },\n  \"tool_choice\": {\n    \"type\": \"string\",\n    \"disable_parallel_tool_use\": true\n  },\n  \"tools\": [\n    {\n      \"name\": \"BOczHNxOsgfjXnlt_5u8UVgnkx05Mpx-tm0Zoi_p_zuH1EVhRQ-3Wgo9Q_A_lxHVCY_PR0X4PoBEvIKMF_\",\n      \"input_schema\": {\n        \"type\": \"string\",\n        \"properties\": {\n          \"key_0\": 3337.173806683594\n        },\n        \"required\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      \"type\": null,\n      \"description\": \"string\",\n      \"strict\": true\n    },\n    {\n      \"name\": \"TzxE5JVLBEws-3V\",\n      \"input_schema\": {\n        \"type\": \"string\",\n        \"properties\": {\n          \"key_0\": \"string\"\n        },\n        \"required\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      \"type\": null,\n      \"description\": \"string\",\n      \"strict\": true\n    }\n  ],\n  \"top_k\": 5,\n  \"top_p\": 0.7,\n  \"raw_output\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"msg_013Zva2CMHLNnXjNJJKqJ2EF\",\n  \"type\": \"message\",\n  \"role\": \"assistant\",\n  \"content\": [\n    {\n      \"citations\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"text\": \"string\",\n      \"type\": \"text\"\n    },\n    {\n      \"citations\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"text\": \"string\",\n      \"type\": \"text\"\n    }\n  ],\n  \"model\": \"string\",\n  \"stop_reason\": \"refusal\",\n  \"stop_sequence\": \"string\",\n  \"raw_output\": {\n    \"prompt_fragments\": [\n      \"string\",\n      \"string\"\n    ],\n    \"prompt_token_ids\": [\n      2825,\n      6103\n    ],\n    \"completion\": \"string\",\n    \"completion_token_ids\": [\n      5100,\n      753\n    ],\n    \"images\": [\n      \"string\",\n      \"string\"\n    ],\n    \"grammar\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1e018b07-15f3-45e5-8706-b7b46e14ebd3",
+              "name": "Error response.\n\nSee the [errors documentation](/guides/inference-error-codes) for more details.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{v1-messages-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"string\",\n  \"messages\": [\n    {\n      \"content\": \"string\",\n      \"role\": \"user\"\n    },\n    {\n      \"content\": \"string\",\n      \"role\": \"user\"\n    }\n  ],\n  \"max_tokens\": 1024,\n  \"metadata\": {\n    \"user_id\": \"string\"\n  },\n  \"output_config\": {\n    \"effort\": \"low\",\n    \"format\": {\n      \"schema\": {\n        \"key_0\": 2402\n      },\n      \"type\": \"string\"\n    }\n  },\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"stream\": \"<boolean>\",\n  \"system\": \"<string>\",\n  \"temperature\": 1,\n  \"thinking\": {\n    \"budget_tokens\": 3057,\n    \"type\": \"string\"\n  },\n  \"tool_choice\": {\n    \"type\": \"string\",\n    \"disable_parallel_tool_use\": true\n  },\n  \"tools\": [\n    {\n      \"name\": \"BOczHNxOsgfjXnlt_5u8UVgnkx05Mpx-tm0Zoi_p_zuH1EVhRQ-3Wgo9Q_A_lxHVCY_PR0X4PoBEvIKMF_\",\n      \"input_schema\": {\n        \"type\": \"string\",\n        \"properties\": {\n          \"key_0\": 3337.173806683594\n        },\n        \"required\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      \"type\": null,\n      \"description\": \"string\",\n      \"strict\": true\n    },\n    {\n      \"name\": \"TzxE5JVLBEws-3V\",\n      \"input_schema\": {\n        \"type\": \"string\",\n        \"properties\": {\n          \"key_0\": \"string\"\n        },\n        \"required\": [\n          \"string\",\n          \"string\"\n        ]\n      },\n      \"type\": null,\n      \"description\": \"string\",\n      \"strict\": true\n    }\n  ],\n  \"top_k\": 5,\n  \"top_p\": 0.7,\n  \"raw_output\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"Invalid request\",\n    \"type\": \"invalid_request_error\"\n  },\n  \"request_id\": \"string\",\n  \"type\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fireworks.ai/inference",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://api.fireworks.ai/inference",
+      "key": "v1-messages-Url"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "5882a8cc-999c-43fb-aafb-2cbe59a73497",
+    "name": "Fireworks AI Anthropic Compatible Messages anthropic-messages.openapi_other API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Anthropic-compatible Messages API endpoint for Fireworks AI inference",
+      "type": "text/plain"
+    }
+  }
+}

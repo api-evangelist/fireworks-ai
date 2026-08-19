@@ -1,0 +1,449 @@
+{
+  "item": [
+    {
+      "id": "abbeafc3-dc49-4090-99e7-5e3e4cce67a7",
+      "name": "gateway-extra.openapi_Gateway",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a06058ec-932c-4406-b232-2ddc026caa67",
+          "name": "Upload Dataset Files",
+          "request": {
+            "name": "Upload Dataset Files",
+            "description": {
+              "content": "Provides a streamlined way to upload a dataset file in a single API request. This path can handle file sizes up to 150Mb. For larger file sizes use [Get Dataset Upload Endpoint](get-dataset-upload-endpoint).\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "accounts",
+                ":account_id",
+                "datasets",
+                "{{dataset_id}}:upload"
+              ],
+              "host": [
+                "{{v1-accounts-account_id-datasets-dataset_id:upload-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) The account id"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "description": ""
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a7b5a6b7-5ab5-4b0e-b3e3-cfc8e430b54d",
+              "name": "A successful response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "datasets",
+                    "{{dataset_id}}:upload"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-datasets-dataset_id:upload-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) The account id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<binary>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"object\": \"string\",\n  \"bytes\": 13,\n  \"created_at\": 773,\n  \"filename\": \"string\",\n  \"purpose\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a64cae31-2ae6-4ca5-94e3-feb64ef2ea17",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "datasets",
+                    "{{dataset_id}}:upload"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-datasets-dataset_id:upload-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) The account id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<binary>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d19c97a0-9c91-4b26-a26d-4465c84aa175",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "datasets",
+                    "{{dataset_id}}:upload"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-datasets-dataset_id:upload-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) The account id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<binary>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "0d16b6e3-4485-4905-befb-2787f54ae61c",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "datasets",
+                    "{{dataset_id}}:upload"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-datasets-dataset_id:upload-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) The account id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<binary>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "51e63352-8234-40f3-aa90-abb02a385bda",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "accounts",
+                    ":account_id",
+                    "datasets",
+                    "{{dataset_id}}:upload"
+                  ],
+                  "host": [
+                    "{{v1-accounts-account_id-datasets-dataset_id:upload-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) The account id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<binary>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.fireworks.ai/inference",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://api.fireworks.ai",
+      "key": "v1-accounts-account_id-datasets-dataset_id:upload-Url"
+    },
+    {
+      "disabled": false,
+      "description": {
+        "content": "(Required) The dataset id",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "<string>",
+      "key": "dataset_id"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "6245e7e6-0294-404b-993b-8d453628f663",
+    "name": "Fireworks AI Anthropic Compatible Messages anthropic-messages.openapi_other gateway-extra.openapi_Gateway API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Anthropic-compatible Messages API endpoint for Fireworks AI inference",
+      "type": "text/plain"
+    }
+  }
+}
