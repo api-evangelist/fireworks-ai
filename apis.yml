@@ -21,6 +21,13 @@ accessModel:
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/fireworks-ai.png
 tags:
+- Artificial Intelligence
+- LLM
+- Inference
+- Multi-Modal
+- Fine-Tuning
+- GPU
+tags_raw:
 - AI
 - LLM
 - Inference
@@ -269,7 +276,8 @@ apis:
     The gateway.openapi_Gateway API from Fireworks AI — 126 operation(s) for gateway.openapi_gateway.
   humanURL: https://docs.fireworks.ai/api-reference/post-chatcompletions
   baseURL: https://api.fireworks.ai/inference/v1
-  tags:
+  tags: []
+  tags_raw:
   - gateway.openapi_Gateway
   properties:
   - type: OpenAPI
@@ -316,6 +324,8 @@ apis:
   humanURL: https://docs.fireworks.ai/api-reference/post-chatcompletions
   baseURL: https://api.fireworks.ai/inference/v1
   tags:
+  - Message
+  tags_raw:
   - Messages
   properties:
   - type: OpenAPI
@@ -408,7 +418,8 @@ apis:
     The responses.openapi_other API from Fireworks AI — 2 operation(s) for responses.openapi_other.
   humanURL: https://docs.fireworks.ai/api-reference/post-chatcompletions
   baseURL: https://api.fireworks.ai/inference/v1
-  tags:
+  tags: []
+  tags_raw:
   - responses.openapi_other
   properties:
   - type: OpenAPI
