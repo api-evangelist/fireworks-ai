@@ -6,6 +6,18 @@ description: Fireworks AI is a production-grade inference platform for open-sour
   and proprietary generative models. The Fireworks API hosts Llama, DeepSeek, Qwen,
   Mixtral, Stable Diffusion, and other models with serverless pay-per-token, on-demand
   dedicated GPU, and batch deployment options, plus managed fine-tuning.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: paid
   onboarding: self-serve
