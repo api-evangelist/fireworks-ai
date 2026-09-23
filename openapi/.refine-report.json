@@ -1,32 +1,33 @@
 {
   "provider": "fireworks-ai",
   "sources": [
-    "fireworks-ai-anthropic-messages-openapi-other-api-openapi.yml",
-    "fireworks-ai-chat-api-openapi.yml",
-    "fireworks-ai-completions-api-openapi.yml",
-    "fireworks-ai-gateway-api-openapi.yml",
-    "fireworks-ai-gateway-extra-openapi-gateway-api-openapi.yml",
-    "fireworks-ai-gateway-openapi-gateway-api-openapi.yml",
-    "fireworks-ai-messages-api-openapi.yml",
-    "fireworks-ai-responses-api-openapi.yml",
-    "fireworks-ai-responses-openapi-other-api-openapi.yml",
-    "fireworks-ai-text-completion-openapi-other-api-openapi.yml"
+    "_original/fireworks-ai-merged-openapi.yml"
   ],
   "outputs": [
     "fireworks-ai-anthropic-messages-openapi-other-api-openapi.yml",
-    "fireworks-ai-chat-api-openapi.yml",
-    "fireworks-ai-completions-api-openapi.yml",
-    "fireworks-ai-gateway-api-openapi.yml",
     "fireworks-ai-gateway-extra-openapi-gateway-api-openapi.yml",
     "fireworks-ai-gateway-openapi-gateway-api-openapi.yml",
-    "fireworks-ai-messages-api-openapi.yml",
-    "fireworks-ai-responses-api-openapi.yml",
     "fireworks-ai-responses-openapi-other-api-openapi.yml",
     "fireworks-ai-text-completion-openapi-other-api-openapi.yml"
   ],
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "4 archived document(s) dropped as subsets of other archived documents",
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "fireworks-ai-merged-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "_original/fireworks-ai-text-completion-openapi.yml: archived document superseded by a larger archived document",
+    "_original/fireworks-ai-responses-openapi.yml: archived document superseded by a larger archived document",
+    "_original/fireworks-ai-gateway-openapi.yml: archived document superseded by a larger archived document",
+    "_original/fireworks-ai-anthropic-messages-openapi.json: archived document superseded by a larger archived document",
+    "fireworks-ai-anthropic-messages-openapi-other-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fireworks-ai-gateway-extra-openapi-gateway-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fireworks-ai-gateway-openapi-gateway-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fireworks-ai-responses-openapi-other-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fireworks-ai-text-completion-openapi-other-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

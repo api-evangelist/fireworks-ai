@@ -1,12 +1,7 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Fireworks AI Anthropic Compatible Messages anthropic-messages.openapi_other API
-  description: Anthropic-compatible Messages API endpoint for Fireworks AI inference
-  version: 1.0.0
-servers:
-- url: https://api.fireworks.ai/inference
-security:
-- BearerAuth: []
+  title: Gateway REST Anthropic Messages.openapi Other API
+  version: 4.259.0
 tags:
 - name: anthropic-messages.openapi_other
   x-displayName: other
@@ -27,9 +22,9 @@ paths:
 
         **Fireworks Quickstarts:**
 
-        - [Serverless Quickstart](/getting-started/quickstart)
+        - Serverless Quickstart
 
-        - [Deployments Quickstart](/getting-started/ondemand-quickstart)'
+        - Deployments Quickstart'
       operationId: messages_post
       responses:
         '200':
@@ -59,44 +54,429 @@ paths:
       - BearerAuth: []
 components:
   schemas:
-    AnthropicRequestSearchResultLocationCitation:
+    AnthropicResponseWebSearchResultLocationCitation:
+      properties:
+        cited_text:
+          title: Cited Text
+          type: string
+        encrypted_index:
+          title: Encrypted Index
+          type: string
+        title:
+          anyOf:
+          - maxLength: 512
+            type: string
+          - type: 'null'
+          title: Title
+        type:
+          const: web_search_result_location
+          default: web_search_result_location
+          title: Type
+          type: string
+        url:
+          title: Url
+          type: string
+      required:
+      - cited_text
+      - encrypted_index
+      - title
+      - type
+      - url
+      title: ResponseWebSearchResultLocationCitation
+      type: object
+    AnthropicRequestCharLocationCitation:
       additionalProperties: false
       properties:
         cited_text:
           title: Cited Text
           type: string
-        end_block_index:
-          title: End Block Index
-          type: integer
-        search_result_index:
+        document_index:
           minimum: 0
-          title: Search Result Index
+          title: Document Index
           type: integer
-        source:
-          title: Source
-          type: string
-        start_block_index:
-          minimum: 0
-          title: Start Block Index
-          type: integer
-        title:
+        document_title:
           anyOf:
-          - type: string
+          - maxLength: 255
+            minLength: 1
+            type: string
           - type: 'null'
-          title: Title
+          title: Document Title
+        end_char_index:
+          title: End Char Index
+          type: integer
+        start_char_index:
+          minimum: 0
+          title: Start Char Index
+          type: integer
         type:
-          const: search_result_location
+          const: char_location
           title: Type
           type: string
       required:
       - cited_text
-      - end_block_index
-      - search_result_index
-      - source
-      - start_block_index
-      - title
+      - document_index
+      - document_title
+      - end_char_index
+      - start_char_index
       - type
-      title: RequestSearchResultLocationCitation
+      title: RequestCharLocationCitation
+      type: object
+    AnthropicRequestImageBlock:
+      additionalProperties: false
+      properties:
+        cache_control:
+          anyOf:
+          - discriminator:
+              mapping:
+                ephemeral: '#/components/schemas/AnthropicCacheControlEphemeral'
+              propertyName: type
+            oneOf:
+            - $ref: '#/components/schemas/AnthropicCacheControlEphemeral'
+          - type: 'null'
+          description: Create a cache control breakpoint at this content block.
+          title: Cache Control
+        source:
+          discriminator:
+            mapping:
+              base64: '#/components/schemas/AnthropicBase64ImageSource'
+              url: '#/components/schemas/AnthropicURLImageSource'
+            propertyName: type
+          oneOf:
+          - $ref: '#/components/schemas/AnthropicBase64ImageSource'
+          - $ref: '#/components/schemas/AnthropicURLImageSource'
+          title: Source
+        type:
+          const: image
+          title: Type
+          type: string
+      required:
+      - source
+      - type
+      title: RequestImageBlock
+      type: object
+    AnthropicURLImageSource:
+      additionalProperties: false
+      properties:
+        type:
+          const: url
+          title: Type
+          type: string
+        url:
+          title: Url
+          type: string
+      required:
+      - type
+      - url
+      title: URLImageSource
+      type: object
+    AnthropicResponseThinkingBlock:
+      properties:
+        signature:
+          title: Signature
+          type: string
+        thinking:
+          title: Thinking
+          type: string
+        type:
+          const: thinking
+          default: thinking
+          title: Type
+          type: string
+      required:
+      - signature
+      - thinking
+      - type
+      title: ResponseThinkingBlock
+      type: object
+    AnthropicURLPDFSource:
+      additionalProperties: false
+      properties:
+        type:
+          const: url
+          title: Type
+          type: string
+        url:
+          title: Url
+          type: string
+      required:
+      - type
+      - url
+      title: URLPDFSource
+      type: object
+    AnthropicJsonOutputFormat:
+      additionalProperties: false
+      properties:
+        schema:
+          additionalProperties: true
+          description: The JSON schema of the format
+          title: Schema
+          type: object
+        type:
+          const: json_schema
+          title: Type
+          type: string
+      required:
+      - schema
+      - type
+      title: JsonOutputFormat
+      type: object
+    AnthropicInputContentBlock:
+      discriminator:
+        mapping:
+          document: '#/components/schemas/AnthropicRequestDocumentBlock'
+          image: '#/components/schemas/AnthropicRequestImageBlock'
+          redacted_thinking: '#/components/schemas/AnthropicRequestRedactedThinkingBlock'
+          text: '#/components/schemas/AnthropicRequestTextBlock'
+          thinking: '#/components/schemas/AnthropicRequestThinkingBlock'
+          tool_result: '#/components/schemas/AnthropicRequestToolResultBlock'
+          tool_use: '#/components/schemas/AnthropicRequestToolUseBlock'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/AnthropicRequestTextBlock'
+        description: Regular text content.
+      - $ref: '#/components/schemas/AnthropicRequestImageBlock'
+        description: Image content specified directly as base64 data or as a reference via a URL.
+      - $ref: '#/components/schemas/AnthropicRequestDocumentBlock'
+        description: Document content, either specified directly as base64 data, as text, or as a reference via a URL.
+      - $ref: '#/components/schemas/AnthropicRequestThinkingBlock'
+        description: A block specifying internal thinking by the model.
+      - $ref: '#/components/schemas/AnthropicRequestRedactedThinkingBlock'
+        description: A block specifying internal, redacted thinking by the model.
+      - $ref: '#/components/schemas/AnthropicRequestToolUseBlock'
+        description: A block indicating a tool use by the model.
+      - $ref: '#/components/schemas/AnthropicRequestToolResultBlock'
+        description: A block specifying the results of a tool use by the model.
+      x-stainless-python-extend-union:
+      - ContentBlock
+      x-stainless-python-extend-union-imports:
+      - from .content_block import ContentBlock
+      x-stainless-go-variant-constructor:
+        naming: new_{variant}_block
+    AnthropicOutputConfig:
+      additionalProperties: false
+      properties:
+        effort:
+          anyOf:
+          - $ref: '#/components/schemas/AnthropicEffortLevel'
+          - type: 'null'
+          description: 'How much effort the model should put into its response. Higher effort levels may result in more thorough analysis but take longer.
+
+
+            Valid values are `low`, `medium`, `high`, or `max`.
+
+
+            **Fireworks behavior:** The `effort` level is converted to Fireworks [`reasoning_effort`](/api-reference/post-chatcompletions). Values `low`, `medium`, and `high` map directly. `max` is mapped to `high` since Fireworks does not have a `max` effort level.'
+        format:
+          anyOf:
+          - $ref: '#/components/schemas/AnthropicJsonOutputFormat'
+          - type: 'null'
+          description: A schema to specify the model's output format in responses. See [structured outputs](/structured-responses/structured-output-grammar-based)
+      title: OutputConfig
+      type: object
+    AnthropicStopReason:
+      enum:
+      - end_turn
+      - max_tokens
+      - stop_sequence
+      - tool_use
+      - pause_turn
+      - refusal
+      type: string
+    AnthropicToolChoiceAny:
+      additionalProperties: false
+      description: The model will use any available tools.
+      properties:
+        disable_parallel_tool_use:
+          description: 'Whether to disable parallel tool use.
+
+
+            Defaults to `false`. If set to `true`, the model will output exactly one tool use.'
+          title: Disable Parallel Tool Use
+          type: boolean
+        type:
+          const: any
+          title: Type
+          type: string
+      required:
+      - type
+      title: ToolChoiceAny
+      type: object
+    AnthropicNotFoundError:
+      properties:
+        message:
+          default: Not found
+          title: Message
+          type: string
+        type:
+          const: not_found_error
+          default: not_found_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: NotFoundError
+      type: object
+    AnthropicToolChoiceNone:
+      additionalProperties: false
+      description: The model will not be allowed to use tools.
+      properties:
+        type:
+          const: none
+          title: Type
+          type: string
+      required:
+      - type
+      title: ToolChoiceNone
+      type: object
+      x-stainless-go-constant-constructor: true
+    AnthropicAPIError:
+      properties:
+        message:
+          default: Internal server error
+          title: Message
+          type: string
+        type:
+          const: api_error
+          default: api_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: APIError
+      type: object
+    AnthropicBase64ImageSource:
+      additionalProperties: false
+      properties:
+        data:
+          format: byte
+          title: Data
+          type: string
+        media_type:
+          enum:
+          - image/jpeg
+          - image/png
+          - image/gif
+          - image/webp
+          title: Media Type
+          type: string
+        type:
+          const: base64
+          title: Type
+          type: string
+      required:
+      - data
+      - media_type
+      - type
+      title: Base64ImageSource
+      type: object
+    AnthropicResponseToolUseBlock:
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9_-]+$
+          title: Id
+          type: string
+        input:
+          additionalProperties: true
+          title: Input
+          type: object
+        name:
+          minLength: 1
+          title: Name
+          type: string
+        type:
+          const: tool_use
+          default: tool_use
+          title: Type
+          type: string
+      required:
+      - id
+      - input
+      - name
+      - type
+      title: ResponseToolUseBlock
+      type: object
+    AnthropicThinkingConfigAdaptive:
+      additionalProperties: false
+      properties:
+        type:
+          const: adaptive
+          title: Type
+          type: string
+      required:
+      - type
+      title: ThinkingConfigAdaptive
+      type: object
+      description: '**Not supported yet.**'
+    AnthropicRawOutput:
+      additionalProperties: false
+      description: Fireworks extension that returns low-level details of what the model sees, including the formatted prompt and function calls.
+      properties:
+        prompt_fragments:
+          description: Pieces of the prompt (like individual messages) before truncation and concatenation. Depending on prompt_truncate_len some of the messages might be dropped. Contains a mix of strings to be tokenized and individual tokens (if dictated by the conversation template)
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          title: Prompt Fragments
+          type: array
+        prompt_token_ids:
+          description: Fully processed prompt as seen by the model
+          items:
+            type: integer
+          title: Prompt Token Ids
+          type: array
+        completion:
+          description: Raw completion produced by the model before any tool calls are parsed
+          title: Completion
+          type: string
+        completion_token_ids:
+          anyOf:
+          - items:
+              type: integer
+            type: array
+          - type: 'null'
+          default: null
+          description: Token IDs for the raw completion
+          title: Completion Token Ids
+        images:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          default: null
+          description: Images in the prompt
+          title: Images
+        grammar:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Grammar used for constrained decoding, can be either user provided (directly or JSON schema) or inferred by the chat template
+          title: Grammar
+      required:
+      - prompt_fragments
+      - prompt_token_ids
+      - completion
+      title: RawOutput
+      type: object
+    AnthropicAuthenticationError:
+      properties:
+        message:
+          default: Authentication error
+          title: Message
+          type: string
+        type:
+          const: authentication_error
+          default: authentication_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: AuthenticationError
       type: object
     AnthropicResponsePageLocationCitation:
       properties:
@@ -140,8 +520,87 @@ components:
       - type
       title: ResponsePageLocationCitation
       type: object
-    AnthropicRequestContentBlockLocationCitation:
+    AnthropicMetadata:
       additionalProperties: false
+      properties:
+        user_id:
+          anyOf:
+          - maxLength: 256
+            type: string
+          - type: 'null'
+          description: 'An external identifier for the user who is associated with the request.
+
+
+            This should be a uuid, hash value, or other opaque identifier. This id may be used to help detect abuse. Do not include any identifying information such as name, email address, or phone number.'
+          examples:
+          - 13803d75-b4b5-4c3e-b2a2-6f21399b021b
+          title: User Id
+      title: Metadata
+      type: object
+    AnthropicInvalidRequestError:
+      properties:
+        message:
+          default: Invalid request
+          title: Message
+          type: string
+        type:
+          const: invalid_request_error
+          default: invalid_request_error
+          title: Type
+          type: string
+      required:
+      - message
+      - type
+      title: InvalidRequestError
+      type: object
+    AnthropicRequestTextBlock:
+      additionalProperties: false
+      properties:
+        cache_control:
+          anyOf:
+          - discriminator:
+              mapping:
+                ephemeral: '#/components/schemas/AnthropicCacheControlEphemeral'
+              propertyName: type
+            oneOf:
+            - $ref: '#/components/schemas/AnthropicCacheControlEphemeral'
+          - type: 'null'
+          description: Create a cache control breakpoint at this content block.
+          title: Cache Control
+        citations:
+          anyOf:
+          - items:
+              discriminator:
+                mapping:
+                  char_location: '#/components/schemas/AnthropicRequestCharLocationCitation'
+                  content_block_location: '#/components/schemas/AnthropicRequestContentBlockLocationCitation'
+                  page_location: '#/components/schemas/AnthropicRequestPageLocationCitation'
+                  search_result_location: '#/components/schemas/AnthropicRequestSearchResultLocationCitation'
+                  web_search_result_location: '#/components/schemas/AnthropicRequestWebSearchResultLocationCitation'
+                propertyName: type
+              oneOf:
+              - $ref: '#/components/schemas/AnthropicRequestCharLocationCitation'
+              - $ref: '#/components/schemas/AnthropicRequestPageLocationCitation'
+              - $ref: '#/components/schemas/AnthropicRequestContentBlockLocationCitation'
+              - $ref: '#/components/schemas/AnthropicRequestWebSearchResultLocationCitation'
+              - $ref: '#/components/schemas/AnthropicRequestSearchResultLocationCitation'
+            type: array
+          - type: 'null'
+          title: Citations
+        text:
+          minLength: 1
+          title: Text
+          type: string
+        type:
+          const: text
+          title: Type
+          type: string
+      required:
+      - text
+      - type
+      title: RequestTextBlock
+      type: object
+    AnthropicResponseCharLocationCitation:
       properties:
         cited_text:
           title: Cited Text
@@ -152,30 +611,79 @@ components:
           type: integer
         document_title:
           anyOf:
-          - maxLength: 255
-            minLength: 1
-            type: string
+          - type: string
           - type: 'null'
           title: Document Title
-        end_block_index:
-          title: End Block Index
+        end_char_index:
+          title: End Char Index
           type: integer
-        start_block_index:
+        file_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: File Id
+        start_char_index:
           minimum: 0
-          title: Start Block Index
+          title: Start Char Index
           type: integer
         type:
-          const: content_block_location
+          const: char_location
+          default: char_location
           title: Type
           type: string
       required:
       - cited_text
       - document_index
       - document_title
-      - end_block_index
-      - start_block_index
+      - end_char_index
+      - file_id
+      - start_char_index
       - type
-      title: RequestContentBlockLocationCitation
+      title: ResponseCharLocationCitation
+      type: object
+    AnthropicErrorResponse:
+      properties:
+        error:
+          discriminator:
+            mapping:
+              api_error: '#/components/schemas/AnthropicAPIError'
+              authentication_error: '#/components/schemas/AnthropicAuthenticationError'
+              billing_error: '#/components/schemas/AnthropicBillingError'
+              invalid_request_error: '#/components/schemas/AnthropicInvalidRequestError'
+              not_found_error: '#/components/schemas/AnthropicNotFoundError'
+              overloaded_error: '#/components/schemas/AnthropicOverloadedError'
+              permission_error: '#/components/schemas/AnthropicPermissionError'
+              rate_limit_error: '#/components/schemas/AnthropicRateLimitError'
+              timeout_error: '#/components/schemas/AnthropicGatewayTimeoutError'
+            propertyName: type
+          oneOf:
+          - $ref: '#/components/schemas/AnthropicInvalidRequestError'
+          - $ref: '#/components/schemas/AnthropicAuthenticationError'
+          - $ref: '#/components/schemas/AnthropicBillingError'
+          - $ref: '#/components/schemas/AnthropicPermissionError'
+          - $ref: '#/components/schemas/AnthropicNotFoundError'
+          - $ref: '#/components/schemas/AnthropicRateLimitError'
+          - $ref: '#/components/schemas/AnthropicGatewayTimeoutError'
+          - $ref: '#/components/schemas/AnthropicAPIError'
+          - $ref: '#/components/schemas/AnthropicOverloadedError'
+          title: Error
+        request_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Request Id
+        type:
+          const: error
+          default: error
+          title: Type
+          type: string
+      required:
+      - error
+      - request_id
+      - type
+      title: ErrorResponse
       type: object
     AnthropicRequestWebSearchResultLocationCitation:
       additionalProperties: false
@@ -210,59 +718,43 @@ components:
       - url
       title: RequestWebSearchResultLocationCitation
       type: object
-    AnthropicInvalidRequestError:
-      properties:
-        message:
-          default: Invalid request
-          title: Message
-          type: string
-        type:
-          const: invalid_request_error
-          default: invalid_request_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: InvalidRequestError
-      type: object
-    AnthropicRequestPageLocationCitation:
+    AnthropicRequestRedactedThinkingBlock:
       additionalProperties: false
       properties:
-        cited_text:
-          title: Cited Text
+        data:
+          title: Data
           type: string
-        document_index:
-          minimum: 0
-          title: Document Index
-          type: integer
-        document_title:
-          anyOf:
-          - maxLength: 255
-            minLength: 1
-            type: string
-          - type: 'null'
-          title: Document Title
-        end_page_number:
-          title: End Page Number
-          type: integer
-        start_page_number:
-          minimum: 1
-          title: Start Page Number
-          type: integer
         type:
-          const: page_location
+          const: redacted_thinking
           title: Type
           type: string
       required:
-      - cited_text
-      - document_index
-      - document_title
-      - end_page_number
-      - start_page_number
+      - data
       - type
-      title: RequestPageLocationCitation
+      title: RequestRedactedThinkingBlock
       type: object
+    AnthropicThinkingConfigParam:
+      description: 'Configuration for enabling the model''s extended thinking.
+
+
+        When enabled, responses include `thinking` content blocks showing the model''s thinking process before the final answer. Requires a minimum budget of 1,024 tokens and counts towards your `max_tokens` limit.
+
+
+        See [reasoning](/guides/reasoning) for details.
+
+
+        **Note:** The `adaptive` thinking type is not supported yet.'
+      discriminator:
+        mapping:
+          adaptive: '#/components/schemas/AnthropicThinkingConfigAdaptive'
+          disabled: '#/components/schemas/AnthropicThinkingConfigDisabled'
+          enabled: '#/components/schemas/AnthropicThinkingConfigEnabled'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/AnthropicThinkingConfigEnabled'
+      - $ref: '#/components/schemas/AnthropicThinkingConfigDisabled'
+      - $ref: '#/components/schemas/AnthropicThinkingConfigAdaptive'
+      title: Thinking
     AnthropicTool:
       additionalProperties: false
       properties:
@@ -319,787 +811,25 @@ components:
       - input_schema
       title: Tool
       type: object
-    AnthropicRequestImageBlock:
-      additionalProperties: false
-      properties:
-        cache_control:
-          anyOf:
-          - discriminator:
-              mapping:
-                ephemeral: '#/components/schemas/AnthropicCacheControlEphemeral'
-              propertyName: type
-            oneOf:
-            - $ref: '#/components/schemas/AnthropicCacheControlEphemeral'
-          - type: 'null'
-          description: Create a cache control breakpoint at this content block.
-          title: Cache Control
-        source:
-          discriminator:
-            mapping:
-              base64: '#/components/schemas/AnthropicBase64ImageSource'
-              url: '#/components/schemas/AnthropicURLImageSource'
-            propertyName: type
-          oneOf:
-          - $ref: '#/components/schemas/AnthropicBase64ImageSource'
-          - $ref: '#/components/schemas/AnthropicURLImageSource'
-          title: Source
-        type:
-          const: image
-          title: Type
-          type: string
-      required:
-      - source
-      - type
-      title: RequestImageBlock
-      type: object
-    AnthropicInputContentBlock:
-      discriminator:
-        mapping:
-          document: '#/components/schemas/AnthropicRequestDocumentBlock'
-          image: '#/components/schemas/AnthropicRequestImageBlock'
-          redacted_thinking: '#/components/schemas/AnthropicRequestRedactedThinkingBlock'
-          text: '#/components/schemas/AnthropicRequestTextBlock'
-          thinking: '#/components/schemas/AnthropicRequestThinkingBlock'
-          tool_result: '#/components/schemas/AnthropicRequestToolResultBlock'
-          tool_use: '#/components/schemas/AnthropicRequestToolUseBlock'
-        propertyName: type
-      oneOf:
-      - $ref: '#/components/schemas/AnthropicRequestTextBlock'
-        description: Regular text content.
-      - $ref: '#/components/schemas/AnthropicRequestImageBlock'
-        description: Image content specified directly as base64 data or as a reference via a URL.
-      - $ref: '#/components/schemas/AnthropicRequestDocumentBlock'
-        description: Document content, either specified directly as base64 data, as text, or as a reference via a URL.
-      - $ref: '#/components/schemas/AnthropicRequestThinkingBlock'
-        description: A block specifying internal thinking by the model.
-      - $ref: '#/components/schemas/AnthropicRequestRedactedThinkingBlock'
-        description: A block specifying internal, redacted thinking by the model.
-      - $ref: '#/components/schemas/AnthropicRequestToolUseBlock'
-        description: A block indicating a tool use by the model.
-      - $ref: '#/components/schemas/AnthropicRequestToolResultBlock'
-        description: A block specifying the results of a tool use by the model.
-      x-stainless-python-extend-union:
-      - ContentBlock
-      x-stainless-python-extend-union-imports:
-      - from .content_block import ContentBlock
-      x-stainless-go-variant-constructor:
-        naming: new_{variant}_block
-    AnthropicResponseToolUseBlock:
-      properties:
-        id:
-          pattern: ^[a-zA-Z0-9_-]+$
-          title: Id
-          type: string
-        input:
-          additionalProperties: true
-          title: Input
-          type: object
-        name:
-          minLength: 1
-          title: Name
-          type: string
-        type:
-          const: tool_use
-          default: tool_use
-          title: Type
-          type: string
-      required:
-      - id
-      - input
-      - name
-      - type
-      title: ResponseToolUseBlock
-      type: object
-    AnthropicThinkingConfigAdaptive:
-      additionalProperties: false
-      properties:
-        type:
-          const: adaptive
-          title: Type
-          type: string
-      required:
-      - type
-      title: ThinkingConfigAdaptive
-      type: object
-      description: '**Not supported yet.**'
-    AnthropicThinkingConfigEnabled:
-      additionalProperties: false
-      properties:
-        budget_tokens:
-          description: 'Determines how many tokens the model can use for its internal reasoning process. Larger budgets can enable more thorough analysis for complex problems, improving response quality.
-
-
-            Must be ≥1024 and less than `max_tokens`.
-
-
-            See [reasoning](/guides/reasoning) for details.'
-          minimum: 1024
-          title: Budget Tokens
-          type: integer
-        type:
-          const: enabled
-          title: Type
-          type: string
-      required:
-      - budget_tokens
-      - type
-      title: ThinkingConfigEnabled
-      type: object
-    AnthropicRequestCharLocationCitation:
-      additionalProperties: false
-      properties:
-        cited_text:
-          title: Cited Text
-          type: string
-        document_index:
-          minimum: 0
-          title: Document Index
-          type: integer
-        document_title:
-          anyOf:
-          - maxLength: 255
-            minLength: 1
-            type: string
-          - type: 'null'
-          title: Document Title
-        end_char_index:
-          title: End Char Index
-          type: integer
-        start_char_index:
-          minimum: 0
-          title: Start Char Index
-          type: integer
-        type:
-          const: char_location
-          title: Type
-          type: string
-      required:
-      - cited_text
-      - document_index
-      - document_title
-      - end_char_index
-      - start_char_index
-      - type
-      title: RequestCharLocationCitation
-      type: object
-    AnthropicBase64PDFSource:
+    AnthropicPlainTextSource:
       additionalProperties: false
       properties:
         data:
-          format: byte
           title: Data
           type: string
         media_type:
-          const: application/pdf
+          const: text/plain
           title: Media Type
           type: string
         type:
-          const: base64
+          const: text
           title: Type
           type: string
       required:
       - data
       - media_type
       - type
-      title: Base64PDFSource
-      type: object
-    AnthropicEffortLevel:
-      description: All possible effort levels.
-      enum:
-      - low
-      - medium
-      - high
-      - max
-      title: EffortLevel
-      type: string
-    AnthropicErrorResponse:
-      properties:
-        error:
-          discriminator:
-            mapping:
-              api_error: '#/components/schemas/AnthropicAPIError'
-              authentication_error: '#/components/schemas/AnthropicAuthenticationError'
-              billing_error: '#/components/schemas/AnthropicBillingError'
-              invalid_request_error: '#/components/schemas/AnthropicInvalidRequestError'
-              not_found_error: '#/components/schemas/AnthropicNotFoundError'
-              overloaded_error: '#/components/schemas/AnthropicOverloadedError'
-              permission_error: '#/components/schemas/AnthropicPermissionError'
-              rate_limit_error: '#/components/schemas/AnthropicRateLimitError'
-              timeout_error: '#/components/schemas/AnthropicGatewayTimeoutError'
-            propertyName: type
-          oneOf:
-          - $ref: '#/components/schemas/AnthropicInvalidRequestError'
-          - $ref: '#/components/schemas/AnthropicAuthenticationError'
-          - $ref: '#/components/schemas/AnthropicBillingError'
-          - $ref: '#/components/schemas/AnthropicPermissionError'
-          - $ref: '#/components/schemas/AnthropicNotFoundError'
-          - $ref: '#/components/schemas/AnthropicRateLimitError'
-          - $ref: '#/components/schemas/AnthropicGatewayTimeoutError'
-          - $ref: '#/components/schemas/AnthropicAPIError'
-          - $ref: '#/components/schemas/AnthropicOverloadedError'
-          title: Error
-        request_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          default: null
-          title: Request Id
-        type:
-          const: error
-          default: error
-          title: Type
-          type: string
-      required:
-      - error
-      - request_id
-      - type
-      title: ErrorResponse
-      type: object
-    AnthropicJsonOutputFormat:
-      additionalProperties: false
-      properties:
-        schema:
-          additionalProperties: true
-          description: The JSON schema of the format
-          title: Schema
-          type: object
-        type:
-          const: json_schema
-          title: Type
-          type: string
-      required:
-      - schema
-      - type
-      title: JsonOutputFormat
-      type: object
-    AnthropicResponseContentBlockLocationCitation:
-      properties:
-        cited_text:
-          title: Cited Text
-          type: string
-        document_index:
-          minimum: 0
-          title: Document Index
-          type: integer
-        document_title:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Document Title
-        end_block_index:
-          title: End Block Index
-          type: integer
-        file_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          default: null
-          title: File Id
-        start_block_index:
-          minimum: 0
-          title: Start Block Index
-          type: integer
-        type:
-          const: content_block_location
-          default: content_block_location
-          title: Type
-          type: string
-      required:
-      - cited_text
-      - document_index
-      - document_title
-      - end_block_index
-      - file_id
-      - start_block_index
-      - type
-      title: ResponseContentBlockLocationCitation
-      type: object
-    AnthropicPermissionError:
-      properties:
-        message:
-          default: Permission denied
-          title: Message
-          type: string
-        type:
-          const: permission_error
-          default: permission_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: PermissionError
-      type: object
-    AnthropicAPIError:
-      properties:
-        message:
-          default: Internal server error
-          title: Message
-          type: string
-        type:
-          const: api_error
-          default: api_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: APIError
-      type: object
-    AnthropicToolChoiceAuto:
-      additionalProperties: false
-      description: The model will automatically decide whether to use tools.
-      properties:
-        disable_parallel_tool_use:
-          description: 'Whether to disable parallel tool use.
-
-
-            Defaults to `false`. If set to `true`, the model will output at most one tool use.'
-          title: Disable Parallel Tool Use
-          type: boolean
-        type:
-          const: auto
-          title: Type
-          type: string
-      required:
-      - type
-      title: ToolChoiceAuto
-      type: object
-    AnthropicToolChoiceNone:
-      additionalProperties: false
-      description: The model will not be allowed to use tools.
-      properties:
-        type:
-          const: none
-          title: Type
-          type: string
-      required:
-      - type
-      title: ToolChoiceNone
-      type: object
-      x-stainless-go-constant-constructor: true
-    AnthropicCacheControlEphemeral:
-      additionalProperties: false
-      properties:
-        ttl:
-          description: 'The time-to-live for the cache control breakpoint.
-
-
-            This may be one the following values:
-
-            - `5m`: 5 minutes
-
-            - `1h`: 1 hour
-
-
-            Defaults to `5m`.'
-          enum:
-          - 5m
-          - 1h
-          title: Ttl
-          type: string
-          x-stainless-renameMap:
-            ttl_5m: 5m
-            ttl_1h: 1h
-        type:
-          const: ephemeral
-          title: Type
-          type: string
-      required:
-      - type
-      title: CacheControlEphemeral
-      type: object
-      x-stainless-go-constant-constructor: true
-    AnthropicThinkingConfigDisabled:
-      additionalProperties: false
-      properties:
-        type:
-          const: disabled
-          title: Type
-          type: string
-      required:
-      - type
-      title: ThinkingConfigDisabled
-      type: object
-      x-stainless-go-constant-constructor: true
-    AnthropicResponseSearchResultLocationCitation:
-      properties:
-        cited_text:
-          title: Cited Text
-          type: string
-        end_block_index:
-          title: End Block Index
-          type: integer
-        search_result_index:
-          minimum: 0
-          title: Search Result Index
-          type: integer
-        source:
-          title: Source
-          type: string
-        start_block_index:
-          minimum: 0
-          title: Start Block Index
-          type: integer
-        title:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Title
-        type:
-          const: search_result_location
-          default: search_result_location
-          title: Type
-          type: string
-      required:
-      - cited_text
-      - end_block_index
-      - search_result_index
-      - source
-      - start_block_index
-      - title
-      - type
-      title: ResponseSearchResultLocationCitation
-      type: object
-    AnthropicResponseRedactedThinkingBlock:
-      properties:
-        data:
-          title: Data
-          type: string
-        type:
-          const: redacted_thinking
-          default: redacted_thinking
-          title: Type
-          type: string
-      required:
-      - data
-      - type
-      title: ResponseRedactedThinkingBlock
-      type: object
-    AnthropicOverloadedError:
-      properties:
-        message:
-          default: Overloaded
-          title: Message
-          type: string
-        type:
-          const: overloaded_error
-          default: overloaded_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: OverloadedError
-      type: object
-    AnthropicRateLimitError:
-      properties:
-        message:
-          default: Rate limited
-          title: Message
-          type: string
-        type:
-          const: rate_limit_error
-          default: rate_limit_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: RateLimitError
-      type: object
-    AnthropicRequestCitationsConfig:
-      additionalProperties: false
-      properties:
-        enabled:
-          title: Enabled
-          type: boolean
-      title: RequestCitationsConfig
-      type: object
-    AnthropicAuthenticationError:
-      properties:
-        message:
-          default: Authentication error
-          title: Message
-          type: string
-        type:
-          const: authentication_error
-          default: authentication_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: AuthenticationError
-      type: object
-    AnthropicMessage:
-      examples:
-      - content:
-        - citations: null
-          text: Hi! How can I help you today?
-          type: text
-        id: msg_013Zva2CMHLNnXjNJJKqJ2EF
-        model: claude-opus-4-6
-        role: assistant
-        stop_reason: end_turn
-        stop_sequence: null
-        type: message
-      properties:
-        id:
-          description: 'Unique object identifier.
-
-
-            The format and length of IDs may change over time.'
-          examples:
-          - msg_013Zva2CMHLNnXjNJJKqJ2EF
-          title: Id
-          type: string
-        type:
-          const: message
-          default: message
-          description: 'Object type.
-
-
-            For Messages, this is always `"message"`.'
-          title: Type
-          type: string
-        role:
-          const: assistant
-          default: assistant
-          description: 'Conversational role of the generated message.
-
-
-            This will always be `"assistant"`.'
-          title: Role
-          type: string
-        content:
-          description: "Content generated by the model.\n\nThis is an array of content blocks, each of which has a `type` that determines its shape.\n\nExample:\n\n```json\n[{\"type\": \"text\", \"text\": \"Hi, I'm here to help.\"}]\n```\n\nIf the request input `messages` ended with an `assistant` turn, then the response `content` will continue directly from that last turn. You can use this to constrain the model's output.\n\nFor example, if the input `messages` were:\n```json\n[\n  {\"role\": \"user\", \"content\": \"What's the Greek name for Sun? (A) Sol (B) Helios (C) Sun\"},\n  {\"role\": \"assistant\", \"content\": \"The best answer is (\"}\n]\n```\n\nThen the response `content` might be:\n\n```json\n[{\"type\": \"text\", \"text\": \"B)\"}]\n```"
-          examples:
-          - - citations: null
-              text: Hi! How can I help you today?
-              type: text
-          items:
-            $ref: '#/components/schemas/AnthropicContentBlock'
-          title: Content
-          type: array
-        model:
-          $ref: '#/components/schemas/AnthropicModel'
-        stop_reason:
-          anyOf:
-          - $ref: '#/components/schemas/AnthropicStopReason'
-          - type: 'null'
-          description: 'The reason that the model stopped.
-
-
-            This may be one the following values:
-
-            * `"end_turn"`: the model reached a natural stopping point
-
-            * `"max_tokens"`: the model exceeded the requested `max_tokens` or the model''s maximum
-
-            * `"stop_sequence"`: one of your provided custom `stop_sequences` was generated
-
-            * `"tool_use"`: the model invoked one or more tools
-
-            * `"pause_turn"`: the model paused a long-running turn. You may provide the response back as-is in a subsequent request to let the model continue.
-
-            * `"refusal"`: when streaming classifiers intervene to handle potential policy violations
-
-
-            In non-streaming mode this value is always non-null. In streaming mode, it is null in the `message_start` event and non-null otherwise.'
-          title: Stop Reason
-        stop_sequence:
-          anyOf:
-          - type: string
-          - type: 'null'
-          default: null
-          description: 'Which custom stop sequence was generated, if any.
-
-
-            This value will be a non-null string if one of your custom stop sequences was generated.'
-          title: Stop Sequence
-        raw_output:
-          anyOf:
-          - $ref: '#/components/schemas/AnthropicRawOutput'
-          - type: 'null'
-          default: null
-      required:
-      - id
-      - type
-      - role
-      - content
-      - model
-      - stop_reason
-      - stop_sequence
-      title: Message
-      type: object
-      x-stainless-python-custom-imports:
-      - from .content_block import ContentBlock as ContentBlock
-    AnthropicResponseTextBlock:
-      properties:
-        citations:
-          anyOf:
-          - items:
-              discriminator:
-                mapping:
-                  char_location: '#/components/schemas/AnthropicResponseCharLocationCitation'
-                  content_block_location: '#/components/schemas/AnthropicResponseContentBlockLocationCitation'
-                  page_location: '#/components/schemas/AnthropicResponsePageLocationCitation'
-                  search_result_location: '#/components/schemas/AnthropicResponseSearchResultLocationCitation'
-                  web_search_result_location: '#/components/schemas/AnthropicResponseWebSearchResultLocationCitation'
-                propertyName: type
-              oneOf:
-              - $ref: '#/components/schemas/AnthropicResponseCharLocationCitation'
-              - $ref: '#/components/schemas/AnthropicResponsePageLocationCitation'
-              - $ref: '#/components/schemas/AnthropicResponseContentBlockLocationCitation'
-              - $ref: '#/components/schemas/AnthropicResponseWebSearchResultLocationCitation'
-              - $ref: '#/components/schemas/AnthropicResponseSearchResultLocationCitation'
-            type: array
-          - type: 'null'
-          default: null
-          description: 'Citations supporting the text block.
-
-
-            The type of citation returned will depend on the type of document being cited. Citing a PDF results in `page_location`, plain text results in `char_location`, and content document results in `content_block_location`.'
-          title: Citations
-        text:
-          maxLength: 5000000
-          minLength: 0
-          title: Text
-          type: string
-        type:
-          const: text
-          default: text
-          title: Type
-          type: string
-      required:
-      - citations
-      - text
-      - type
-      title: ResponseTextBlock
-      type: object
-    AnthropicRawOutput:
-      additionalProperties: false
-      description: Fireworks extension that returns low-level details of what the model sees, including the formatted prompt and function calls.
-      properties:
-        prompt_fragments:
-          description: Pieces of the prompt (like individual messages) before truncation and concatenation. Depending on prompt_truncate_len some of the messages might be dropped. Contains a mix of strings to be tokenized and individual tokens (if dictated by the conversation template)
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          title: Prompt Fragments
-          type: array
-        prompt_token_ids:
-          description: Fully processed prompt as seen by the model
-          items:
-            type: integer
-          title: Prompt Token Ids
-          type: array
-        completion:
-          description: Raw completion produced by the model before any tool calls are parsed
-          title: Completion
-          type: string
-        completion_token_ids:
-          anyOf:
-          - items:
-              type: integer
-            type: array
-          - type: 'null'
-          default: null
-          description: Token IDs for the raw completion
-          title: Completion Token Ids
-        images:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          default: null
-          description: Images in the prompt
-          title: Images
-        grammar:
-          anyOf:
-          - type: string
-          - type: 'null'
-          default: null
-          description: Grammar used for constrained decoding, can be either user provided (directly or JSON schema) or inferred by the chat template
-          title: Grammar
-      required:
-      - prompt_fragments
-      - prompt_token_ids
-      - completion
-      title: RawOutput
-      type: object
-    AnthropicRequestToolUseBlock:
-      additionalProperties: false
-      properties:
-        cache_control:
-          anyOf:
-          - discriminator:
-              mapping:
-                ephemeral: '#/components/schemas/AnthropicCacheControlEphemeral'
-              propertyName: type
-            oneOf:
-            - $ref: '#/components/schemas/AnthropicCacheControlEphemeral'
-          - type: 'null'
-          description: Create a cache control breakpoint at this content block.
-          title: Cache Control
-        id:
-          pattern: ^[a-zA-Z0-9_-]+$
-          title: Id
-          type: string
-        input:
-          additionalProperties: true
-          title: Input
-          type: object
-        name:
-          maxLength: 200
-          minLength: 1
-          title: Name
-          type: string
-        type:
-          const: tool_use
-          title: Type
-          type: string
-      required:
-      - id
-      - input
-      - name
-      - type
-      title: RequestToolUseBlock
-      type: object
-    AnthropicToolChoice:
-      description: How the model should use the provided tools. The model can use a specific tool, any available tool, decide by itself, or not use tools at all.
-      discriminator:
-        mapping:
-          any: '#/components/schemas/AnthropicToolChoiceAny'
-          auto: '#/components/schemas/AnthropicToolChoiceAuto'
-          none: '#/components/schemas/AnthropicToolChoiceNone'
-          tool: '#/components/schemas/AnthropicToolChoiceTool'
-        propertyName: type
-      oneOf:
-      - $ref: '#/components/schemas/AnthropicToolChoiceAuto'
-      - $ref: '#/components/schemas/AnthropicToolChoiceAny'
-      - $ref: '#/components/schemas/AnthropicToolChoiceTool'
-      - $ref: '#/components/schemas/AnthropicToolChoiceNone'
-      title: Tool Choice
-    AnthropicMetadata:
-      additionalProperties: false
-      properties:
-        user_id:
-          anyOf:
-          - maxLength: 256
-            type: string
-          - type: 'null'
-          description: 'An external identifier for the user who is associated with the request.
-
-
-            This should be a uuid, hash value, or other opaque identifier. This id may be used to help detect abuse. Do not include any identifying information such as name, email address, or phone number.'
-          examples:
-          - 13803d75-b4b5-4c3e-b2a2-6f21399b021b
-          title: User Id
-      title: Metadata
+      title: PlainTextSource
       type: object
     AnthropicRequestDocumentBlock:
       additionalProperties: false
@@ -1155,47 +885,91 @@ components:
       - type
       title: RequestDocumentBlock
       type: object
-    AnthropicResponseCharLocationCitation:
+    AnthropicResponseTextBlock:
       properties:
-        cited_text:
-          title: Cited Text
-          type: string
-        document_index:
-          minimum: 0
-          title: Document Index
-          type: integer
-        document_title:
+        citations:
           anyOf:
-          - type: string
-          - type: 'null'
-          title: Document Title
-        end_char_index:
-          title: End Char Index
-          type: integer
-        file_id:
-          anyOf:
-          - type: string
+          - items:
+              discriminator:
+                mapping:
+                  char_location: '#/components/schemas/AnthropicResponseCharLocationCitation'
+                  content_block_location: '#/components/schemas/AnthropicResponseContentBlockLocationCitation'
+                  page_location: '#/components/schemas/AnthropicResponsePageLocationCitation'
+                  search_result_location: '#/components/schemas/AnthropicResponseSearchResultLocationCitation'
+                  web_search_result_location: '#/components/schemas/AnthropicResponseWebSearchResultLocationCitation'
+                propertyName: type
+              oneOf:
+              - $ref: '#/components/schemas/AnthropicResponseCharLocationCitation'
+              - $ref: '#/components/schemas/AnthropicResponsePageLocationCitation'
+              - $ref: '#/components/schemas/AnthropicResponseContentBlockLocationCitation'
+              - $ref: '#/components/schemas/AnthropicResponseWebSearchResultLocationCitation'
+              - $ref: '#/components/schemas/AnthropicResponseSearchResultLocationCitation'
+            type: array
           - type: 'null'
           default: null
-          title: File Id
-        start_char_index:
-          minimum: 0
-          title: Start Char Index
-          type: integer
+          description: 'Citations supporting the text block.
+
+
+            The type of citation returned will depend on the type of document being cited. Citing a PDF results in `page_location`, plain text results in `char_location`, and content document results in `content_block_location`.'
+          title: Citations
+        text:
+          maxLength: 5000000
+          minLength: 0
+          title: Text
+          type: string
         type:
-          const: char_location
-          default: char_location
+          const: text
+          default: text
           title: Type
           type: string
       required:
-      - cited_text
-      - document_index
-      - document_title
-      - end_char_index
-      - file_id
-      - start_char_index
+      - citations
+      - text
       - type
-      title: ResponseCharLocationCitation
+      title: ResponseTextBlock
+      type: object
+    AnthropicRequestThinkingBlock:
+      additionalProperties: false
+      properties:
+        signature:
+          title: Signature
+          type: string
+        thinking:
+          title: Thinking
+          type: string
+        type:
+          const: thinking
+          title: Type
+          type: string
+      required:
+      - signature
+      - thinking
+      - type
+      title: RequestThinkingBlock
+      type: object
+    AnthropicInputSchema:
+      additionalProperties: true
+      properties:
+        properties:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Properties
+        required:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Required
+        type:
+          const: object
+          title: Type
+          type: string
+      required:
+      - type
+      title: InputSchema
       type: object
     AnthropicInputMessage:
       additionalProperties: false
@@ -1226,44 +1000,42 @@ components:
       type: object
       discriminator:
         propertyName: role
-    AnthropicToolChoiceAny:
+    AnthropicRequestContentBlockLocationCitation:
       additionalProperties: false
-      description: The model will use any available tools.
       properties:
-        disable_parallel_tool_use:
-          description: 'Whether to disable parallel tool use.
-
-
-            Defaults to `false`. If set to `true`, the model will output exactly one tool use.'
-          title: Disable Parallel Tool Use
-          type: boolean
+        cited_text:
+          title: Cited Text
+          type: string
+        document_index:
+          minimum: 0
+          title: Document Index
+          type: integer
+        document_title:
+          anyOf:
+          - maxLength: 255
+            minLength: 1
+            type: string
+          - type: 'null'
+          title: Document Title
+        end_block_index:
+          title: End Block Index
+          type: integer
+        start_block_index:
+          minimum: 0
+          title: Start Block Index
+          type: integer
         type:
-          const: any
+          const: content_block_location
           title: Type
           type: string
       required:
+      - cited_text
+      - document_index
+      - document_title
+      - end_block_index
+      - start_block_index
       - type
-      title: ToolChoiceAny
-      type: object
-    AnthropicPlainTextSource:
-      additionalProperties: false
-      properties:
-        data:
-          title: Data
-          type: string
-        media_type:
-          const: text/plain
-          title: Media Type
-          type: string
-        type:
-          const: text
-          title: Type
-          type: string
-      required:
-      - data
-      - media_type
-      - type
-      title: PlainTextSource
+      title: RequestContentBlockLocationCitation
       type: object
     AnthropicContentBlockSource:
       additionalProperties: false
@@ -1296,34 +1068,10 @@ components:
       - type
       title: ContentBlockSource
       type: object
-    AnthropicRequestRedactedThinkingBlock:
-      additionalProperties: false
-      properties:
-        data:
-          title: Data
-          type: string
-        type:
-          const: redacted_thinking
-          title: Type
-          type: string
-      required:
-      - data
-      - type
-      title: RequestRedactedThinkingBlock
-      type: object
-    AnthropicContentBlock:
-      discriminator:
-        mapping:
-          redacted_thinking: '#/components/schemas/AnthropicResponseRedactedThinkingBlock'
-          text: '#/components/schemas/AnthropicResponseTextBlock'
-          thinking: '#/components/schemas/AnthropicResponseThinkingBlock'
-          tool_use: '#/components/schemas/AnthropicResponseToolUseBlock'
-        propertyName: type
-      oneOf:
-      - $ref: '#/components/schemas/AnthropicResponseTextBlock'
-      - $ref: '#/components/schemas/AnthropicResponseThinkingBlock'
-      - $ref: '#/components/schemas/AnthropicResponseRedactedThinkingBlock'
-      - $ref: '#/components/schemas/AnthropicResponseToolUseBlock'
+    AnthropicModel:
+      type: string
+      title: Model
+      description: The model that will complete your prompt. See the [Fireworks Model Library](https://app.fireworks.ai/models) for available models.
     AnthropicGatewayTimeoutError:
       properties:
         message:
@@ -1340,133 +1088,20 @@ components:
       - type
       title: GatewayTimeoutError
       type: object
-    AnthropicBase64ImageSource:
-      additionalProperties: false
+    AnthropicResponseRedactedThinkingBlock:
       properties:
         data:
-          format: byte
           title: Data
           type: string
-        media_type:
-          enum:
-          - image/jpeg
-          - image/png
-          - image/gif
-          - image/webp
-          title: Media Type
-          type: string
         type:
-          const: base64
+          const: redacted_thinking
+          default: redacted_thinking
           title: Type
           type: string
       required:
       - data
-      - media_type
       - type
-      title: Base64ImageSource
-      type: object
-    AnthropicRequestToolResultBlock:
-      additionalProperties: false
-      properties:
-        cache_control:
-          anyOf:
-          - discriminator:
-              mapping:
-                ephemeral: '#/components/schemas/AnthropicCacheControlEphemeral'
-              propertyName: type
-            oneOf:
-            - $ref: '#/components/schemas/AnthropicCacheControlEphemeral'
-          - type: 'null'
-          description: Create a cache control breakpoint at this content block.
-          title: Cache Control
-        content:
-          anyOf:
-          - type: string
-            x-stainless-skip:
-            - go
-            - cli
-          - items:
-              discriminator:
-                mapping:
-                  document: '#/components/schemas/AnthropicRequestDocumentBlock'
-                  image: '#/components/schemas/AnthropicRequestImageBlock'
-                  text: '#/components/schemas/AnthropicRequestTextBlock'
-                propertyName: type
-              oneOf:
-              - $ref: '#/components/schemas/AnthropicRequestTextBlock'
-              - $ref: '#/components/schemas/AnthropicRequestImageBlock'
-              - $ref: '#/components/schemas/AnthropicRequestDocumentBlock'
-              title: Block
-            type: array
-            x-stainless-naming:
-              python:
-                type_name: Content
-              ruby:
-                type_name: Content
-              php:
-                type_name: Content
-          title: Content
-        is_error:
-          title: Is Error
-          type: boolean
-        tool_use_id:
-          pattern: ^[a-zA-Z0-9_-]+$
-          title: Tool Use Id
-          type: string
-        type:
-          const: tool_result
-          title: Type
-          type: string
-      required:
-      - tool_use_id
-      - type
-      title: RequestToolResultBlock
-      type: object
-    AnthropicNotFoundError:
-      properties:
-        message:
-          default: Not found
-          title: Message
-          type: string
-        type:
-          const: not_found_error
-          default: not_found_error
-          title: Type
-          type: string
-      required:
-      - message
-      - type
-      title: NotFoundError
-      type: object
-    AnthropicResponseWebSearchResultLocationCitation:
-      properties:
-        cited_text:
-          title: Cited Text
-          type: string
-        encrypted_index:
-          title: Encrypted Index
-          type: string
-        title:
-          anyOf:
-          - maxLength: 512
-            type: string
-          - type: 'null'
-          title: Title
-        type:
-          const: web_search_result_location
-          default: web_search_result_location
-          title: Type
-          type: string
-        url:
-          title: Url
-          type: string
-      required:
-      - cited_text
-      - encrypted_index
-      - title
-      - type
-      - url
-      title: ResponseWebSearchResultLocationCitation
+      title: ResponseRedactedThinkingBlock
       type: object
     AnthropicCreateMessageParams:
       additionalProperties: false
@@ -1619,103 +1254,75 @@ components:
       - messages
       title: CreateMessageParams
       type: object
-    AnthropicRequestTextBlock:
-      additionalProperties: false
+    AnthropicRateLimitError:
       properties:
-        cache_control:
-          anyOf:
-          - discriminator:
-              mapping:
-                ephemeral: '#/components/schemas/AnthropicCacheControlEphemeral'
-              propertyName: type
-            oneOf:
-            - $ref: '#/components/schemas/AnthropicCacheControlEphemeral'
-          - type: 'null'
-          description: Create a cache control breakpoint at this content block.
-          title: Cache Control
-        citations:
-          anyOf:
-          - items:
-              discriminator:
-                mapping:
-                  char_location: '#/components/schemas/AnthropicRequestCharLocationCitation'
-                  content_block_location: '#/components/schemas/AnthropicRequestContentBlockLocationCitation'
-                  page_location: '#/components/schemas/AnthropicRequestPageLocationCitation'
-                  search_result_location: '#/components/schemas/AnthropicRequestSearchResultLocationCitation'
-                  web_search_result_location: '#/components/schemas/AnthropicRequestWebSearchResultLocationCitation'
-                propertyName: type
-              oneOf:
-              - $ref: '#/components/schemas/AnthropicRequestCharLocationCitation'
-              - $ref: '#/components/schemas/AnthropicRequestPageLocationCitation'
-              - $ref: '#/components/schemas/AnthropicRequestContentBlockLocationCitation'
-              - $ref: '#/components/schemas/AnthropicRequestWebSearchResultLocationCitation'
-              - $ref: '#/components/schemas/AnthropicRequestSearchResultLocationCitation'
-            type: array
-          - type: 'null'
-          title: Citations
-        text:
-          minLength: 1
-          title: Text
+        message:
+          default: Rate limited
+          title: Message
           type: string
         type:
-          const: text
+          const: rate_limit_error
+          default: rate_limit_error
           title: Type
           type: string
       required:
-      - text
+      - message
       - type
-      title: RequestTextBlock
+      title: RateLimitError
       type: object
-    AnthropicModel:
-      type: string
-      title: Model
-      description: The model that will complete your prompt. See the [Fireworks Model Library](https://app.fireworks.ai/models) for available models.
-    AnthropicURLImageSource:
+    AnthropicRequestPageLocationCitation:
       additionalProperties: false
       properties:
+        cited_text:
+          title: Cited Text
+          type: string
+        document_index:
+          minimum: 0
+          title: Document Index
+          type: integer
+        document_title:
+          anyOf:
+          - maxLength: 255
+            minLength: 1
+            type: string
+          - type: 'null'
+          title: Document Title
+        end_page_number:
+          title: End Page Number
+          type: integer
+        start_page_number:
+          minimum: 1
+          title: Start Page Number
+          type: integer
         type:
-          const: url
+          const: page_location
           title: Type
           type: string
-        url:
-          title: Url
+      required:
+      - cited_text
+      - document_index
+      - document_title
+      - end_page_number
+      - start_page_number
+      - type
+      title: RequestPageLocationCitation
+      type: object
+    AnthropicOverloadedError:
+      properties:
+        message:
+          default: Overloaded
+          title: Message
+          type: string
+        type:
+          const: overloaded_error
+          default: overloaded_error
+          title: Type
           type: string
       required:
+      - message
       - type
-      - url
-      title: URLImageSource
+      title: OverloadedError
       type: object
-    AnthropicThinkingConfigParam:
-      description: 'Configuration for enabling the model''s extended thinking.
-
-
-        When enabled, responses include `thinking` content blocks showing the model''s thinking process before the final answer. Requires a minimum budget of 1,024 tokens and counts towards your `max_tokens` limit.
-
-
-        See [reasoning](/guides/reasoning) for details.
-
-
-        **Note:** The `adaptive` thinking type is not supported yet.'
-      discriminator:
-        mapping:
-          adaptive: '#/components/schemas/AnthropicThinkingConfigAdaptive'
-          disabled: '#/components/schemas/AnthropicThinkingConfigDisabled'
-          enabled: '#/components/schemas/AnthropicThinkingConfigEnabled'
-        propertyName: type
-      oneOf:
-      - $ref: '#/components/schemas/AnthropicThinkingConfigEnabled'
-      - $ref: '#/components/schemas/AnthropicThinkingConfigDisabled'
-      - $ref: '#/components/schemas/AnthropicThinkingConfigAdaptive'
-      title: Thinking
-    AnthropicStopReason:
-      enum:
-      - end_turn
-      - max_tokens
-      - stop_sequence
-      - tool_use
-      - pause_turn
-      - refusal
-      type: string
     AnthropicBillingError:
       properties:
         message:
@@ -1732,84 +1339,105 @@ components:
       - type
       title: BillingError
       type: object
-    AnthropicRequestThinkingBlock:
-      additionalProperties: false
+    AnthropicPermissionError:
       properties:
-        signature:
-          title: Signature
-          type: string
-        thinking:
-          title: Thinking
+        message:
+          default: Permission denied
+          title: Message
           type: string
         type:
-          const: thinking
+          const: permission_error
+          default: permission_error
           title: Type
           type: string
       required:
-      - signature
-      - thinking
+      - message
       - type
-      title: RequestThinkingBlock
+      title: PermissionError
       type: object
-    AnthropicOutputConfig:
+    AnthropicEffortLevel:
+      description: All possible effort levels.
+      enum:
+      - low
+      - medium
+      - high
+      - max
+      title: EffortLevel
+      type: string
+    AnthropicThinkingConfigDisabled:
       additionalProperties: false
       properties:
-        effort:
-          anyOf:
-          - $ref: '#/components/schemas/AnthropicEffortLevel'
-          - type: 'null'
-          description: 'How much effort the model should put into its response. Higher effort levels may result in more thorough analysis but take longer.
-
-
-            Valid values are `low`, `medium`, `high`, or `max`.
-
-
-            **Fireworks behavior:** The `effort` level is converted to Fireworks [`reasoning_effort`](/api-reference/post-chatcompletions). Values `low`, `medium`, and `high` map directly. `max` is mapped to `high` since Fireworks does not have a `max` effort level.'
-        format:
-          anyOf:
-          - $ref: '#/components/schemas/AnthropicJsonOutputFormat'
-          - type: 'null'
-          description: A schema to specify the model's output format in responses. See [structured outputs](/structured-responses/structured-output-grammar-based)
-      title: OutputConfig
-      type: object
-    AnthropicInputSchema:
-      additionalProperties: true
-      properties:
-        properties:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Properties
-        required:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Required
         type:
-          const: object
+          const: disabled
           title: Type
           type: string
       required:
       - type
-      title: InputSchema
+      title: ThinkingConfigDisabled
       type: object
-    AnthropicURLPDFSource:
-      additionalProperties: false
+      x-stainless-go-constant-constructor: true
+    AnthropicResponseContentBlockLocationCitation:
       properties:
+        cited_text:
+          title: Cited Text
+          type: string
+        document_index:
+          minimum: 0
+          title: Document Index
+          type: integer
+        document_title:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Document Title
+        end_block_index:
+          title: End Block Index
+          type: integer
+        file_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: File Id
+        start_block_index:
+          minimum: 0
+          title: Start Block Index
+          type: integer
         type:
-          const: url
+          const: content_block_location
+          default: content_block_location
           title: Type
           type: string
-        url:
-          title: Url
+      required:
+      - cited_text
+      - document_index
+      - document_title
+      - end_block_index
+      - file_id
+      - start_block_index
+      - type
+      title: ResponseContentBlockLocationCitation
+      type: object
+    AnthropicBase64PDFSource:
+      additionalProperties: false
+      properties:
+        data:
+          format: byte
+          title: Data
+          type: string
+        media_type:
+          const: application/pdf
+          title: Media Type
+          type: string
+        type:
+          const: base64
+          title: Type
           type: string
       required:
+      - data
+      - media_type
       - type
-      - url
-      title: URLPDFSource
+      title: Base64PDFSource
       type: object
     AnthropicToolChoiceTool:
       additionalProperties: false
@@ -1835,24 +1463,391 @@ components:
       - type
       title: ToolChoiceTool
       type: object
-    AnthropicResponseThinkingBlock:
+    AnthropicToolChoiceAuto:
+      additionalProperties: false
+      description: The model will automatically decide whether to use tools.
       properties:
-        signature:
-          title: Signature
-          type: string
-        thinking:
-          title: Thinking
-          type: string
+        disable_parallel_tool_use:
+          description: 'Whether to disable parallel tool use.
+
+
+            Defaults to `false`. If set to `true`, the model will output at most one tool use.'
+          title: Disable Parallel Tool Use
+          type: boolean
         type:
-          const: thinking
-          default: thinking
+          const: auto
           title: Type
           type: string
       required:
-      - signature
-      - thinking
       - type
-      title: ResponseThinkingBlock
+      title: ToolChoiceAuto
+      type: object
+    AnthropicRequestCitationsConfig:
+      additionalProperties: false
+      properties:
+        enabled:
+          title: Enabled
+          type: boolean
+      title: RequestCitationsConfig
+      type: object
+    AnthropicThinkingConfigEnabled:
+      additionalProperties: false
+      properties:
+        budget_tokens:
+          description: 'Determines how many tokens the model can use for its internal reasoning process. Larger budgets can enable more thorough analysis for complex problems, improving response quality.
+
+
+            Must be ≥1024 and less than `max_tokens`.
+
+
+            See [reasoning](/guides/reasoning) for details.'
+          minimum: 1024
+          title: Budget Tokens
+          type: integer
+        type:
+          const: enabled
+          title: Type
+          type: string
+      required:
+      - budget_tokens
+      - type
+      title: ThinkingConfigEnabled
+      type: object
+    AnthropicToolChoice:
+      description: How the model should use the provided tools. The model can use a specific tool, any available tool, decide by itself, or not use tools at all.
+      discriminator:
+        mapping:
+          any: '#/components/schemas/AnthropicToolChoiceAny'
+          auto: '#/components/schemas/AnthropicToolChoiceAuto'
+          none: '#/components/schemas/AnthropicToolChoiceNone'
+          tool: '#/components/schemas/AnthropicToolChoiceTool'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/AnthropicToolChoiceAuto'
+      - $ref: '#/components/schemas/AnthropicToolChoiceAny'
+      - $ref: '#/components/schemas/AnthropicToolChoiceTool'
+      - $ref: '#/components/schemas/AnthropicToolChoiceNone'
+      title: Tool Choice
+    AnthropicResponseSearchResultLocationCitation:
+      properties:
+        cited_text:
+          title: Cited Text
+          type: string
+        end_block_index:
+          title: End Block Index
+          type: integer
+        search_result_index:
+          minimum: 0
+          title: Search Result Index
+          type: integer
+        source:
+          title: Source
+          type: string
+        start_block_index:
+          minimum: 0
+          title: Start Block Index
+          type: integer
+        title:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Title
+        type:
+          const: search_result_location
+          default: search_result_location
+          title: Type
+          type: string
+      required:
+      - cited_text
+      - end_block_index
+      - search_result_index
+      - source
+      - start_block_index
+      - title
+      - type
+      title: ResponseSearchResultLocationCitation
+      type: object
+    AnthropicCacheControlEphemeral:
+      additionalProperties: false
+      properties:
+        ttl:
+          description: 'The time-to-live for the cache control breakpoint.
+
+
+            This may be one the following values:
+
+            - `5m`: 5 minutes
+
+            - `1h`: 1 hour
+
+
+            Defaults to `5m`.'
+          enum:
+          - 5m
+          - 1h
+          title: Ttl
+          type: string
+          x-stainless-renameMap:
+            ttl_5m: 5m
+            ttl_1h: 1h
+        type:
+          const: ephemeral
+          title: Type
+          type: string
+      required:
+      - type
+      title: CacheControlEphemeral
+      type: object
+      x-stainless-go-constant-constructor: true
+    AnthropicRequestToolUseBlock:
+      additionalProperties: false
+      properties:
+        cache_control:
+          anyOf:
+          - discriminator:
+              mapping:
+                ephemeral: '#/components/schemas/AnthropicCacheControlEphemeral'
+              propertyName: type
+            oneOf:
+            - $ref: '#/components/schemas/AnthropicCacheControlEphemeral'
+          - type: 'null'
+          description: Create a cache control breakpoint at this content block.
+          title: Cache Control
+        id:
+          pattern: ^[a-zA-Z0-9_-]+$
+          title: Id
+          type: string
+        input:
+          additionalProperties: true
+          title: Input
+          type: object
+        name:
+          maxLength: 200
+          minLength: 1
+          title: Name
+          type: string
+        type:
+          const: tool_use
+          title: Type
+          type: string
+      required:
+      - id
+      - input
+      - name
+      - type
+      title: RequestToolUseBlock
+      type: object
+    AnthropicRequestSearchResultLocationCitation:
+      additionalProperties: false
+      properties:
+        cited_text:
+          title: Cited Text
+          type: string
+        end_block_index:
+          title: End Block Index
+          type: integer
+        search_result_index:
+          minimum: 0
+          title: Search Result Index
+          type: integer
+        source:
+          title: Source
+          type: string
+        start_block_index:
+          minimum: 0
+          title: Start Block Index
+          type: integer
+        title:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Title
+        type:
+          const: search_result_location
+          title: Type
+          type: string
+      required:
+      - cited_text
+      - end_block_index
+      - search_result_index
+      - source
+      - start_block_index
+      - title
+      - type
+      title: RequestSearchResultLocationCitation
+      type: object
+    AnthropicMessage:
+      examples:
+      - content:
+        - citations: null
+          text: Hi! How can I help you today?
+          type: text
+        id: msg_013Zva2CMHLNnXjNJJKqJ2EF
+        model: claude-opus-4-6
+        role: assistant
+        stop_reason: end_turn
+        stop_sequence: null
+        type: message
+      properties:
+        id:
+          description: 'Unique object identifier.
+
+
+            The format and length of IDs may change over time.'
+          examples:
+          - msg_013Zva2CMHLNnXjNJJKqJ2EF
+          title: Id
+          type: string
+        type:
+          const: message
+          default: message
+          description: 'Object type.
+
+
+            For Messages, this is always `"message"`.'
+          title: Type
+          type: string
+        role:
+          const: assistant
+          default: assistant
+          description: 'Conversational role of the generated message.
+
+
+            This will always be `"assistant"`.'
+          title: Role
+          type: string
+        content:
+          description: "Content generated by the model.\n\nThis is an array of content blocks, each of which has a `type` that determines its shape.\n\nExample:\n\n```json\n[{\"type\": \"text\", \"text\": \"Hi, I'm here to help.\"}]\n```\n\nIf the request input `messages` ended with an `assistant` turn, then the response `content` will continue directly from that last turn. You can use this to constrain the model's output.\n\nFor example, if the input `messages` were:\n```json\n[\n  {\"role\": \"user\", \"content\": \"What's the Greek name for Sun? (A) Sol (B) Helios (C) Sun\"},\n  {\"role\": \"assistant\", \"content\": \"The best answer is (\"}\n]\n```\n\nThen the response `content` might be:\n\n```json\n[{\"type\": \"text\", \"text\": \"B)\"}]\n```"
+          examples:
+          - - citations: null
+              text: Hi! How can I help you today?
+              type: text
+          items:
+            $ref: '#/components/schemas/AnthropicContentBlock'
+          title: Content
+          type: array
+        model:
+          $ref: '#/components/schemas/AnthropicModel'
+        stop_reason:
+          anyOf:
+          - $ref: '#/components/schemas/AnthropicStopReason'
+          - type: 'null'
+          description: 'The reason that the model stopped.
+
+
+            This may be one the following values:
+
+            * `"end_turn"`: the model reached a natural stopping point
+
+            * `"max_tokens"`: the model exceeded the requested `max_tokens` or the model''s maximum
+
+            * `"stop_sequence"`: one of your provided custom `stop_sequences` was generated
+
+            * `"tool_use"`: the model invoked one or more tools
+
+            * `"pause_turn"`: the model paused a long-running turn. You may provide the response back as-is in a subsequent request to let the model continue.
+
+            * `"refusal"`: when streaming classifiers intervene to handle potential policy violations
+
+
+            In non-streaming mode this value is always non-null. In streaming mode, it is null in the `message_start` event and non-null otherwise.'
+          title: Stop Reason
+        stop_sequence:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: 'Which custom stop sequence was generated, if any.
+
+
+            This value will be a non-null string if one of your custom stop sequences was generated.'
+          title: Stop Sequence
+        raw_output:
+          anyOf:
+          - $ref: '#/components/schemas/AnthropicRawOutput'
+          - type: 'null'
+          default: null
+      required:
+      - id
+      - type
+      - role
+      - content
+      - model
+      - stop_reason
+      - stop_sequence
+      title: Message
+      type: object
+      x-stainless-python-custom-imports:
+      - from .content_block import ContentBlock as ContentBlock
+    AnthropicContentBlock:
+      discriminator:
+        mapping:
+          redacted_thinking: '#/components/schemas/AnthropicResponseRedactedThinkingBlock'
+          text: '#/components/schemas/AnthropicResponseTextBlock'
+          thinking: '#/components/schemas/AnthropicResponseThinkingBlock'
+          tool_use: '#/components/schemas/AnthropicResponseToolUseBlock'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/AnthropicResponseTextBlock'
+      - $ref: '#/components/schemas/AnthropicResponseThinkingBlock'
+      - $ref: '#/components/schemas/AnthropicResponseRedactedThinkingBlock'
+      - $ref: '#/components/schemas/AnthropicResponseToolUseBlock'
+    AnthropicRequestToolResultBlock:
+      additionalProperties: false
+      properties:
+        cache_control:
+          anyOf:
+          - discriminator:
+              mapping:
+                ephemeral: '#/components/schemas/AnthropicCacheControlEphemeral'
+              propertyName: type
+            oneOf:
+            - $ref: '#/components/schemas/AnthropicCacheControlEphemeral'
+          - type: 'null'
+          description: Create a cache control breakpoint at this content block.
+          title: Cache Control
+        content:
+          anyOf:
+          - type: string
+            x-stainless-skip:
+            - go
+            - cli
+          - items:
+              discriminator:
+                mapping:
+                  document: '#/components/schemas/AnthropicRequestDocumentBlock'
+                  image: '#/components/schemas/AnthropicRequestImageBlock'
+                  text: '#/components/schemas/AnthropicRequestTextBlock'
+                propertyName: type
+              oneOf:
+              - $ref: '#/components/schemas/AnthropicRequestTextBlock'
+              - $ref: '#/components/schemas/AnthropicRequestImageBlock'
+              - $ref: '#/components/schemas/AnthropicRequestDocumentBlock'
+              title: Block
+            type: array
+            x-stainless-naming:
+              python:
+                type_name: Content
+              ruby:
+                type_name: Content
+              php:
+                type_name: Content
+          title: Content
+        is_error:
+          title: Is Error
+          type: boolean
+        tool_use_id:
+          pattern: ^[a-zA-Z0-9_-]+$
+          title: Tool Use Id
+          type: string
+        type:
+          const: tool_result
+          title: Type
+          type: string
+      required:
+      - tool_use_id
+      - type
+      title: RequestToolResultBlock
       type: object
   securitySchemes:
     BearerAuth:
@@ -1860,3 +1855,17 @@ components:
       scheme: bearer
       description: 'Bearer authentication using your Fireworks API key. Format: Bearer <API_KEY>'
       bearerFormat: API_KEY
+x-tagGroups:
+- name: Gateway REST API
+  tags:
+  - gateway.openapi_Gateway
+  - gateway-extra.openapi_Gateway
+- name: Fireworks Responses API
+  tags:
+  - responses.openapi_other
+- name: Fireworks Text Completion API
+  tags:
+  - text-completion.openapi_other
+- name: Fireworks AI Anthropic Compatible Messages API
+  tags:
+  - anthropic-messages.openapi_other

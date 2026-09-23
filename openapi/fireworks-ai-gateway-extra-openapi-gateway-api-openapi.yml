@@ -1,12 +1,7 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Fireworks AI Anthropic Compatible Messages anthropic-messages.openapi_other gateway-extra.openapi_Gateway API
-  description: Anthropic-compatible Messages API endpoint for Fireworks AI inference
-  version: 1.0.0
-servers:
-- url: https://api.fireworks.ai/inference
-security:
-- BearerAuth: []
+  title: Gateway REST Gateway Extra.openapi Gateway API
+  version: 4.259.0
 tags:
 - name: gateway-extra.openapi_Gateway
   x-displayName: Gateway
@@ -16,9 +11,7 @@ paths:
     - url: https://api.fireworks.ai
     post:
       summary: Upload Dataset Files
-      description: 'Provides a streamlined way to upload a dataset file in a single API request. This path can handle file sizes up to 150Mb. For larger file sizes use [Get Dataset Upload Endpoint](get-dataset-upload-endpoint).
-
-        '
+      description: Provides a streamlined way to upload a dataset file in a single API request. This path can handle file sizes up to 150Mb. For larger file sizes use Get Dataset Upload Endpoint.
       operationId: Gateway_UploadDatasetFile
       responses:
         '200':
@@ -93,3 +86,17 @@ components:
       scheme: bearer
       description: 'Bearer authentication using your Fireworks API key. Format: Bearer <API_KEY>'
       bearerFormat: API_KEY
+x-tagGroups:
+- name: Gateway REST API
+  tags:
+  - gateway.openapi_Gateway
+  - gateway-extra.openapi_Gateway
+- name: Fireworks Responses API
+  tags:
+  - responses.openapi_other
+- name: Fireworks Text Completion API
+  tags:
+  - text-completion.openapi_other
+- name: Fireworks AI Anthropic Compatible Messages API
+  tags:
+  - anthropic-messages.openapi_other
