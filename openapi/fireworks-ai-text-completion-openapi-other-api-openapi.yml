@@ -100,32 +100,6 @@ paths:
       - BearerAuth: []
 components:
   schemas:
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     ThinkingConfigDisabled:
       properties:
         type:
@@ -138,89 +112,110 @@ components:
       - type
       title: ThinkingConfigDisabled
       description: Configuration for disabling extended thinking (Anthropic-compatible format).
-    ThinkingConfigEnabled:
+    PromptTokensDetails:
+      additionalProperties: false
       properties:
-        type:
-          type: string
-          const: enabled
-          title: Type
-        budget_tokens:
+        cached_tokens:
           anyOf:
           - type: integer
           - type: 'null'
-          title: Budget Tokens
-          description: Determines how many tokens the model can use for its internal reasoning process. Larger budgets can enable more thorough analysis for complex problems, improving response quality. Must be >= 1024 if specified.
+          default: null
+          title: Cached Tokens
+      title: PromptTokensDetails
+      type: object
+    ChatMessageContentImageURL:
+      properties:
+        url:
+          type: string
+          title: Url
+        detail:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Detail
       additionalProperties: false
       type: object
       required:
-      - type
-      title: ThinkingConfigEnabled
-      description: Configuration for enabling extended thinking (Anthropic-compatible format).
-    ResponseFormat:
+      - url
+      title: ChatMessageContentImageURL
+    RawOutput:
+      additionalProperties: false
+      description: 'Extension of OpenAI that returns low-level interaction of what the model
+
+        sees, including the formatted prompt and function calls'
       properties:
-        type:
+        prompt_fragments:
+          description: Pieces of the prompt (like individual messages) before truncation and concatenation. Depending on prompt_truncate_len some of the messages might be dropped. Contains a mix of strings to be tokenized and individual tokens (if dictated by the conversation template)
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          title: Prompt Fragments
+          type: array
+        prompt_token_ids:
+          description: Fully processed prompt as seen by the model
+          items:
+            type: integer
+          title: Prompt Token Ids
+          type: array
+        completion:
+          description: Raw completion produced by the model before any tool calls are parsed
+          title: Completion
           type: string
-          enum:
-          - json_object
-          - json_schema
-          - grammar
-          - text
-          title: Type
-        schema:
+        completion_token_ids:
           anyOf:
-          - type: string
-          - additionalProperties: true
-            type: object
+          - items:
+              type: integer
+            type: array
           - type: 'null'
-          title: Schema
+          default: null
+          description: Token IDs for the raw completion
+          title: Completion Token Ids
+        completion_logprobs:
+          anyOf:
+          - $ref: '#/components/schemas/NewLogProbs'
+          - type: 'null'
+          default: null
+          description: Log probabilities for the completion. Only populated if logprobs is specified in the request
+        images:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          default: null
+          description: Images in the prompt
+          title: Images
+        videos:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          default: null
+          description: Videos in the prompt
+          title: Videos
         grammar:
           anyOf:
           - type: string
           - type: 'null'
+          default: null
+          description: Grammar used for constrained decoding, can be either user provided (directly or JSON schema) or inferred by the chat template
           title: Grammar
-        json_schema:
-          anyOf:
-          - type: string
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Json Schema
-      additionalProperties: false
-      type: object
       required:
-      - type
-      title: ResponseFormat
-    NewLogProbs:
-      additionalProperties: false
-      description: OpenAI-compatible log probabilities format
-      properties:
-        content:
-          items:
-            $ref: '#/components/schemas/NewLogProbsContent'
-          title: Content
-          type: array
-      title: NewLogProbs
+      - prompt_fragments
+      - prompt_token_ids
+      - completion
+      title: RawOutput
       type: object
-    FunctionNameSpec:
-      properties:
-        name:
-          type: string
-          title: Name
+    CompletionResponseStreamChoice:
       additionalProperties: false
-      type: object
-      required:
-      - name
-      title: FunctionNameSpec
-    Choice:
-      additionalProperties: false
-      description: A completion choice.
+      description: "A streamed completion choice.\n\nAttributes:\n  index (int): The index of the completion choice.\n  text (str): The completion response.\n  logprobs (float, optional): The log probabilities of the most likely tokens.\n  finish_reason (str): The reason the model stopped generating tokens. This will be \"stop\" if\n    the model hit a natural stop point or a provided stop sequence, or\n    \"length\" if the maximum number of tokens specified in the request was\n    reached.\n  prompt_token_ids (Optional[List[int]]): Token IDs for the prompt (when return_token_ids=true, sent in first chunk)\n  token_ids (Optional[List[int]]): Token IDs for this chunk (when return_token_ids=true)"
       properties:
         index:
-          description: The index of the completion choice
           title: Index
           type: integer
         text:
-          description: The completion response
           title: Text
           type: string
         logprobs:
@@ -229,7 +224,6 @@ components:
           - $ref: '#/components/schemas/NewLogProbs'
           - type: 'null'
           default: null
-          description: The log probabilities of the most likely tokens
           title: Logprobs
         finish_reason:
           anyOf:
@@ -240,7 +234,6 @@ components:
             type: string
           - type: 'null'
           default: null
-          description: The reason the model stopped generating tokens. This will be "stop" if the model hit a natural stop point or a provided stop sequence, or "length" if the maximum number of tokens specified in the request was reached
           title: Finish Reason
         raw_output:
           anyOf:
@@ -254,7 +247,6 @@ components:
             type: array
           - type: 'null'
           default: null
-          description: Token IDs for the prompt (when return_token_ids=true)
           title: Prompt Token Ids
         token_ids:
           anyOf:
@@ -263,12 +255,69 @@ components:
             type: array
           - type: 'null'
           default: null
-          description: Token IDs for the generated completion (when return_token_ids=true)
           title: Token Ids
       required:
       - index
       - text
-      title: Choice
+      title: CompletionResponseStreamChoice
+      type: object
+    PredictedOutput:
+      properties:
+        content:
+          anyOf:
+          - type: string
+          - items:
+              $ref: '#/components/schemas/ChatMessageContent'
+            type: array
+          title: Content
+        type:
+          type: string
+          const: content
+          title: Type
+          default: content
+      additionalProperties: false
+      type: object
+      required:
+      - content
+      title: PredictedOutput
+      description: OpenAI-compatible struct for the "speculation" field.
+    LogProbs:
+      additionalProperties: false
+      description: Legacy log probabilities format
+      properties:
+        tokens:
+          items:
+            type: string
+          title: Tokens
+          type: array
+        token_logprobs:
+          items:
+            type: number
+          title: Token Logprobs
+          type: array
+        top_logprobs:
+          anyOf:
+          - items:
+              additionalProperties:
+                type: number
+              type: object
+            type: array
+          - type: 'null'
+          title: Top Logprobs
+        text_offset:
+          items:
+            type: integer
+          title: Text Offset
+          type: array
+        token_ids:
+          anyOf:
+          - items:
+              type: integer
+            type: array
+          - type: 'null'
+          default: null
+          title: Token Ids
+      title: LogProbs
       type: object
     ChatCompletionStreamResponse:
       additionalProperties: false
@@ -326,6 +375,121 @@ components:
       - choices
       title: ChatCompletionStreamResponse
       type: object
+    ResponseFormat:
+      properties:
+        type:
+          type: string
+          enum:
+          - json_object
+          - json_schema
+          - grammar
+          - text
+          title: Type
+        schema:
+          anyOf:
+          - type: string
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Schema
+        grammar:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Grammar
+        json_schema:
+          anyOf:
+          - type: string
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Json Schema
+      additionalProperties: false
+      type: object
+      required:
+      - type
+      title: ResponseFormat
+    ChatCompletionResponseStreamChoice:
+      additionalProperties: false
+      description: A streamed chat completion choice.
+      properties:
+        index:
+          description: The index of the chat completion choice
+          title: Index
+          type: integer
+        delta:
+          $ref: '#/components/schemas/DeltaMessage'
+          description: The message delta
+        finish_reason:
+          anyOf:
+          - enum:
+            - stop
+            - length
+            - function_call
+            - tool_calls
+            type: string
+          - type: 'null'
+          default: null
+          description: The reason the model stopped generating tokens. This will be "stop" if the model hit a natural stop point or a provided stop sequence, or "length" if the maximum number of tokens specified in the request was reached
+          title: Finish Reason
+        logprobs:
+          anyOf:
+          - $ref: '#/components/schemas/LogProbs'
+          - $ref: '#/components/schemas/NewLogProbs'
+          - type: 'null'
+          default: null
+          title: Logprobs
+        raw_output:
+          anyOf:
+          - $ref: '#/components/schemas/RawOutput'
+          - type: 'null'
+          default: null
+        prompt_token_ids:
+          anyOf:
+          - items:
+              type: integer
+            type: array
+          - type: 'null'
+          default: null
+          description: Token IDs for the prompt (when return_token_ids=true)
+          title: Prompt Token Ids
+        token_ids:
+          anyOf:
+          - items:
+              type: integer
+            type: array
+          - type: 'null'
+          default: null
+          description: Token IDs for this chunk (when return_token_ids=true)
+          title: Token Ids
+      required:
+      - index
+      - delta
+      title: ChatCompletionResponseStreamChoice
+      type: object
+    NewLogProbsContentTopLogProbs:
+      additionalProperties: false
+      properties:
+        token:
+          title: Token
+          type: string
+        logprob:
+          title: Logprob
+          type: number
+        token_id:
+          title: Token Id
+          type: integer
+        bytes:
+          items:
+            type: integer
+          title: Bytes
+          type: array
+      required:
+      - token
+      - logprob
+      - token_id
+      title: NewLogProbsContentTopLogProbs
+      type: object
     ChatCompletionTool:
       properties:
         type:
@@ -344,6 +508,90 @@ components:
       required:
       - type
       title: ChatCompletionTool
+    ChatCompletionFunction:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: A description of what the function does, used by the model to choose when and how to call the function.
+        parameters:
+          additionalProperties: true
+          type: object
+          title: Parameters
+          description: "The parameters the function accepts, described as a JSON Schema object.\n\nThe JSON Schema object should have the following structure:\n\n```json\n{\n  \"type\": \"object\",\n  \"required\": [\"param1\", \"param2\"],\n  \"properties\": {\n    \"param1\": {\n      \"type\": \"string\",\n      \"description\": \"...\"\n    },\n    \"param2\": {\n      \"type\": \"number\",\n      \"description\": \"...\"\n    }\n  }\n}\n```\n\n- The `type` field must be `\"object\"`.\n- The `required` field is an array of strings indicating which parameters are required.\n- The `properties` field is a map of property names to their definitions, where each property is an object with `type` (string) and `description` (string) fields.\n\nTo describe a function that accepts no parameters, provide the value:\n\n```json\n{\"type\": \"object\", \"properties\": {}}\n```"
+        strict:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Strict
+      additionalProperties: false
+      type: object
+      required:
+      - name
+      title: ChatCompletionFunction
+    FunctionSelection:
+      properties:
+        type:
+          type: string
+          const: function
+          title: Type
+        function:
+          anyOf:
+          - $ref: '#/components/schemas/FunctionNameSpec'
+          - type: 'null'
+      additionalProperties: false
+      type: object
+      required:
+      - type
+      title: FunctionSelection
+    ChatCompletionMessageToolCallFunction:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+          description: The name of the function to call.
+        arguments:
+          anyOf:
+          - type: string
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Arguments
+          description: The arguments to call the function with, as generated by the model in JSON format. Note that the model does not always generate valid JSON, and may hallucinate parameters not defined by your function schema. Validate the arguments in your code before calling your function.
+      additionalProperties: false
+      type: object
+      title: ChatCompletionMessageToolCallFunction
+    ChatMessageContent:
+      properties:
+        type:
+          type: string
+          title: Type
+        text:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Text
+        image_url:
+          anyOf:
+          - $ref: '#/components/schemas/ChatMessageContentImageURL'
+          - type: 'null'
+        video_url:
+          anyOf:
+          - $ref: '#/components/schemas/ChatMessageContentVideoURL'
+          - type: 'null'
+      additionalProperties: false
+      type: object
+      required:
+      - type
+      title: ChatMessageContent
     CompletionRequest:
       properties:
         model:
@@ -906,29 +1154,41 @@ components:
       - prompt
       - model
       title: CompletionRequest
-    ChatMessageContent:
+    DeltaMessage:
+      additionalProperties: false
+      description: A message delta.
       properties:
-        type:
-          type: string
-          title: Type
-        text:
+        role:
           anyOf:
           - type: string
           - type: 'null'
-          title: Text
-        image_url:
+          default: null
+          description: The role of the author of this message
+          title: Role
+        content:
           anyOf:
-          - $ref: '#/components/schemas/ChatMessageContentImageURL'
+          - type: string
           - type: 'null'
-        video_url:
+          default: null
+          description: The contents of the chunk message
+          title: Content
+        reasoning_content:
           anyOf:
-          - $ref: '#/components/schemas/ChatMessageContentVideoURL'
+          - type: string
           - type: 'null'
-      additionalProperties: false
+          default: null
+          description: The reasoning or thinking process generated by the model. This field is only available for certain reasoning models (GLM 4.5, GLM 4.5 Air, GPT OSS 120B, GPT OSS 20B) and contains the model's internal reasoning that would otherwise appear in `<think></think>` tags within the content field.
+          title: Reasoning Content
+        tool_calls:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/ChatCompletionMessageToolCall'
+            type: array
+          - type: 'null'
+          default: null
+          title: Tool Calls
+      title: DeltaMessage
       type: object
-      required:
-      - type
-      title: ChatMessageContent
     CompletionStreamResponse:
       additionalProperties: false
       description: The streamed response message from a /v1/completions call.
@@ -976,78 +1236,77 @@ components:
       - choices
       title: CompletionStreamResponse
       type: object
-    ChatCompletionMessageToolCallFunction:
+    FunctionNameSpec:
       properties:
         name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-          description: The name of the function to call.
-        arguments:
-          anyOf:
-          - type: string
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Arguments
-          description: The arguments to call the function with, as generated by the model in JSON format. Note that the model does not always generate valid JSON, and may hallucinate parameters not defined by your function schema. Validate the arguments in your code before calling your function.
-      additionalProperties: false
-      type: object
-      title: ChatCompletionMessageToolCallFunction
-    NewLogProbsContentTopLogProbs:
-      additionalProperties: false
-      properties:
-        token:
-          title: Token
           type: string
-        logprob:
-          title: Logprob
-          type: number
-        token_id:
-          title: Token Id
-          type: integer
-        bytes:
-          items:
-            type: integer
-          title: Bytes
-          type: array
-      required:
-      - token
-      - logprob
-      - token_id
-      title: NewLogProbsContentTopLogProbs
-      type: object
-    ChatCompletionResponseStreamChoice:
+          title: Name
       additionalProperties: false
-      description: A streamed chat completion choice.
+      type: object
+      required:
+      - name
+      title: FunctionNameSpec
+    UsageInfo:
+      additionalProperties: false
+      description: Usage statistics.
       properties:
-        index:
-          description: The index of the chat completion choice
-          title: Index
+        prompt_tokens:
+          description: The number of tokens in the prompt
+          title: Prompt Tokens
           type: integer
-        delta:
-          $ref: '#/components/schemas/DeltaMessage'
-          description: The message delta
-        finish_reason:
+        total_tokens:
+          description: The total number of tokens used in the request (prompt + completion)
+          title: Total Tokens
+          type: integer
+        completion_tokens:
           anyOf:
-          - enum:
-            - stop
-            - length
-            - function_call
-            - tool_calls
-            type: string
+          - type: integer
           - type: 'null'
           default: null
-          description: The reason the model stopped generating tokens. This will be "stop" if the model hit a natural stop point or a provided stop sequence, or "length" if the maximum number of tokens specified in the request was reached
-          title: Finish Reason
+          description: The number of tokens in the generated completion
+          title: Completion Tokens
+        prompt_tokens_details:
+          anyOf:
+          - $ref: '#/components/schemas/PromptTokensDetails'
+          - type: 'null'
+          default: null
+          description: Details about prompt tokens, including cached tokens
+      required:
+      - prompt_tokens
+      - total_tokens
+      title: UsageInfo
+      type: object
+    Choice:
+      additionalProperties: false
+      description: A completion choice.
+      properties:
+        index:
+          description: The index of the completion choice
+          title: Index
+          type: integer
+        text:
+          description: The completion response
+          title: Text
+          type: string
         logprobs:
           anyOf:
           - $ref: '#/components/schemas/LogProbs'
           - $ref: '#/components/schemas/NewLogProbs'
           - type: 'null'
           default: null
+          description: The log probabilities of the most likely tokens
           title: Logprobs
+        finish_reason:
+          anyOf:
+          - enum:
+            - stop
+            - length
+            - error
+            type: string
+          - type: 'null'
+          default: null
+          description: The reason the model stopped generating tokens. This will be "stop" if the model hit a natural stop point or a provided stop sequence, or "length" if the maximum number of tokens specified in the request was reached
+          title: Finish Reason
         raw_output:
           anyOf:
           - $ref: '#/components/schemas/RawOutput'
@@ -1069,82 +1328,12 @@ components:
             type: array
           - type: 'null'
           default: null
-          description: Token IDs for this chunk (when return_token_ids=true)
+          description: Token IDs for the generated completion (when return_token_ids=true)
           title: Token Ids
       required:
       - index
-      - delta
-      title: ChatCompletionResponseStreamChoice
-      type: object
-    RawOutput:
-      additionalProperties: false
-      description: 'Extension of OpenAI that returns low-level interaction of what the model
-
-        sees, including the formatted prompt and function calls'
-      properties:
-        prompt_fragments:
-          description: Pieces of the prompt (like individual messages) before truncation and concatenation. Depending on prompt_truncate_len some of the messages might be dropped. Contains a mix of strings to be tokenized and individual tokens (if dictated by the conversation template)
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          title: Prompt Fragments
-          type: array
-        prompt_token_ids:
-          description: Fully processed prompt as seen by the model
-          items:
-            type: integer
-          title: Prompt Token Ids
-          type: array
-        completion:
-          description: Raw completion produced by the model before any tool calls are parsed
-          title: Completion
-          type: string
-        completion_token_ids:
-          anyOf:
-          - items:
-              type: integer
-            type: array
-          - type: 'null'
-          default: null
-          description: Token IDs for the raw completion
-          title: Completion Token Ids
-        completion_logprobs:
-          anyOf:
-          - $ref: '#/components/schemas/NewLogProbs'
-          - type: 'null'
-          default: null
-          description: Log probabilities for the completion. Only populated if logprobs is specified in the request
-        images:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          default: null
-          description: Images in the prompt
-          title: Images
-        videos:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          default: null
-          description: Videos in the prompt
-          title: Videos
-        grammar:
-          anyOf:
-          - type: string
-          - type: 'null'
-          default: null
-          description: Grammar used for constrained decoding, can be either user provided (directly or JSON schema) or inferred by the chat template
-          title: Grammar
-      required:
-      - prompt_fragments
-      - prompt_token_ids
-      - completion
-      title: RawOutput
+      - text
+      title: Choice
       type: object
     ChatCompletionRequest:
       properties:
@@ -1733,6 +1922,281 @@ components:
       - messages
       - model
       title: ChatCompletionRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    NewLogProbsContent:
+      additionalProperties: false
+      properties:
+        token:
+          title: Token
+          type: string
+        logprob:
+          title: Logprob
+          type: number
+        sampling_logprob:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Sampling Logprob
+        bytes:
+          items:
+            type: integer
+          title: Bytes
+          type: array
+        top_logprobs:
+          items:
+            $ref: '#/components/schemas/NewLogProbsContentTopLogProbs'
+          title: Top Logprobs
+          type: array
+        token_id:
+          title: Token Id
+          type: integer
+        text_offset:
+          title: Text Offset
+          type: integer
+        last_activation:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Last Activation
+        routing_matrix:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Routing Matrix
+      required:
+      - token
+      - logprob
+      - sampling_logprob
+      - bytes
+      - token_id
+      - text_offset
+      title: NewLogProbsContent
+      type: object
+    ChatCompletionResponseChoice:
+      additionalProperties: false
+      description: "A chat completion choice generated by a chat model.\n\nAttributes:\n  index (int): The index of the chat completion choice.\n  message (ChatMessage): The chat completion message.\n  finish_reason (Optional[str]): The reason the model stopped generating tokens. This will be \"stop\" if\n    the model hit a natural stop point or a provided stop sequence, or\n    \"length\" if the maximum number of tokens specified in the request was\n    reached.\n  token_ids (Optional[List[int]]): Token IDs for the generated message content (when return_token_ids=true)"
+      properties:
+        index:
+          title: Index
+          type: integer
+        message:
+          $ref: '#/components/schemas/ChatMessage'
+        finish_reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          title: Finish Reason
+        logprobs:
+          anyOf:
+          - $ref: '#/components/schemas/LogProbs'
+          - $ref: '#/components/schemas/NewLogProbs'
+          - type: 'null'
+          default: null
+          title: Logprobs
+        raw_output:
+          anyOf:
+          - $ref: '#/components/schemas/RawOutput'
+          - type: 'null'
+          default: null
+        token_ids:
+          anyOf:
+          - items:
+              type: integer
+            type: array
+          - type: 'null'
+          default: null
+          title: Token Ids
+      required:
+      - index
+      - message
+      title: ChatCompletionResponseChoice
+      type: object
+    ThinkingConfigEnabled:
+      properties:
+        type:
+          type: string
+          const: enabled
+          title: Type
+        budget_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Budget Tokens
+          description: Determines how many tokens the model can use for its internal reasoning process. Larger budgets can enable more thorough analysis for complex problems, improving response quality. Must be >= 1024 if specified.
+      additionalProperties: false
+      type: object
+      required:
+      - type
+      title: ThinkingConfigEnabled
+      description: Configuration for enabling extended thinking (Anthropic-compatible format).
+    NewLogProbs:
+      additionalProperties: false
+      description: OpenAI-compatible log probabilities format
+      properties:
+        content:
+          items:
+            $ref: '#/components/schemas/NewLogProbsContent'
+          title: Content
+          type: array
+      title: NewLogProbs
+      type: object
+    ChatMessage:
+      properties:
+        role:
+          type: string
+          title: Role
+          description: The role of the messages author. One of `system`, `user`, or `assistant`.
+        content:
+          anyOf:
+          - type: string
+          - items:
+              $ref: '#/components/schemas/ChatMessageContent'
+            type: array
+          - type: 'null'
+          title: Content
+          description: The contents of the message. `content` is required for all messages, and may be null for assistant messages with function calls.
+        reasoning_content:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Reasoning Content
+          description: The reasoning or thinking process generated by the model. This field is only available for certain reasoning models (GLM 4.5, GLM 4.5 Air, GPT OSS 120B, GPT OSS 20B) and contains the model's internal reasoning that would otherwise appear in `<think></think>` tags within the content field.
+        tool_calls:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/ChatCompletionMessageToolCall'
+            type: array
+          - type: 'null'
+          title: Tool Calls
+          description: The tool calls generated by the model, such as function calls.
+        tool_call_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Tool Call Id
+      additionalProperties: false
+      type: object
+      required:
+      - role
+      title: ChatMessage
+      description: A chat completion message.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ChatCompletionMessageToolCall:
+      properties:
+        id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Id
+          description: The ID of the tool call.
+        type:
+          type: string
+          title: Type
+          description: The type of the tool. Currently, only `function` is supported.
+          default: function
+        function:
+          anyOf:
+          - $ref: '#/components/schemas/ChatCompletionMessageToolCallFunction'
+          - type: string
+          title: Function
+          description: The function that the model called.
+      additionalProperties: false
+      type: object
+      required:
+      - function
+      title: ChatCompletionMessageToolCall
+    ChatCompletionResponse:
+      additionalProperties: false
+      description: The response message from a /v1/chat/completions call.
+      properties:
+        id:
+          description: A unique identifier of the response
+          title: Id
+          type: string
+        object:
+          default: chat.completion
+          description: The object type, which is always "chat.completion"
+          title: Object
+          type: string
+        created:
+          description: The Unix time in seconds when the response was generated
+          title: Created
+          type: integer
+        model:
+          description: The model used for the chat completion
+          title: Model
+          type: string
+        choices:
+          description: The list of chat completion choices
+          items:
+            $ref: '#/components/schemas/ChatCompletionResponseChoice'
+          title: Choices
+          type: array
+        usage:
+          anyOf:
+          - $ref: '#/components/schemas/UsageInfo'
+          - type: 'null'
+          default: null
+        perf_metrics:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          default: null
+          description: See parameter [perf_metrics_in_response](#body-perf-metrics-in-response)
+          title: Perf Metrics
+        prompt_token_ids:
+          anyOf:
+          - items:
+              type: integer
+            type: array
+          - type: 'null'
+          default: null
+          description: Token IDs for the prompt (when return_token_ids=true)
+          title: Prompt Token Ids
+      required:
+      - id
+      - created
+      - model
+      - choices
+      title: ChatCompletionResponse
+      type: object
     CompletionResponse:
       additionalProperties: false
       description: The response message from a /v1/completions call.
@@ -1809,470 +2273,6 @@ components:
       required:
       - url
       title: ChatMessageContentVideoURL
-    PromptTokensDetails:
-      additionalProperties: false
-      properties:
-        cached_tokens:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          default: null
-          title: Cached Tokens
-      title: PromptTokensDetails
-      type: object
-    ChatMessageContentImageURL:
-      properties:
-        url:
-          type: string
-          title: Url
-        detail:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Detail
-      additionalProperties: false
-      type: object
-      required:
-      - url
-      title: ChatMessageContentImageURL
-    LogProbs:
-      additionalProperties: false
-      description: Legacy log probabilities format
-      properties:
-        tokens:
-          items:
-            type: string
-          title: Tokens
-          type: array
-        token_logprobs:
-          items:
-            type: number
-          title: Token Logprobs
-          type: array
-        top_logprobs:
-          anyOf:
-          - items:
-              additionalProperties:
-                type: number
-              type: object
-            type: array
-          - type: 'null'
-          title: Top Logprobs
-        text_offset:
-          items:
-            type: integer
-          title: Text Offset
-          type: array
-        token_ids:
-          anyOf:
-          - items:
-              type: integer
-            type: array
-          - type: 'null'
-          default: null
-          title: Token Ids
-      title: LogProbs
-      type: object
-    NewLogProbsContent:
-      additionalProperties: false
-      properties:
-        token:
-          title: Token
-          type: string
-        logprob:
-          title: Logprob
-          type: number
-        sampling_logprob:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Sampling Logprob
-        bytes:
-          items:
-            type: integer
-          title: Bytes
-          type: array
-        top_logprobs:
-          items:
-            $ref: '#/components/schemas/NewLogProbsContentTopLogProbs'
-          title: Top Logprobs
-          type: array
-        token_id:
-          title: Token Id
-          type: integer
-        text_offset:
-          title: Text Offset
-          type: integer
-        last_activation:
-          anyOf:
-          - type: string
-          - type: 'null'
-          default: null
-          title: Last Activation
-        routing_matrix:
-          anyOf:
-          - type: string
-          - type: 'null'
-          default: null
-          title: Routing Matrix
-      required:
-      - token
-      - logprob
-      - sampling_logprob
-      - bytes
-      - token_id
-      - text_offset
-      title: NewLogProbsContent
-      type: object
-    FunctionSelection:
-      properties:
-        type:
-          type: string
-          const: function
-          title: Type
-        function:
-          anyOf:
-          - $ref: '#/components/schemas/FunctionNameSpec'
-          - type: 'null'
-      additionalProperties: false
-      type: object
-      required:
-      - type
-      title: FunctionSelection
-    CompletionResponseStreamChoice:
-      additionalProperties: false
-      description: "A streamed completion choice.\n\nAttributes:\n  index (int): The index of the completion choice.\n  text (str): The completion response.\n  logprobs (float, optional): The log probabilities of the most likely tokens.\n  finish_reason (str): The reason the model stopped generating tokens. This will be \"stop\" if\n    the model hit a natural stop point or a provided stop sequence, or\n    \"length\" if the maximum number of tokens specified in the request was\n    reached.\n  prompt_token_ids (Optional[List[int]]): Token IDs for the prompt (when return_token_ids=true, sent in first chunk)\n  token_ids (Optional[List[int]]): Token IDs for this chunk (when return_token_ids=true)"
-      properties:
-        index:
-          title: Index
-          type: integer
-        text:
-          title: Text
-          type: string
-        logprobs:
-          anyOf:
-          - $ref: '#/components/schemas/LogProbs'
-          - $ref: '#/components/schemas/NewLogProbs'
-          - type: 'null'
-          default: null
-          title: Logprobs
-        finish_reason:
-          anyOf:
-          - enum:
-            - stop
-            - length
-            - error
-            type: string
-          - type: 'null'
-          default: null
-          title: Finish Reason
-        raw_output:
-          anyOf:
-          - $ref: '#/components/schemas/RawOutput'
-          - type: 'null'
-          default: null
-        prompt_token_ids:
-          anyOf:
-          - items:
-              type: integer
-            type: array
-          - type: 'null'
-          default: null
-          title: Prompt Token Ids
-        token_ids:
-          anyOf:
-          - items:
-              type: integer
-            type: array
-          - type: 'null'
-          default: null
-          title: Token Ids
-      required:
-      - index
-      - text
-      title: CompletionResponseStreamChoice
-      type: object
-    ChatCompletionResponseChoice:
-      additionalProperties: false
-      description: "A chat completion choice generated by a chat model.\n\nAttributes:\n  index (int): The index of the chat completion choice.\n  message (ChatMessage): The chat completion message.\n  finish_reason (Optional[str]): The reason the model stopped generating tokens. This will be \"stop\" if\n    the model hit a natural stop point or a provided stop sequence, or\n    \"length\" if the maximum number of tokens specified in the request was\n    reached.\n  token_ids (Optional[List[int]]): Token IDs for the generated message content (when return_token_ids=true)"
-      properties:
-        index:
-          title: Index
-          type: integer
-        message:
-          $ref: '#/components/schemas/ChatMessage'
-        finish_reason:
-          anyOf:
-          - type: string
-          - type: 'null'
-          default: null
-          title: Finish Reason
-        logprobs:
-          anyOf:
-          - $ref: '#/components/schemas/LogProbs'
-          - $ref: '#/components/schemas/NewLogProbs'
-          - type: 'null'
-          default: null
-          title: Logprobs
-        raw_output:
-          anyOf:
-          - $ref: '#/components/schemas/RawOutput'
-          - type: 'null'
-          default: null
-        token_ids:
-          anyOf:
-          - items:
-              type: integer
-            type: array
-          - type: 'null'
-          default: null
-          title: Token Ids
-      required:
-      - index
-      - message
-      title: ChatCompletionResponseChoice
-      type: object
-    ChatCompletionResponse:
-      additionalProperties: false
-      description: The response message from a /v1/chat/completions call.
-      properties:
-        id:
-          description: A unique identifier of the response
-          title: Id
-          type: string
-        object:
-          default: chat.completion
-          description: The object type, which is always "chat.completion"
-          title: Object
-          type: string
-        created:
-          description: The Unix time in seconds when the response was generated
-          title: Created
-          type: integer
-        model:
-          description: The model used for the chat completion
-          title: Model
-          type: string
-        choices:
-          description: The list of chat completion choices
-          items:
-            $ref: '#/components/schemas/ChatCompletionResponseChoice'
-          title: Choices
-          type: array
-        usage:
-          anyOf:
-          - $ref: '#/components/schemas/UsageInfo'
-          - type: 'null'
-          default: null
-        perf_metrics:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          default: null
-          description: See parameter [perf_metrics_in_response](#body-perf-metrics-in-response)
-          title: Perf Metrics
-        prompt_token_ids:
-          anyOf:
-          - items:
-              type: integer
-            type: array
-          - type: 'null'
-          default: null
-          description: Token IDs for the prompt (when return_token_ids=true)
-          title: Prompt Token Ids
-      required:
-      - id
-      - created
-      - model
-      - choices
-      title: ChatCompletionResponse
-      type: object
-    ChatCompletionFunction:
-      properties:
-        name:
-          type: string
-          title: Name
-          description: The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-          description: A description of what the function does, used by the model to choose when and how to call the function.
-        parameters:
-          additionalProperties: true
-          type: object
-          title: Parameters
-          description: "The parameters the function accepts, described as a JSON Schema object.\n\nThe JSON Schema object should have the following structure:\n\n```json\n{\n  \"type\": \"object\",\n  \"required\": [\"param1\", \"param2\"],\n  \"properties\": {\n    \"param1\": {\n      \"type\": \"string\",\n      \"description\": \"...\"\n    },\n    \"param2\": {\n      \"type\": \"number\",\n      \"description\": \"...\"\n    }\n  }\n}\n```\n\n- The `type` field must be `\"object\"`.\n- The `required` field is an array of strings indicating which parameters are required.\n- The `properties` field is a map of property names to their definitions, where each property is an object with `type` (string) and `description` (string) fields.\n\nTo describe a function that accepts no parameters, provide the value:\n\n```json\n{\"type\": \"object\", \"properties\": {}}\n```"
-        strict:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Strict
-      additionalProperties: false
-      type: object
-      required:
-      - name
-      title: ChatCompletionFunction
-    ChatMessage:
-      properties:
-        role:
-          type: string
-          title: Role
-          description: The role of the messages author. One of `system`, `user`, or `assistant`.
-        content:
-          anyOf:
-          - type: string
-          - items:
-              $ref: '#/components/schemas/ChatMessageContent'
-            type: array
-          - type: 'null'
-          title: Content
-          description: The contents of the message. `content` is required for all messages, and may be null for assistant messages with function calls.
-        reasoning_content:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Reasoning Content
-          description: The reasoning or thinking process generated by the model. This field is only available for certain reasoning models (GLM 4.5, GLM 4.5 Air, GPT OSS 120B, GPT OSS 20B) and contains the model's internal reasoning that would otherwise appear in `<think></think>` tags within the content field.
-        tool_calls:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/ChatCompletionMessageToolCall'
-            type: array
-          - type: 'null'
-          title: Tool Calls
-          description: The tool calls generated by the model, such as function calls.
-        tool_call_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Tool Call Id
-      additionalProperties: false
-      type: object
-      required:
-      - role
-      title: ChatMessage
-      description: A chat completion message.
-    DeltaMessage:
-      additionalProperties: false
-      description: A message delta.
-      properties:
-        role:
-          anyOf:
-          - type: string
-          - type: 'null'
-          default: null
-          description: The role of the author of this message
-          title: Role
-        content:
-          anyOf:
-          - type: string
-          - type: 'null'
-          default: null
-          description: The contents of the chunk message
-          title: Content
-        reasoning_content:
-          anyOf:
-          - type: string
-          - type: 'null'
-          default: null
-          description: The reasoning or thinking process generated by the model. This field is only available for certain reasoning models (GLM 4.5, GLM 4.5 Air, GPT OSS 120B, GPT OSS 20B) and contains the model's internal reasoning that would otherwise appear in `<think></think>` tags within the content field.
-          title: Reasoning Content
-        tool_calls:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/ChatCompletionMessageToolCall'
-            type: array
-          - type: 'null'
-          default: null
-          title: Tool Calls
-      title: DeltaMessage
-      type: object
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    PredictedOutput:
-      properties:
-        content:
-          anyOf:
-          - type: string
-          - items:
-              $ref: '#/components/schemas/ChatMessageContent'
-            type: array
-          title: Content
-        type:
-          type: string
-          const: content
-          title: Type
-          default: content
-      additionalProperties: false
-      type: object
-      required:
-      - content
-      title: PredictedOutput
-      description: OpenAI-compatible struct for the "speculation" field.
-    ChatCompletionMessageToolCall:
-      properties:
-        id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Id
-          description: The ID of the tool call.
-        type:
-          type: string
-          title: Type
-          description: The type of the tool. Currently, only `function` is supported.
-          default: function
-        function:
-          anyOf:
-          - $ref: '#/components/schemas/ChatCompletionMessageToolCallFunction'
-          - type: string
-          title: Function
-          description: The function that the model called.
-      additionalProperties: false
-      type: object
-      required:
-      - function
-      title: ChatCompletionMessageToolCall
-    UsageInfo:
-      additionalProperties: false
-      description: Usage statistics.
-      properties:
-        prompt_tokens:
-          description: The number of tokens in the prompt
-          title: Prompt Tokens
-          type: integer
-        total_tokens:
-          description: The total number of tokens used in the request (prompt + completion)
-          title: Total Tokens
-          type: integer
-        completion_tokens:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          default: null
-          description: The number of tokens in the generated completion
-          title: Completion Tokens
-        prompt_tokens_details:
-          anyOf:
-          - $ref: '#/components/schemas/PromptTokensDetails'
-          - type: 'null'
-          default: null
-          description: Details about prompt tokens, including cached tokens
-      required:
-      - prompt_tokens
-      - total_tokens
-      title: UsageInfo
-      type: object
   securitySchemes:
     BearerAuth:
       type: http
