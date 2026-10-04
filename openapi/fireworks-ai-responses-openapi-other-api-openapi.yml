@@ -169,15 +169,6 @@ paths:
       - responses.openapi_other
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     Message:
       properties:
         id:
@@ -211,188 +202,32 @@ components:
       - status
       title: Message
       description: Represents a message in a conversation.
-    ResponseList:
+    ValidationError:
       properties:
-        object:
-          type: string
-          title: Object
-          description: The object type, which is always 'list'.
-          default: list
-        data:
+        loc:
           items:
-            $ref: '#/components/schemas/Response'
+            anyOf:
+            - type: string
+            - type: integer
           type: array
-          title: Data
-          description: An array of response objects, sorted by creation time in descending order (most recent first).
-        has_more:
-          type: boolean
-          title: Has More
-          description: Indicates whether there are more responses available beyond this page. If true, use the 'last_id' value as the 'after' cursor to fetch the next page.
-        first_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: First Id
-          description: The ID of the first response in the current page. Used for pagination.
-        last_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Last Id
-          description: The ID of the last response in the current page. Use this as the 'after' cursor to fetch the next page if has_more is true.
-      type: object
-      required:
-      - data
-      - has_more
-      title: ResponseList
-      description: 'Response model for listing responses.
-
-
-        Returned from the GET /v1/responses endpoint. Provides a paginated list
-
-        of response objects with cursor-based pagination support.'
-    CreateResponse:
-      properties:
-        model:
+          title: Location
+        msg:
           type: string
-          title: Model
-          description: 'The model to use for generating the response. Example: `accounts/<ACCOUNT_ID>/models/<MODEL_ID>`.'
+          title: Message
+        type:
+          type: string
+          title: Error Type
         input:
-          anyOf:
-          - type: string
-          - items:
-              additionalProperties: true
-              type: object
-            type: array
           title: Input
-          description: The input to the model. Can be a simple text string or a list of message objects for complex inputs with multiple content types.
-        previous_response_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Previous Response Id
-          description: The ID of a previous response to continue the conversation from. When provided, the conversation history from that response will be automatically loaded.
-        instructions:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Instructions
-          description: System instructions that guide the model's behavior throughout the conversation. Similar to a system message.
-        max_output_tokens:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Max Output Tokens
-          description: The maximum number of tokens that can be generated in the response. Must be at least 1. If not specified, the model will generate up to its maximum context length.
-        max_tool_calls:
-          anyOf:
-          - type: integer
-            minimum: 1
-          - type: 'null'
-          title: Max Tool Calls
-          description: The maximum number of tool calls allowed in a single response. Useful for controlling costs and limiting tool execution. Must be at least 1.
-        metadata:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Metadata
-          description: Set of up to 16 key-value pairs that can be attached to the response. Useful for storing additional information in a structured format.
-        parallel_tool_calls:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Parallel Tool Calls
-          description: Whether to enable parallel function calling during tool use. When true, the model can call multiple tools simultaneously. Default is True.
-          default: true
-        reasoning:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Reasoning
-          description: Configuration for reasoning output. When enabled, the model will return its reasoning process along with the response.
-        store:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Store
-          description: Whether to store the response. When set to false, the response will not be stored and will not be retrievable via the API. This is useful for ephemeral or sensitive data. See an example in our [Controlling Response Storage cookbook](https://github.com/fw-ai/cookbook/blob/main/learn/response-api/mcp_server_with_store_false_argument.ipynb). Default is True.
-          default: true
-        stream:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Stream
-          description: Whether to stream the response back as Server-Sent Events (SSE). When true, tokens are sent incrementally as they are generated. Default is False.
-          default: false
-        temperature:
-          anyOf:
-          - type: number
-            maximum: 2
-            minimum: 0
-          - type: 'null'
-          title: Temperature
-          description: The sampling temperature to use, between 0 and 2. Higher values like 0.8 make output more random, while lower values like 0.2 make it more focused and deterministic. Default is 1.0.
-          default: 1
-        text:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Text
-          description: Text generation configuration parameters. Used for advanced text generation settings.
-        tool_choice:
-          anyOf:
-          - type: string
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Tool Choice
-          description: Controls which (if any) tool the model should use. Can be 'none' (never call tools), 'auto' (model decides), 'required' (must call at least one tool), or an object specifying a particular tool to call. Default is 'auto'.
-          default: auto
-        tools:
-          anyOf:
-          - items:
-              additionalProperties: true
-              type: object
-            type: array
-          - type: 'null'
-          title: Tools
-          description: A list of MCP tools the model may call. See our cookbooks for examples on [basic MCP usage](https://github.com/fw-ai/cookbook/blob/main/learn/response-api/fireworks_mcp_examples.ipynb) and [streaming with MCP](https://github.com/fw-ai/cookbook/blob/main/learn/response-api/fireworks_mcp_with_streaming.ipynb).
-        top_p:
-          anyOf:
-          - type: number
-            maximum: 1
-            minimum: 0
-          - type: 'null'
-          title: Top P
-          description: An alternative to temperature sampling, called nucleus sampling, where the model considers the results of tokens with top_p probability mass. So 0.1 means only tokens comprising the top 10% probability mass are considered. Default is 1.0. We generally recommend altering this or temperature but not both.
-          default: 1
-        truncation:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Truncation
-          description: The truncation strategy to use for the context when it exceeds the model's maximum length. Can be 'auto' (automatically truncate) or 'disabled' (return error if context too long). Default is 'disabled'.
-          default: disabled
-        user:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: User
-          description: A unique identifier representing your end-user, which can help Fireworks to monitor and detect abuse. This can be a username, email, or any other unique identifier.
+        ctx:
+          type: object
+          title: Context
       type: object
       required:
-      - model
-      - input
-      title: CreateResponse
-      description: 'Request model for creating a new response.
-
-
-        This model defines all the parameters needed to create a new model response,
-
-        including model configuration, input data, tool definitions, and conversation continuation.'
+      - loc
+      - msg
+      - type
+      title: ValidationError
     Response:
       properties:
         id:
@@ -559,6 +394,36 @@ components:
         A response includes the model output, token usage, configuration parameters,
 
         and metadata about the conversation state.'
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ToolOutput:
+      properties:
+        type:
+          type: string
+          title: Type
+          description: The object type, always 'tool_output'.
+          default: tool_output
+        tool_call_id:
+          type: string
+          title: Tool Call Id
+          description: The ID of the tool call that this output corresponds to.
+        output:
+          type: string
+          title: Output
+          description: The output content from the tool execution.
+      type: object
+      required:
+      - tool_call_id
+      - output
+      title: ToolOutput
+      description: Represents the output/result of a tool call.
     ToolCall:
       properties:
         id:
@@ -613,6 +478,46 @@ components:
       - type
       title: ToolCall
       description: Represents a tool call made by the model.
+    ResponseList:
+      properties:
+        object:
+          type: string
+          title: Object
+          description: The object type, which is always 'list'.
+          default: list
+        data:
+          items:
+            $ref: '#/components/schemas/Response'
+          type: array
+          title: Data
+          description: An array of response objects, sorted by creation time in descending order (most recent first).
+        has_more:
+          type: boolean
+          title: Has More
+          description: Indicates whether there are more responses available beyond this page. If true, use the 'last_id' value as the 'after' cursor to fetch the next page.
+        first_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Id
+          description: The ID of the first response in the current page. Used for pagination.
+        last_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Id
+          description: The ID of the last response in the current page. Use this as the 'after' cursor to fetch the next page if has_more is true.
+      type: object
+      required:
+      - data
+      - has_more
+      title: ResponseList
+      description: 'Response model for listing responses.
+
+
+        Returned from the GET /v1/responses endpoint. Provides a paginated list
+
+        of response objects with cursor-based pagination support.'
     MessageContent:
       properties:
         type:
@@ -630,53 +535,148 @@ components:
       - type
       title: MessageContent
       description: Represents a piece of content within a message.
-    ValidationError:
+    CreateResponse:
       properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
+        model:
           type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
+          title: Model
+          description: 'The model to use for generating the response. Example: `accounts/<ACCOUNT_ID>/models/<MODEL_ID>`.'
         input:
+          anyOf:
+          - type: string
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
           title: Input
-        ctx:
-          type: object
-          title: Context
+          description: The input to the model. Can be a simple text string or a list of message objects for complex inputs with multiple content types.
+        previous_response_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Previous Response Id
+          description: The ID of a previous response to continue the conversation from. When provided, the conversation history from that response will be automatically loaded.
+        instructions:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instructions
+          description: System instructions that guide the model's behavior throughout the conversation. Similar to a system message.
+        max_output_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Output Tokens
+          description: The maximum number of tokens that can be generated in the response. Must be at least 1. If not specified, the model will generate up to its maximum context length.
+        max_tool_calls:
+          anyOf:
+          - type: integer
+            minimum: 1
+          - type: 'null'
+          title: Max Tool Calls
+          description: The maximum number of tool calls allowed in a single response. Useful for controlling costs and limiting tool execution. Must be at least 1.
+        metadata:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Metadata
+          description: Set of up to 16 key-value pairs that can be attached to the response. Useful for storing additional information in a structured format.
+        parallel_tool_calls:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Parallel Tool Calls
+          description: Whether to enable parallel function calling during tool use. When true, the model can call multiple tools simultaneously. Default is True.
+          default: true
+        reasoning:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Reasoning
+          description: Configuration for reasoning output. When enabled, the model will return its reasoning process along with the response.
+        store:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Store
+          description: Whether to store the response. When set to false, the response will not be stored and will not be retrievable via the API. This is useful for ephemeral or sensitive data. See an example in our [Controlling Response Storage cookbook](https://github.com/fw-ai/cookbook/blob/main/learn/response-api/mcp_server_with_store_false_argument.ipynb). Default is True.
+          default: true
+        stream:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Stream
+          description: Whether to stream the response back as Server-Sent Events (SSE). When true, tokens are sent incrementally as they are generated. Default is False.
+          default: false
+        temperature:
+          anyOf:
+          - type: number
+            maximum: 2
+            minimum: 0
+          - type: 'null'
+          title: Temperature
+          description: The sampling temperature to use, between 0 and 2. Higher values like 0.8 make output more random, while lower values like 0.2 make it more focused and deterministic. Default is 1.0.
+          default: 1
+        text:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Text
+          description: Text generation configuration parameters. Used for advanced text generation settings.
+        tool_choice:
+          anyOf:
+          - type: string
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Tool Choice
+          description: Controls which (if any) tool the model should use. Can be 'none' (never call tools), 'auto' (model decides), 'required' (must call at least one tool), or an object specifying a particular tool to call. Default is 'auto'.
+          default: auto
+        tools:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Tools
+          description: A list of MCP tools the model may call. See our cookbooks for examples on [basic MCP usage](https://github.com/fw-ai/cookbook/blob/main/learn/response-api/fireworks_mcp_examples.ipynb) and [streaming with MCP](https://github.com/fw-ai/cookbook/blob/main/learn/response-api/fireworks_mcp_with_streaming.ipynb).
+        top_p:
+          anyOf:
+          - type: number
+            maximum: 1
+            minimum: 0
+          - type: 'null'
+          title: Top P
+          description: An alternative to temperature sampling, called nucleus sampling, where the model considers the results of tokens with top_p probability mass. So 0.1 means only tokens comprising the top 10% probability mass are considered. Default is 1.0. We generally recommend altering this or temperature but not both.
+          default: 1
+        truncation:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Truncation
+          description: The truncation strategy to use for the context when it exceeds the model's maximum length. Can be 'auto' (automatically truncate) or 'disabled' (return error if context too long). Default is 'disabled'.
+          default: disabled
+        user:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: User
+          description: A unique identifier representing your end-user, which can help Fireworks to monitor and detect abuse. This can be a username, email, or any other unique identifier.
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    ToolOutput:
-      properties:
-        type:
-          type: string
-          title: Type
-          description: The object type, always 'tool_output'.
-          default: tool_output
-        tool_call_id:
-          type: string
-          title: Tool Call Id
-          description: The ID of the tool call that this output corresponds to.
-        output:
-          type: string
-          title: Output
-          description: The output content from the tool execution.
-      type: object
-      required:
-      - tool_call_id
-      - output
-      title: ToolOutput
-      description: Represents the output/result of a tool call.
+      - model
+      - input
+      title: CreateResponse
+      description: 'Request model for creating a new response.
+
+
+        This model defines all the parameters needed to create a new model response,
+
+        including model configuration, input data, tool definitions, and conversation continuation.'
     DeleteResponse:
       properties:
         message:
