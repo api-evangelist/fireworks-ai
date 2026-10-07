@@ -283,6 +283,8 @@ apis:
   - type: APIReference
     url: https://docs.fireworks.ai/api-reference
 common:
+- type: Pricing
+  url: https://fireworks.ai/pricing
 - type: AgenticAccess
   url: agentic-access/fireworks-ai-agentic-access.yml
 - type: DomainSecurity
