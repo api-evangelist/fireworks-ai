@@ -1,74 +1,65 @@
-specification: API Commons Rate Limits
-specificationVersion: '0.1'
-schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
-provider: Fireworks AI
-providerId: fireworks-ai
-created: '2026-05-08'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-08, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-08'
-reconciled: false
-tags:
-- AI
-- LLM
-- Inference
-- Multimodal
-- Fine-tuning
-- Rate Limiting
-- Quotas
-- Throttling
-description: >-
-  Fireworks AI publishes high serverless rate limits that scale with paid
-  spend, expressed primarily as RPM (requests per minute) per model, with
-  separate limits for batch jobs and fine-tuning. On-demand dedicated
-  deployments are bounded by provisioned GPU capacity rather than shared
-  serverless limits.
-notes: >-
-  Per-model RPM and concurrency limits are listed on the docs.fireworks.ai
-  rate-limits page; verify on reconciliation. Free-tier accounts have lower
-  limits than paid postpaid accounts.
+# Rate limits transcribed from the provider's own documentation — see provenance. Quoted, not derived.
+generated: '2026-10-07'
+method: searched
+source: https://docs.fireworks.ai/serverless/rate-limits
 sources:
-- https://docs.fireworks.ai/guides/rate-limits
-- https://fireworks.ai/pricing
-responseCodes:
-  throttled: 429
+- https://docs.fireworks.ai/serverless/rate-limits
+provenance:
+  tool: all/0-working/economics/harvest_ratelimits.py
+  run: 20261007T122905
+  grounding: every limit_text was found verbatim in the fetched page text
+published: false
+note: Adaptive token-per-minute ceilings scoped per account and per model, varying by model parameter-count
+  tier. Page also mentions 503 Service Overloaded for load shedding.
+limit_count: 9
 limits:
-- name: Requests Per Minute (RPM)
+- name: Total Prompt TPM — Small tier
+  limit_text: 108M
+  window: minute
   scope: account
-  metric: requests
-  limit: see provider documentation
-  notes: Per-model RPM, varies by tier and model.
-- name: Concurrent Requests
+  plan: Small (< 600B total parameters)
+- name: Uncached Prompt TPM — Small tier
+  limit_text: 27M
+  window: minute
   scope: account
-  metric: concurrent
-  limit: see provider documentation
-  notes: Concurrency cap per model on serverless.
-- name: Tokens Per Minute (TPM)
+  plan: Small (< 600B total parameters)
+- name: Generated TPM — Small tier
+  limit_text: 1.08M
+  window: minute
   scope: account
-  metric: tokens
-  limit: see provider documentation
-  notes: Per-model TPM, varies by tier and model.
-- name: Batch Inference
+  plan: Small (< 600B total parameters)
+- name: Total Prompt TPM — Medium tier
+  limit_text: 43.2M
+  window: minute
   scope: account
-  metric: jobs
-  limit: separate from sync limits
-  notes: Batch runs at 50% discount and does not consume sync RPM/TPM directly.
-- name: Fine-Tuning Jobs
+  plan: Medium (600B – < 1.6T)
+- name: Uncached Prompt TPM — Medium tier
+  limit_text: 10.8M
+  window: minute
   scope: account
-  metric: concurrent_jobs
-  limit: see provider documentation
-  notes: Concurrency cap on parallel fine-tuning jobs.
-- name: On-Demand Deployments
-  scope: deployment
-  metric: requests
-  limit: bounded by provisioned GPU capacity
-  notes: Throughput determined by GPU sizing and autoscaling configuration.
-policies:
-- name: Tiered Limits
-  description: Limits scale up automatically with paid postpaid usage and via Enterprise agreements.
-- name: Backoff Strategy
-  description: Clients should implement exponential backoff with jitter and honor Retry-After.
-maintainers:
-- FN: Kin Lane
-  email: kin@apievangelist.com
+  plan: Medium (600B – < 1.6T)
+- name: Generated TPM — Medium tier
+  limit_text: 432k
+  window: minute
+  scope: account
+  plan: Medium (600B – < 1.6T)
+- name: Total Prompt TPM — Large tier
+  limit_text: 21.6M
+  window: minute
+  scope: account
+  plan: Large (≥ 1.6T)
+- name: Uncached Prompt TPM — Large tier
+  limit_text: 5.4M
+  window: minute
+  scope: account
+  plan: Large (≥ 1.6T)
+- name: Generated TPM — Large tier
+  limit_text: 216k
+  window: minute
+  scope: account
+  plan: Large (≥ 1.6T)
+headers:
+- X-Ratelimit-Limit-Tokens-Prompt
+- X-Ratelimit-Limit-Tokens-Cache-Adjusted-Prompt
+- X-Ratelimit-Limit-Tokens-Generated
+exceeded_status: 429
