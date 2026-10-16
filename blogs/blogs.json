@@ -2,21 +2,21 @@
   "repo": "fireworks-ai",
   "feeds": [
     {
-      "source": "https://docs.fireworks.ai/llms.txt",
-      "feed_url": "https://docs.fireworks.ai/llms.txt",
-      "title": "",
-      "saved": 0,
-      "method": "none"
-    },
-    {
       "source": "https://fireworks.ai/blog",
       "feed_url": "https://fireworks.ai/blog",
       "title": "",
       "saved": 0,
       "method": "none"
+    },
+    {
+      "source": "https://docs.fireworks.ai/llms.txt",
+      "feed_url": "https://docs.fireworks.ai/llms.txt",
+      "title": "",
+      "saved": 0,
+      "method": "none"
     }
   ],
-  "fetched": "2026-10-03T12:30:02Z",
+  "fetched": "2026-10-10T13:15:00Z",
   "post_count": 5,
   "feed_nature": "vendor-blog",
   "feed_nature_basis": "path_blog",

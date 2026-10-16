@@ -100,28 +100,9 @@ edges:
     value: OpenAI-compatible
     note: 'fireworks-ai declares OpenAI compatibility: ''description: OpenAI-compatible log probabilities format'''
     detected_by: sweep-model-routing.py
-    detected: '2026-10-13'
+    detected: '2026-10-15'
   detected_by: sweep-model-routing.py
   first_seen: '2026-10-13'
-- partner_name: LiveKit Agents
-  partner: livekit
-  partner_match: framework
-  channel: partner-built
-  direction: partner-built
-  type: coverage
-  relationship: system-coverage
-  evidence: https://github.com/livekit/agents/tree/main/livekit-plugins/livekit-plugins-fireworksai
-  coverage_role:
-  - stt
-  framework_signals:
-    packages:
-    - livekit-plugins-fireworksai
-    roles:
-    - stt
-    vendor_domain: fireworks.ai
-  matched_by: verified-domain-table
-  detected_by: sweep-voice-ai.py
-  first_seen: '2026-10-15'
 - partner_name: LlamaIndex
   partner: llamaindex
   partner_match: framework
@@ -159,6 +140,25 @@ edges:
     vendor_domain: fireworks.ai
   matched_by: verified-domain-table
   detected_by: sweep-rag-vector.py
+  first_seen: '2026-10-15'
+- partner_name: LiveKit Agents
+  partner: livekit
+  partner_match: framework
+  channel: partner-built
+  direction: partner-built
+  type: coverage
+  relationship: system-coverage
+  evidence: https://github.com/livekit/agents/tree/main/livekit-plugins/livekit-plugins-fireworksai
+  coverage_role:
+  - stt
+  framework_signals:
+    packages:
+    - livekit-plugins-fireworksai
+    roles:
+    - stt
+    vendor_domain: fireworks.ai
+  matched_by: verified-domain-table
+  detected_by: sweep-voice-ai.py
   first_seen: '2026-10-15'
 generated: '2026-10-13'
 method: searched
