@@ -123,5 +123,5 @@
     - connectors/applications/fireworks-ai
     vendor_link: https://fireworks.ai/
     builder: Fivetran
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
