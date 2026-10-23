@@ -239,6 +239,46 @@ edges:
     sector: aiml
   detected_by: sweep-vc-portfolios.py
   first_seen: '2026-10-21'
+- partner_name: Hugging Face (hugging-face-hub)
+  partner: hugging-face
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: hugging-face-hub
+  evidence: https://huggingface.co/fireworks-ai
+  mirror_of: hugging-face/integrations/hugging-face-integration-edges.yml
+  apps:
+  - fireworks-ai/logiqa-deepseek-v3
+  - fireworks-ai/logiqa
+  - fireworks-ai/msmarco_rank
+  - fireworks-ai/function-calling-eval-dataset-v0
+  - fireworks-ai/bfcl_v3_multi_turn_base
+  - fireworks-ai/four-digits-multiply-open-instruct
+  - fireworks-ai/vision-food-reasoning-dataset
+  - fireworks-ai/long-chat
+  - fireworks-ai/llama-3-firefunction-v2
+  - fireworks-ai/firefunction-v1
+  - fireworks-ai/mixtral-8x22b-instruct-oh
+  - fireworks-ai/FLUX.1-schnell-fp8-flumina
+  - fireworks-ai/function-calling-v1
+  - fireworks-ai/mistral-7b-eagle-head-experimental
+  - fireworks-ai/llama-68m-test
+  - fireworks-ai/FireLLaVA-13b
+  - fireworks-ai/Intelligent-Documentation-Generator-Agent
+  - fireworks-ai/Fed-AI-Savant
+  - fireworks-ai/ugly-holiday-card-generator
+  - fireworks-ai/fw-vision-studio
+  - fireworks-ai/catalog-extract
+  - fireworks-ai/search-alchemy
+  listing_count: 3
+  detected: '2026-10-23'
+  detected_by: mirror-platform-listings.py
+  category: Hugging Face Hub datasets
+  badges:
+  - Verified publisher (Hugging Face verified organisation)
 generated: '2026-10-13'
 method: searched
 checked:
@@ -257,6 +297,7 @@ checked:
 - https://www.indexventures.com/companies/
 - https://www.sequoiacap.com/our-companies/
 - https://www.sequoiacap.com/sitemap.xml
+- hugging-face/integrations/hugging-face-integration-edges.yml
 source:
 - https://fivetran.com/docs-sitemap.xml
 - https://fivetran.com/docs/connectors/partner-built-program
