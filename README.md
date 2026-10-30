@@ -1,4 +1,4 @@
-# Fireworks AI (fireworks-ai)
+# Fireworks AI
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,300 +66,167 @@
 
 Fireworks AI is a production-grade inference platform for open-source and proprietary generative models. The Fireworks API hosts Llama, DeepSeek, Qwen, Mixtral, Stable Diffusion, and other models with serverless pay-per-token, on-demand dedicated GPU, and batch deployment options, plus managed fine-tuning.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/fireworks-ai/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/fireworks-ai/refs/heads/main/apis.yml)
+**Areas:** Artificial Intelligence · LLM · Inference · Multi-Modal · Fine-Tuning · GPU
 
-## Tags
+## Fireworks AI on APIs.io
 
-- AI
-- LLM
-- Inference
-- Multimodal
-- Fine-tuning
-- GPU
+Everything profiled for Fireworks AI is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/fireworks-ai/](https://apis.io/providers/fireworks-ai/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (5)
 
-- **Created:** 2026-05-08
-- **Modified:** 2026-05-29
+- [Fireworks AI anthropic-messages.openapi_other API](https://apis.io/apis/fireworks-ai/fireworks-ai-anthropic-messages-openapi-other-api/) — The anthropic-messages.openapi_other API from Fireworks AI — 1 operation(s) for anthropic-messages.openapi_other.
+- [Fireworks AI gateway-extra.openapi_Gateway API](https://apis.io/apis/fireworks-ai/fireworks-ai-gateway-extra-openapi-gateway-api/) — The gateway-extra.openapi_Gateway API from Fireworks AI — 1 operation(s) for gateway-extra.openapi_gateway.
+- [Fireworks AI Gateway.openapi Gateway API](https://apis.io/apis/fireworks-ai/fireworks-ai-gateway-openapi-gateway-api/) — The gateway.openapi_Gateway API from Fireworks AI — 126 operation(s) for gateway.openapi_gateway.
+- [Fireworks AI Responses.openapi Other API](https://apis.io/apis/fireworks-ai/fireworks-ai-responses-openapi-other-api/) — The responses.openapi_other API from Fireworks AI — 2 operation(s) for responses.openapi_other.
+- [Fireworks AI Text Completion.openapi Other API](https://apis.io/apis/fireworks-ai/fireworks-ai-text-completion-openapi-other-api/) — The text-completion.openapi_other API from Fireworks AI — 2 operation(s) for text-completion.openapi_other.
 
-## APIs
+### Published properties
 
-### Fireworks Chat Completions API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-OpenAI-compatible chat completions across 100+ open-source and proprietary models including Llama, DeepSeek, Qwen, and Mixtral, with streaming, function calling, and structured outputs.
+#### AsyncAPI (1)
 
-- **Human URL:** [https://docs.fireworks.ai/api-reference/post-chatcompletions](https://docs.fireworks.ai/api-reference/post-chatcompletions)
-- **Base URL:** `https://api.fireworks.ai/inference/v1`
+Event-driven and webhook contracts.
 
-#### Tags
+- [Fireworks AI Streaming Inference API](https://apis.io/asyncapis/fireworks-ai/fireworks-ai-asyncapi/)
 
-- Chat
-- Completions
-- LLM
+#### Event channels (4)
 
-#### Properties
+Individual events and webhooks the provider emits.
 
-- [Documentation](https://docs.fireworks.ai/guides/querying-text-models)
-- [API Reference](https://docs.fireworks.ai/api-reference/post-chatcompletions)
-- [OpenAPI](openapi/fireworks-ai-merged-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/fireworks-ai-merged.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/fireworks-ai-merged.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [AsyncAPI](asyncapi/fireworks-ai-asyncapi.yml) — [AsyncAPI Specification](https://www.asyncapi.com/docs/reference/specification/latest)
+- [/chat/completions](https://apis.io/channels/fireworks-ai/chat-completions/)
+- [/completions](https://apis.io/channels/fireworks-ai/completions/)
+- [/messages](https://apis.io/channels/fireworks-ai/messages/)
+- [/responses](https://apis.io/channels/fireworks-ai/responses/)
 
-### Fireworks Completions API
+#### GraphQL (1)
 
-Legacy text completion endpoint, OpenAI-compatible.
+GraphQL schemas.
 
-- **Human URL:** [https://docs.fireworks.ai/api-reference/post-completions](https://docs.fireworks.ai/api-reference/post-completions)
-- **Base URL:** `https://api.fireworks.ai/inference/v1`
+- [Moved to /providers/fireworks-ai/](https://apis.io/graphqls/fireworks-ai/fireworks-ai-graphql/)
 
-#### Tags
+#### MCP servers (1)
 
-- Completions
-- LLM
+Model Context Protocol servers that expose the API to agents.
 
-#### Properties
+- [fireworks-ai](https://apis.io/servers/fireworks-ai/fireworks-ai/)
 
-- [API Reference](https://docs.fireworks.ai/api-reference/post-completions)
-- [OpenAPI](openapi/fireworks-ai-merged-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/fireworks-ai-merged.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/fireworks-ai-merged.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [AsyncAPI](asyncapi/fireworks-ai-asyncapi.yml) — [AsyncAPI Specification](https://www.asyncapi.com/docs/reference/specification/latest)
+#### Agentic access (1)
 
-### Fireworks Vision API
+Which operations an agent can call, which act, and which need a human in the loop.
 
-Vision-language inference for image and document understanding through chat completions.
+- [Fireworks Ai Agentic Access](https://apis.io/agentic-access/fireworks-ai/fireworks-ai-agentic-access/)
 
-- **Human URL:** [https://docs.fireworks.ai/guides/querying-vision-language-models](https://docs.fireworks.ai/guides/querying-vision-language-models)
-- **Base URL:** `https://api.fireworks.ai/inference/v1`
+#### Collections (15)
 
-#### Tags
+Postman and Open Collection request collections.
 
-- Vision
-- Multimodal
-- Documents
+- [Fireworks AI Anthropic Compatible Messages API](https://apis.io/collections/fireworks-ai/open-fireworks-ai-anthropic-messages/)
+- [Fireworks AI Anthropic Compatible Messages anthropic-messages.openapi_other API](https://apis.io/collections/fireworks-ai/open-fireworks-ai-anthropic-messages-openapi-other-api/)
+- [Fireworks AI Anthropic Compatible Messages anthropic-messages.openapi_other Chat API](https://apis.io/collections/fireworks-ai/open-fireworks-ai-chat-api/)
+- [Fireworks AI Anthropic Compatible Messages anthropic-messages.openapi_other Completions API](https://apis.io/collections/fireworks-ai/open-fireworks-ai-completions-api/)
+- [Gateway REST API](https://apis.io/collections/fireworks-ai/open-fireworks-ai-gateway/)
+- [Fireworks AI Anthropic Compatible Messages anthropic-messages.openapi_other Gateway API](https://apis.io/collections/fireworks-ai/open-fireworks-ai-gateway-api/)
+- [Fireworks AI Anthropic Compatible Messages anthropic-messages.openapi_other gateway-extra.openapi_Gateway API](https://apis.io/collections/fireworks-ai/open-fireworks-ai-gateway-extra-openapi-gateway-api/)
+- [Fireworks AI Anthropic Compatible Messages anthropic-messages.openapi_other gateway.openapi_Gateway API](https://apis.io/collections/fireworks-ai/open-fireworks-ai-gateway-openapi-gateway-api/)
+- [Gateway REST API](https://apis.io/collections/fireworks-ai/open-fireworks-ai-merged/)
+- [Fireworks AI Anthropic Compatible anthropic-.openapi_other Messages API](https://apis.io/collections/fireworks-ai/open-fireworks-ai-messages-api/)
+- [Fireworks Responses API](https://apis.io/collections/fireworks-ai/open-fireworks-ai-responses/)
+- [Fireworks AI Anthropic Compatible Messages anthropic-messages.openapi_other Responses API](https://apis.io/collections/fireworks-ai/open-fireworks-ai-responses-api/)
+- [Fireworks AI Anthropic Compatible Messages anthropic-messages.openapi_other responses.openapi_other API](https://apis.io/collections/fireworks-ai/open-fireworks-ai-responses-openapi-other-api/)
+- [Fireworks Text Completion API](https://apis.io/collections/fireworks-ai/open-fireworks-ai-text-completion/)
+- [Fireworks AI Anthropic Compatible Messages anthropic-messages.openapi_other text-completion.openapi_other API](https://apis.io/collections/fireworks-ai/open-fireworks-ai-text-completion-openapi-other-api/)
 
-#### Properties
+#### Governance rules (1)
 
-- [Documentation](https://docs.fireworks.ai/guides/querying-vision-language-models)
-- [OpenAPI](openapi/fireworks-ai-merged-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/fireworks-ai-merged.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/fireworks-ai-merged.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Spectral rulesets for the provider's contracts.
 
-### Fireworks Embeddings API
+- [Fireworks AI — asyncapi rules](https://apis.io/rules/fireworks-ai/fireworks-ai-asyncapi-spectral-rules/)
 
-Generate dense vector embeddings for retrieval, RAG, and semantic search using nomic, Qwen3, BGE, and other open embedding models.
+#### Security (2)
 
-- **Human URL:** [https://docs.fireworks.ai/guides/querying-embeddings-models](https://docs.fireworks.ai/guides/querying-embeddings-models)
-- **Base URL:** `https://api.fireworks.ai/inference/v1`
+Authentication, trust centre, and vulnerability disclosure.
 
-#### Tags
+- [Fireworks Ai Authentication](https://apis.io/security/fireworks-ai/fireworks-ai-authentication/)
+- [Fireworks Ai Domain Security](https://apis.io/security/fireworks-ai/fireworks-ai-domain-security/)
 
-- Embeddings
-- Vector
-- Retrieval
+#### Plans and pricing (1)
 
-#### Properties
+Published plans, tiers and prices.
 
-- [Documentation](https://docs.fireworks.ai/guides/querying-embeddings-models)
-- [OpenAPI](openapi/fireworks-ai-merged-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/fireworks-ai-merged.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/fireworks-ai-merged.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Fireworks Ai Plans Pricing](https://apis.io/plans/fireworks-ai/fireworks-ai-plans-pricing/)
 
-### Fireworks Rerank API
+#### Rate limits (1)
 
-Cross-encoder reranking of candidate passages for higher-quality retrieval and RAG pipelines.
+Published request limits.
 
-- **Human URL:** [https://docs.fireworks.ai/guides/querying-rerank-models](https://docs.fireworks.ai/guides/querying-rerank-models)
-- **Base URL:** `https://api.fireworks.ai/inference/v1`
+- [Fireworks Ai Rate Limits](https://apis.io/rate-limits/fireworks-ai/fireworks-ai-rate-limits/)
 
-#### Tags
+#### FinOps (1)
 
-- Rerank
-- Retrieval
-- RAG
+What the API costs to run, by operation.
 
-#### Properties
+- [Fireworks Ai Finops](https://apis.io/finops/fireworks-ai/fireworks-ai-finops/)
 
-- [Documentation](https://docs.fireworks.ai/guides/querying-rerank-models)
-- [OpenAPI](openapi/fireworks-ai-merged-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/fireworks-ai-merged.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/fireworks-ai-merged.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+## Where to find this API
 
-### Fireworks Images API
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-Text-to-image and image-to-image generation across Stable Diffusion, FLUX, and other diffusion model families.
-
-- **Human URL:** [https://docs.fireworks.ai/api-reference/generate-a-new-image-from-a-text-prompt](https://docs.fireworks.ai/api-reference/generate-a-new-image-from-a-text-prompt)
-- **Base URL:** `https://api.fireworks.ai/inference/v1`
-
-#### Tags
-
-- Images
-- Generation
-- Stable Diffusion
-
-#### Properties
-
-- [Documentation](https://docs.fireworks.ai/guides/querying-image-language-models)
-- [API Reference](https://docs.fireworks.ai/api-reference/generate-a-new-image-from-a-text-prompt)
-- [OpenAPI](openapi/fireworks-ai-merged-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/fireworks-ai-merged.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/fireworks-ai-merged.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Fireworks Audio API
-
-OpenAI-compatible audio transcription, translation, and TTS endpoints for Whisper and other audio models with low-latency streaming.
-
-- **Human URL:** [https://docs.fireworks.ai/api-reference/audio-transcriptions](https://docs.fireworks.ai/api-reference/audio-transcriptions)
-- **Base URL:** `https://audio-prod.us-virginia-1.direct.fireworks.ai/v1`
-
-#### Tags
-
-- Audio
-- Speech to Text
-- Text to Speech
-- Whisper
-
-#### Properties
-
-- [Documentation](https://docs.fireworks.ai/guides/audio)
-- [API Reference](https://docs.fireworks.ai/api-reference/audio-transcriptions)
-- [OpenAPI](openapi/fireworks-ai-merged-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/fireworks-ai-merged.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/fireworks-ai-merged.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Fireworks Batch Inference API
-
-Asynchronous batch inference at 50% of serverless rates for both input and output tokens.
-
-- **Human URL:** [https://docs.fireworks.ai/guides/batch-inference](https://docs.fireworks.ai/guides/batch-inference)
-- **Base URL:** `https://api.fireworks.ai/inference/v1`
-
-#### Tags
-
-- Batch
-- Async
-
-#### Properties
-
-- [Documentation](https://docs.fireworks.ai/guides/batch-inference)
-- [OpenAPI](openapi/fireworks-ai-merged-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/fireworks-ai-merged.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/fireworks-ai-merged.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Fireworks Fine-Tuning API
-
-Supervised fine-tuning (LoRA and full-parameter) and reinforcement fine-tuning, with one-click deployment of fine-tuned weights at the same per-token price as base models.
-
-- **Human URL:** [https://docs.fireworks.ai/fine-tuning/fine-tuning-models](https://docs.fireworks.ai/fine-tuning/fine-tuning-models)
-- **Base URL:** `https://api.fireworks.ai/v1`
-
-#### Tags
-
-- Fine-Tuning
-- LoRA
-- RFT
-- Training
-
-#### Properties
-
-- [Documentation](https://docs.fireworks.ai/fine-tuning/fine-tuning-models)
-- [OpenAPI](openapi/fireworks-ai-merged-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/fireworks-ai-merged.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/fireworks-ai-merged.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Fireworks Files API
-
-Upload and manage training datasets, batch input files, and fine-tuning artifacts.
-
-- **Human URL:** [https://docs.fireworks.ai/api-reference/files](https://docs.fireworks.ai/api-reference/files)
-- **Base URL:** `https://api.fireworks.ai/v1`
-
-#### Tags
-
-- Files
-- Datasets
-
-#### Properties
-
-- [API Reference](https://docs.fireworks.ai/api-reference/files)
-- [OpenAPI](openapi/fireworks-ai-merged-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/fireworks-ai-merged.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/fireworks-ai-merged.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Fireworks Models API
-
-Lists models, deployments, and metadata across the Fireworks catalog.
-
-- **Human URL:** [https://docs.fireworks.ai/api-reference/list-models](https://docs.fireworks.ai/api-reference/list-models)
-- **Base URL:** `https://api.fireworks.ai/v1`
-
-#### Tags
-
-- Models
-- Catalog
-
-#### Properties
-
-- [API Reference](https://docs.fireworks.ai/api-reference/list-models)
-- [OpenAPI](openapi/fireworks-ai-merged-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/fireworks-ai-merged.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/fireworks-ai-merged.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Fireworks Deployments API
-
-Provision and autoscale on-demand dedicated GPU deployments (H100, H200, B200, B300) billed per GPU-second.
-
-- **Human URL:** [https://docs.fireworks.ai/guides/ondemand-deployments](https://docs.fireworks.ai/guides/ondemand-deployments)
-- **Base URL:** `https://api.fireworks.ai/v1`
-
-#### Tags
-
-- Deployments
-- On-Demand
-- GPU
-
-#### Properties
-
-- [Documentation](https://docs.fireworks.ai/guides/ondemand-deployments)
-- [OpenAPI](openapi/fireworks-ai-merged-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/fireworks-ai-merged.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/fireworks-ai-merged.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Fireworks Account API
-
-Programmatic access to account, billing, usage, and team management.
-
-- **Human URL:** [https://docs.fireworks.ai/api-reference](https://docs.fireworks.ai/api-reference)
-- **Base URL:** `https://api.fireworks.ai/v1`
-
-#### Tags
-
-- Account
-- Usage
-- Billing
-
-#### Properties
-
-- [API Reference](https://docs.fireworks.ai/api-reference)
-- [OpenAPI](openapi/fireworks-ai-merged-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/fireworks-ai-merged.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/fireworks-ai-merged.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-## Common Properties
-
-- [GitHub Organization](https://github.com/fw-ai)
-- [LinkedIn](https://www.linkedin.com/company/fireworks-ai)
 - [Website](https://fireworks.ai/)
 - [Documentation](https://docs.fireworks.ai/)
-- [Plans](plans/fireworks-ai-plans-pricing.yml)
-- [Rate Limits](rate-limits/fireworks-ai-rate-limits.yml)
-- [Fin Ops](finops/fireworks-ai-finops.yml)
-- [Integrations](https://fireworks.ai/partners)
-- [L L Ms Txt](https://docs.fireworks.ai/llms.txt)
+- [Pricing](https://fireworks.ai/pricing)
+- [Blog](https://fireworks.ai/blog)
+- [GitHub](https://github.com/fw-ai)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 37.9** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 80.0 |
+| Contract quality | 44.9 |
+| Contract governance | 11.4 |
+| Operational transparency | 34.2 |
+| Developer ergonomics | 31.0 |
+| Access clarity | 42.1 |
+
+**Agent readiness 35.9** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | platform (partial credit) |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | derived (partial credit) |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | yes |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 10.9** — AI & Biometrics
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/fireworks-ai/](https://apis.io/providers/fireworks-ai/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Fireworks AI: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/fireworks-ai/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
